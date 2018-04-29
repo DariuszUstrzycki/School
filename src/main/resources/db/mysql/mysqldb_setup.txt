@@ -1,0 +1,7 @@
+The sql database is set up automatically be loading data from schema.sql in resources.
+
+It is good security practice that after your database is in production state, you make spring.jpa.hibernate.ddl-auto=none 
+ and revoke all privileges from the MySQL user connected to the Spring application, then give him 
+ only SELECT, UPDATE, INSERT, DELETE.
+ 
+ 

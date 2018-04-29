@@ -1,0 +1,133 @@
+
+
+
+# LOGGING
+#  Enable debug/trace logs
+debug=false 
+trace=false 
+
+# Log file name (for instance, `myapp.log`). Names can be an exact location or relative to the current directory.
+logging.file= 
+# Location of the log file. For instance, `/var/log`.
+logging.path= 
+
+# Log levels severity mapping. For instance, `logging.level.org.springframework=DEBUG`.
+logging.level.*= 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# ----------------------------------------
+# WEB PROPERTIES
+# ----------------------------------------
+
+# EMBEDDED SERVER CONFIGURATION (ServerProperties)
+server.error.path=/error # Path of the error controller.
+server.error.whitelabel.enabled=true # Whether to enable the default error page displayed in browsers in case of a server error.
+server.port=8080 # Server HTTP port.
+server.servlet.context-parameters.*= # Servlet context init parameters.
+server.servlet.context-path= # Context path of the application.
+server.servlet.application-display-name=application # Display name of the application.
+server.servlet.jsp.class-name=org.apache.jasper.servlet.JspServlet # The class name of the JSP servlet.
+server.servlet.jsp.init-parameters.*= # Init parameters used to configure the JSP servlet.
+server.servlet.jsp.registered=true # Whether the JSP servlet is registered.
+server.servlet.path=/ # Path of the main dispatcher servlet.
+
+server.servlet.session.persistent=false # Whether to persist session data between restarts.
+server.servlet.session.store-dir= # Directory used to store session data.
+server.servlet.session.timeout= # Session timeout. If a duration suffix is not specified, seconds will be used.
+server.servlet.session.tracking-modes= # Session tracking modes (one or more of the following: "cookie", "url", "ssl").
+
+
+
+# MULTIPART (MultipartProperties)
+spring.servlet.multipart.enabled=true # Whether to enable support of multipart uploads.
+spring.servlet.multipart.file-size-threshold=0 # Threshold after which files are written to disk. Values can use the suffixes "MB" or "KB" to indicate megabytes or kilobytes, respectively.
+spring.servlet.multipart.location= # Intermediate location of uploaded files.
+spring.servlet.multipart.max-file-size=1MB # Max file size. Values can use the suffixes "MB" or "KB" to indicate megabytes or kilobytes, respectively.
+spring.servlet.multipart.max-request-size=10MB # Max request size. Values can use the suffixes "MB" or "KB" to indicate megabytes or kilobytes, respectively.
+spring.servlet.multipart.resolve-lazily=false # Whether to resolve the multipart request lazily at the time of file or parameter access.
+
+
+# SPRING MVC (WebMvcProperties)
+spring.mvc.date-format= # Date format to use. For instance, `dd/MM/yyyy`.
+spring.mvc.locale= # Locale to use. By default, this locale is overridden by the "Accept-Language" header.
+spring.mvc.servlet.load-on-startup=-1 # Load on startup priority of the dispatcher servlet.
+spring.mvc.static-path-pattern=/** # Path pattern used for static resources.
+
+# SPRING RESOURCES HANDLING (ResourceProperties)
+spring.resources.add-mappings=true # Whether to enable default resource handling.
+# Locations of static resources.
+spring.resources.static-locations=classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/ 
+
+
+
+
+# SPRING INTEGRATION (IntegrationProperties)
+spring.integration.jdbc.initialize-schema=embedded # Database schema initialization mode.
+spring.integration.jdbc.schema=classpath:org/springframework/integration/jdbc/schema-@@platform@@.sql # Path to the SQL file to use to initialize the database schema.
+
+
+# ----------------------------------------
+# ACTUATOR PROPERTIES
+# ----------------------------------------
+
+# MANAGEMENT HTTP SERVER (ManagementServerProperties)
+management.server.add-application-context-header=false # Add the "X-Application-Context" HTTP header in each response.
+management.server.address= # Network address to which the management endpoints should bind. Requires a custom management.server.port.
+management.server.port= # Management endpoint HTTP port (uses the same port as the application by default). Configure a different port to use management-specific SSL.
+management.server.servlet.context-path= # Management endpoint context-path (for instance, `/management`). Requires a custom management.server.port.
+management.server.ssl.ciphers= # Supported SSL ciphers. Requires a custom management.port.
+management.server.ssl.client-auth= # Whether client authentication is wanted ("want") or needed ("need"). Requires a trust store. Requires a custom management.server.port.
+management.server.ssl.enabled= # Whether to enable SSL support. Requires a custom management.server.port.
+management.server.ssl.enabled-protocols= # Enabled SSL protocols. Requires a custom management.server.port.
+management.server.ssl.key-alias= # Alias that identifies the key in the key store. Requires a custom management.server.port.
+management.server.ssl.key-password= # Password used to access the key in the key store. Requires a custom management.server.port.
+management.server.ssl.key-store= # Path to the key store that holds the SSL certificate (typically a jks file). Requires a custom management.server.port.
+management.server.ssl.key-store-password= # Password used to access the key store. Requires a custom management.server.port.
+management.server.ssl.key-store-provider= # Provider for the key store. Requires a custom management.server.port.
+management.server.ssl.key-store-type= # Type of the key store. Requires a custom management.server.port.
+management.server.ssl.protocol=TLS # SSL protocol to use. Requires a custom management.server.port.
+management.server.ssl.trust-store= # Trust store that holds SSL certificates. Requires a custom management.server.port.
+management.server.ssl.trust-store-password= # Password used to access the trust store. Requires a custom management.server.port.
+management.server.ssl.trust-store-provider= # Provider for the trust store. Requires a custom management.server.port.
+management.server.ssl.trust-store-type= # Type of the trust store. Requires a custom management.server.port.
+
+
+
+
+
+
+
+
+# APPLICATION SETTINGS (SpringApplication)
+# Sources (class names, package names, or XML resource locations) to include in the ApplicationContext.
+spring.main.sources= 
+
+
+
+
+
+
+
+
+

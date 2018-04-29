@@ -4,11 +4,11 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>pl.ustrzycki</groupId>
-	<artifactId>aaaa_School</artifactId>
+	<artifactId>a_School</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging> <!-- for JSP zmienione z JAr -->
 
-	<name>aaaa_School</name>
+	<name>a_School</name>
 	<description>Final project for Coders Lab</description>
 
 	<parent>
@@ -73,12 +73,14 @@
 		</dependency>
 			
 	
-		<!-- security -->
+		<!-- security 
 		
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
+		
+		-->
 		
 		<!--  management -->
 		
