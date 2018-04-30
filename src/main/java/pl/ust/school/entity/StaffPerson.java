@@ -1,10 +1,15 @@
 
 package pl.ust.school.entity;
 
+import java.time.LocalDate;
+
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Past;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 
 @MappedSuperclass
@@ -31,7 +36,15 @@ public class StaffPerson extends IdEntity {
     @NotEmpty
     @Digits(fraction = 0, integer = 10)
     @Column
-    private String telephone;
+    private String telephone;    
+    
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @Past
+    @Column(name = "birth_date")
+    private LocalDate birthDate;
+    
+    
+    /////////////// getters and setters ///////////////////
 
 	public String getFirstName() {
 		return firstName;
