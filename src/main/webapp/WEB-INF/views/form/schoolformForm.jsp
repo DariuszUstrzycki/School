@@ -9,15 +9,22 @@
 <title>Add a school form</title>
 </head>
 <body>
-<h1>Add a school form</h1><br><br>
 
-<form:form action="${pageContext.request.contextPath}/schoolform/save" method="POST" modelAttribute="schoolForm">
-<form:hidden path="id"/>
+<c:if test="${schoolForm['new']}">
+	<c:set var = "actionType" scope = "page" value = "Add"/>
+</c:if>
+<c:if test="${ not schoolForm['new']}">
+	<c:set var = "actionType" scope = "page" value = "Update"/>
+</c:if>	
+
+<h1>${actionType} a school form</h1><br><br>
+
+<form:form action="#" method="POST" modelAttribute="schoolForm">
 <label for="name">Name of the form:</label>
 <form:input placeholder="eg 1B, 2C, 4D, etc." path="name" />
 <form:errors path="name"></form:errors>
-<br><br><input type="submit"/>
+<br><br>
+<input type="submit" value="${actionType}" />
 </form:form>
 
-</body>
-</html>
+
