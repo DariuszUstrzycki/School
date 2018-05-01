@@ -28,7 +28,7 @@ import pl.ust.school.repository.SchoolFormRepository;
 @RequestMapping("schoolform") // endpoint should be read some config file
 public class SchoolFormController {
 	
-	private static final String CREATE_OR_UPDATE_FORM = "form/schoolformForm";
+	private static final String CREATE_OR_UPDATE_FORM_VIEW = "form/schoolformForm";
 	private static final String LIST_VIEW = "edit/schoolformList";
 	private static final String DETAILS_VIEW = "edit/schoolformDetails";
 	
@@ -47,7 +47,7 @@ public class SchoolFormController {
 	@GetMapping("/save")
 	public String showForm(SchoolForm form, Model model) {
 		model.addAttribute("entityName", "schoolform"); // endpoint should be read some config file
-		return CREATE_OR_UPDATE_FORM;
+		return CREATE_OR_UPDATE_FORM_VIEW;
 	}
 	
 	@PostMapping("/save")
@@ -60,7 +60,7 @@ public class SchoolFormController {
 			for (ObjectError error : list) {
 				System.out.println(error);
 			}
-			return CREATE_OR_UPDATE_FORM; 
+			return CREATE_OR_UPDATE_FORM_VIEW; 
 		}
 		
 		form = this.repo.save(form);	
@@ -124,14 +124,14 @@ public class SchoolFormController {
 			
 		});
 
-		return CREATE_OR_UPDATE_FORM;
+		return CREATE_OR_UPDATE_FORM_VIEW;
 	}
 
 	@PostMapping("/update/{id}")
 	public String processUpdateForm(@Valid SchoolForm form, BindingResult result, @PathVariable long id, Model model) {
 		
 		if (result.hasErrors()) {
-	         return CREATE_OR_UPDATE_FORM;
+	         return CREATE_OR_UPDATE_FORM_VIEW;
 	     } else {
 	    	 form.setId(id);
 	         this.repo.save(form);
