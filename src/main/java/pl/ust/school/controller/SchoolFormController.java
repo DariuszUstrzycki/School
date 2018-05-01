@@ -64,14 +64,14 @@ public class SchoolFormController {
 		}
 		
 		form = this.repo.save(form);	
-		return "redirect:/schoolform/" + form.getId(); 
+		return "redirect:/schoolform/view/" + form.getId(); 
 	}
 		
 	////////////////////////////LIST ////////////////////////////
 	
 	@RequestMapping("/list")
 	public String listSchoolForms(@RequestParam(defaultValue = "0", required = false) int min, Model model) {
-		model.addAttribute("schoolformItems", this.repo.findAll());
+		model.addAttribute("schoolformItems", this.repo. findAll());
 		model.addAttribute("entityName", "schoolform");
 		return LIST_VIEW;
 	}
@@ -82,7 +82,7 @@ public class SchoolFormController {
 	public String viewSchoolForm(@PathVariable long id, Model model) {
 
 		Set<SchoolForm> schoolformItems = new HashSet<>();
-		Optional<SchoolForm> opt = this.repo.findById(id);
+		Optional<SchoolForm> opt = this.repo. findById(id);
 		opt.ifPresent(schoolForm -> schoolformItems.add(schoolForm)); 
 		
 		model.addAttribute("schoolformItems", schoolformItems);

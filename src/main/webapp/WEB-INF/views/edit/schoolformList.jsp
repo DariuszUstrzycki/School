@@ -13,7 +13,7 @@
 <h1>School forms</h1>
 
 <form method="GET" action='${pageContext.request.contextPath}/schoolform/save'>
-<input type="submit" value="Add a school form">
+<input type="submit" value="Add new school form">
 </form>
 
 <br>

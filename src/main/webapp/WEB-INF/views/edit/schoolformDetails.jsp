@@ -6,11 +6,15 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
+<title>School form information</title>
 </head>
 <body>
 
-<h1>School form details</h1>
+<h1>School form information</h1>
+
+<form method="GET" action='${pageContext.request.contextPath}/schoolform/save'>
+<input type="submit" value="Add new school form">
+</form>
 
 <table border='1px'>
 
@@ -31,7 +35,8 @@
 </c:forEach>
 
 </tbody>
-</table>
+</table><br><br>
+
 
 </body>
 </html>
