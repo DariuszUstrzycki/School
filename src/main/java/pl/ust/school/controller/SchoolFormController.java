@@ -63,18 +63,10 @@ public class SchoolFormController {
 			return CREATE_OR_UPDATE_FORM; 
 		}
 		
-		this.repo.save(form);	
-		return "redirect:/schoolform/list"; //  /schoolform/success
+		form = this.repo.save(form);	
+		return "redirect:/schoolform/" + form.getId(); 
 	}
-	
-	//////////////////////////// success ////////////////////////////
-	
-	@RequestMapping("/success")
-	public String success(Model model) {
-		model.addAttribute("successMsg", "New school form has been added");
-		return "form/success";
-	}
-	
+		
 	////////////////////////////LIST ////////////////////////////
 	
 	@RequestMapping("/list")
