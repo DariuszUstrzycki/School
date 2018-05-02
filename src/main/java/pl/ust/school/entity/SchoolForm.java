@@ -9,25 +9,23 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "forms")
+@Table(name = "schoolForms")
 public class SchoolForm extends NamedEntity {
 
 	private static final long serialVersionUID = 1L;
 	
-	@OneToMany(mappedBy = "form", cascade = {CascadeType.MERGE, CascadeType.PERSIST })
+	@OneToMany(mappedBy = "schoolForm", cascade = {CascadeType.MERGE, CascadeType.PERSIST })
 	private Set<Student> students; // = new HashSet<>();
 
 	/////////////// helper ///////////////////
 	
 	
-	
-	
 	public void addStudent(Student student) {
-		student.setForm(this);
+		students.add(student);
     }
 
     public void removeStudent(Student student) {
-    	student.setForm( null );
+    	student.setSchoolForm(null);
     }
     
     /////////////// getters and setters ///////////////////
