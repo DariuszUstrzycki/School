@@ -28,11 +28,7 @@ public class StaffPerson extends IdEntity {
     @NotEmpty // not null or empty
     @Column
     private String address;
-    
-    @NotEmpty
-    @Column
-    private String city;
-    
+        
     @NotEmpty
     @Digits(fraction = 0, integer = 10)
     @Column
@@ -70,14 +66,6 @@ public class StaffPerson extends IdEntity {
 		this.address = address;
 	}
 
-	public String getCity() {
-		return city;
-	}
-
-	public void setCity(String city) {
-		this.city = city;
-	}
-
 	public String getTelephone() {
 		return telephone;
 	}
@@ -85,11 +73,19 @@ public class StaffPerson extends IdEntity {
 	public void setTelephone(String telephone) {
 		this.telephone = telephone;
 	}
+	
+	public LocalDate getBirthDate() {
+		return birthDate;
+	}
+
+	public void setBirthDate(LocalDate birthDate) {
+		this.birthDate = birthDate;
+	}
 
 	@Override
 	public String toString() {
-		return "StaffPerson [firstName=" + firstName + ", lastName=" + lastName + ", address=" + address + ", city="
-				+ city + ", telephone=" + telephone + "]";
+		return "StaffPerson [firstName=" + firstName + ", lastName=" + lastName + ", address=" + address + 
+				", telephone=" + telephone + "]";
 	}
     
     
