@@ -12,26 +12,33 @@ public class Student extends StaffPerson {
 	private static final long serialVersionUID = 1L;
 
 	@ManyToOne
-	@JoinColumn(name = "form_id")
-	private SchoolForm form;
+	@JoinColumn(name = "schoolForm_id")
+	private SchoolForm schoolForm;
 
 	/////////////// getters and setters ///////////////////
 
-	public SchoolForm getForm() {
-		return form;
+	public SchoolForm getSchoolForm() {
+		return schoolForm;
 	}
 
-	public void setForm(SchoolForm form) {
+	public void setSchoolForm(SchoolForm schoolForm) {
 
-		if (form != null) {
-			form.getStudents().add(this);
+		if (schoolForm != null) {
+			schoolForm.getStudents().add(this);
 		} 
 		
-		if (this.form != null) { // student takes care of unlisting from the previous Form before new Form is set
-			this.form.getStudents().remove(this);
+		if (this.schoolForm != null) { // student takes care of unlisting from the previous Form before new Form is set
+			this.schoolForm.getStudents().remove(this);
 		}
 
-		this.form = form;
+		this.schoolForm = schoolForm;
 	}
+
+	@Override
+	public String toString() {
+		return "Student [" + schoolForm + ", " + super.toString() + "]";
+	}
+	
+	
 	
 }
