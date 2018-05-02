@@ -17,13 +17,13 @@ public interface AppBaseRepository<T, Long> extends Repository<T , Long> {
 	
 	// add @Query("SELECT DISTINCT .......................") ?!
 		
-	<T extends IdEntity> IdEntity save(T entity);
+	T save(T entity);
 	
 	@Transactional(readOnly = true)  
-	Optional<? extends IdEntity> findById(Long id);
+	Optional<T> findById(Long id);
 	
 	@Transactional(readOnly = true)  
-	Iterable<? extends IdEntity> findAll();
+	Iterable<T> findAll();
 	 
 	@Transactional
 	void deleteById(Long id);

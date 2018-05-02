@@ -44,7 +44,6 @@ public class StudentController {
 	
 	//////////////////////////////////////////////////////////
 	
-	@SuppressWarnings("unchecked")
 	@ModelAttribute("schoolFormItems")
     public Collection<SchoolForm> populateSchoolFormItems() {
         return (Collection<SchoolForm>) this.schoolFormRepo.findAll();
@@ -92,7 +91,6 @@ public class StudentController {
 	}
 
 	//////////////////////////// VIEW ONE ////////////////////////////
-	@SuppressWarnings("unchecked")
 	@RequestMapping("view/{id}")
 	public String viewStudent(@PathVariable long id, Model model) {
 
@@ -112,7 +110,6 @@ public class StudentController {
 		return CONFIRM_DELETE_VIEW;
 	}
 
-	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/delete/{id}")
 	public String deleteStudent(@PathVariable long id) {
 
@@ -129,7 +126,6 @@ public class StudentController {
 
 	//////////////////////////// UPDATE ////////////////////////////
 	// Neither BindingResult nor plain target object for bean name 'student' available as request attribute
-	@SuppressWarnings("unchecked")
 	@GetMapping("/update/{id}")
 	public String showForm(@PathVariable long id, Model model) {
 		

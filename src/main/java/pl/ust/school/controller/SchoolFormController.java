@@ -81,7 +81,6 @@ public class SchoolFormController {
 	
 	//////////////////////////// VIEW ONE ////////////////////////////
 
-	@SuppressWarnings("unchecked")
 	@RequestMapping("view/{id}")
 	public String viewSchoolForm(@PathVariable long id, Model model) {
 
@@ -102,7 +101,6 @@ public class SchoolFormController {
 		return CONFIRM_DELETE_VIEW;
 	}
 
-	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/delete/{id}")
 	public String deleteSchoolForm(@PathVariable long id) {
 		
@@ -121,7 +119,6 @@ public class SchoolFormController {
 	}
 
 	//////////////////////////// UPDATE ////////////////////////////
-	@SuppressWarnings("unchecked")
 	@GetMapping("/update/{id}")
 	public String showForm(@PathVariable long id, Model model) {
 		Optional<SchoolForm> opt = (Optional<SchoolForm>) schooFormRepo.findById(id);
