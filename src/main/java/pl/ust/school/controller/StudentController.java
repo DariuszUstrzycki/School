@@ -32,8 +32,8 @@ import pl.ust.school.repository.StudentRepository;
 public class StudentController {
 	
 	private static final String CREATE_OR_UPDATE_FORM_VIEW = "forms/studentForm";
-	private static final String LIST_VIEW = "edit/studentList";
-	private static final String DETAILS_VIEW = "edit/studentDetails";
+	private static final String LIST_VIEW = "detailsNLists/studentList";
+	private static final String DETAILS_VIEW = "detailsNLists/studentDetails";
 	private static final String CONFIRM_DELETE_VIEW = "forms/confirmDelete";
 	
 	@Autowired
