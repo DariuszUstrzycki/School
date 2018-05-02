@@ -1,9 +1,9 @@
 @charset "UTF-8";
 
 h1{
-	color:darkgreen;
+	color: darkblue;
 }
 
-h2{
-	color:blue;
+h2, h3, h4{
+	color: cornflowerBlue;
 }
