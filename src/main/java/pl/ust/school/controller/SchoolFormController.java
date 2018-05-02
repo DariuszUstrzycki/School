@@ -23,19 +23,22 @@ import org.springframework.web.bind.annotation.RequestParam;
 import pl.ust.school.entity.SchoolForm;
 import pl.ust.school.entity.Student;
 import pl.ust.school.repository.SchoolFormRepository;
+import pl.ust.school.repository.StudentRepository;
 
 @Controller
 @RequestMapping("schoolform") // endpoint should be read some config file
 public class SchoolFormController {
 	
-	private static final String CREATE_OR_UPDATE_FORM_VIEW = "form/schoolformForm";
+	private static final String CREATE_OR_UPDATE_FORM_VIEW = "forms/schoolformForm";
 	private static final String LIST_VIEW = "edit/schoolformList";
 	private static final String DETAILS_VIEW = "edit/schoolformDetails";
+	private static final String CONFIRM_DELETE_VIEW = "forms/confirmDelete";
 	
 	@Autowired
-	private SchoolFormRepository repo;
+	private SchoolFormRepository schooFormRepo;
 	
-	
+	@Autowired
+	private StudentRepository studentRepo;
 	
 	@InitBinder
     public void setAllowedFields(WebDataBinder dataBinder) {
@@ -51,7 +54,7 @@ public class SchoolFormController {
 	}
 	
 	@PostMapping("/save")
-	public String saveForm(@Valid SchoolForm form, BindingResult result, Model model) {
+	public String saveSchoolForm(@Valid SchoolForm form, BindingResult result, Model model) {
 		
 		model.addAttribute("entityName", "schoolform"); // endpoint should be read some config file
 		
@@ -63,7 +66,7 @@ public class SchoolFormController {
 			return CREATE_OR_UPDATE_FORM_VIEW; 
 		}
 		
-		form = this.repo.save(form);	
+		form = (SchoolForm) this.schooFormRepo.save(form);	
 		return "redirect:/schoolform/view/" + form.getId(); 
 	}
 		
@@ -71,43 +74,46 @@ public class SchoolFormController {
 	
 	@RequestMapping("/list")
 	public String listSchoolForms(@RequestParam(defaultValue = "0", required = false) int min, Model model) {
-		model.addAttribute("schoolformItems", this.repo. findAll());
+		model.addAttribute("schoolformItems", this.schooFormRepo. findAll());
 		model.addAttribute("entityName", "schoolform");
 		return LIST_VIEW;
 	}
 	
 	//////////////////////////// VIEW ONE ////////////////////////////
 
+	@SuppressWarnings("unchecked")
 	@RequestMapping("view/{id}")
 	public String viewSchoolForm(@PathVariable long id, Model model) {
 
 		Set<SchoolForm> schoolformItems = new HashSet<>();
-		Optional<SchoolForm> opt = this.repo. findById(id);
+		Optional<SchoolForm> opt = (Optional<SchoolForm>) this.schooFormRepo. findById(id);
 		opt.ifPresent(schoolForm -> schoolformItems.add(schoolForm)); 
-		
+		model.addAttribute("schoolformName", opt.get().getName());
 		model.addAttribute("schoolformItems", schoolformItems);
+		model.addAttribute("studentItems", studentRepo.findBySchoolForm_Id(id));
 		return DETAILS_VIEW; 
-	}
-
+	}                        
+	
 	//////////////////////////// DELETE ////////////////////////////
 
 	@GetMapping("/delete/{id}/confirm")
 	public String showConfirmationPage(@PathVariable long id, Model model) {
 		model.addAttribute("entityName", "schoolform");
-		return "form/confirmDelete";
+		return CONFIRM_DELETE_VIEW;
 	}
 
+	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/delete/{id}")
 	public String deleteSchoolForm(@PathVariable long id) {
-
-		Optional<SchoolForm> opt = repo.findById(id);
+		
+		Optional<SchoolForm> opt = (Optional<SchoolForm>) schooFormRepo.findById(id);
 		opt.ifPresent(schoolForm -> {
 
 			for (Student student : schoolForm.getStudents()) {
 				schoolForm.removeStudent(student);
 			}
 
-			this.repo.deleteById(id);
+			this.schooFormRepo.deleteById(id);
 
 		});
 		
@@ -115,10 +121,10 @@ public class SchoolFormController {
 	}
 
 	//////////////////////////// UPDATE ////////////////////////////
-
+	@SuppressWarnings("unchecked")
 	@GetMapping("/update/{id}")
 	public String showForm(@PathVariable long id, Model model) {
-		Optional<SchoolForm> opt = repo.findById(id);
+		Optional<SchoolForm> opt = (Optional<SchoolForm>) schooFormRepo.findById(id);
 		opt.ifPresent(schoolForm -> {
 			model.addAttribute(schoolForm);
 			
@@ -128,18 +134,16 @@ public class SchoolFormController {
 	}
 
 	@PostMapping("/update/{id}")
-	public String processUpdateForm(@Valid SchoolForm form, BindingResult result, @PathVariable long id, Model model) {
+	public String updateSchoolForm(@Valid SchoolForm form, BindingResult result, @PathVariable long id, Model model) {
 		
 		if (result.hasErrors()) {
 	         return CREATE_OR_UPDATE_FORM_VIEW;
 	     } else {
 	    	 form.setId(id);
-	         this.repo.save(form);
+	         this.schooFormRepo.save(form);
 	         return "redirect:/schoolform/view/" + id;
 	     }
 		
 	}
-	
-	 
 
 }
