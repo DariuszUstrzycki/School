@@ -10,7 +10,7 @@
 </head>
 <body>
 
-<h1>Library Manager</h1>
+<h1>School Manager</h1>
 
 <table border='1px' style="padding: 3px">
 <tr>

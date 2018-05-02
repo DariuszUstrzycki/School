@@ -13,15 +13,11 @@
     <%@ include file="../jspf/header.jspf" %>
 </div>
 
-<h1>School form information</h1>
+<h1>Student information</h1>
 
 <div id="content">
-	<%@ include file="../jspf/schoolformAddButton.jspf" %>
-
-	<h3>Students in ${schoolformName}:</h3>
-
+	<%@ include file="../jspf/studentAddButton.jspf" %>
 	<%@ include file="../jspf/studentDetailsFrag.jspf" %>
-
 </div>
 
 <div id="header">

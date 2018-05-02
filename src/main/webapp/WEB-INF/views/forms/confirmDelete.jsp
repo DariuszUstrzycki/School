@@ -12,18 +12,20 @@
 <div id="header">
     <%@ include file="../jspf/header.jspf" %>
 </div>
+<div>
 
-<h1>School form information</h1>
+<h3>Do you really want to delete ${entityName} with id ${id}?</h3>
 
-<div id="content">
-	<%@ include file="../jspf/schoolformAddButton.jspf" %>
+<form action='${pageContext.request.contextPath}/${entityName}/delete/${id}' method="GET">
+<input type="submit" value="Confirm">
+</form><br>
 
-	<h3>Students in ${schoolformName}:</h3>
+<form action='${pageContext.request.contextPath}/${entityName}/list/' method="GET">
+<input type="submit" value="Cancel">
+</form>
 
-	<%@ include file="../jspf/studentDetailsFrag.jspf" %>
 
 </div>
-
 <div id="header">
     <%@ include file="../jspf/footer.jspf" %>
 </div>
