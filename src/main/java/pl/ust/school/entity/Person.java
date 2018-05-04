@@ -109,8 +109,7 @@ public class Person extends IdEntity {
 
 	@Override
 	public String toString() {
-		return "StaffPerson [firstName=" + firstName + ", lastName=" + lastName + ", address=" + address + 
-				", telephone=" + telephone + "]";
+		return "firstName" + ", "  + lastName;
 	}
     
     
