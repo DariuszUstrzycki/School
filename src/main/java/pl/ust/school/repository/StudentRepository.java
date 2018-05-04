@@ -31,7 +31,7 @@ public interface StudentRepository extends AppBaseRepository<Student, Long> {
 
 	// parameters NAMING -------------------------------------	
 	
-	@Query("select s from Student s where s.firstName =	:first or u.lastName = :second")
+	@Query("select s from Student s where s.firstName =	:first OR s.lastName = :second")
 	Collection<Student> findByFirstNameAndLastNameAllIgnoreCaseOrderByLastNameAsc(@Param("first") String firstName, 
 																					@Param("second") String lastName);
 	
