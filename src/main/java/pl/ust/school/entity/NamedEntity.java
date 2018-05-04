@@ -5,6 +5,7 @@ import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.validation.constraints.NotEmpty;
 
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.NaturalId;
 
 
@@ -17,8 +18,7 @@ public class NamedEntity extends IdEntity {
 	// @NaturalId To be added but first I must learn how to handle org.hibernate.HibernateException:: An immutable natural identifier  of entity com.pramati.model.Person was altered 
 	// Natural ids are immutable by default. We can have at-most one natural id defined for an entity. When Hibernate sees natural-id tag in an entity mapping file, it automatically creates unique and not-null constraints 
     // https://prasanthnath.wordpress.com/2013/04/24/natural-ids-in-hibernate/
-	@Column(unique = true, nullable=false)
-	@org.hibernate.annotations.ColumnDefault("not assigned")
+	@Column(unique = true, nullable = true) 
     private String name;
 
     public String getName() {
