@@ -1,22 +1,156 @@
 package pl.ust.school.controller;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import pl.ust.school.repository.StudentRepository;
+import pl.ust.school.entity.Subject;
 import pl.ust.school.repository.SubjectRepository;
 
 @Controller
-@RequestMapping("subject") 
+@RequestMapping("subject")
 public class SubjectController {
-	
+
 	private static final String CREATE_OR_UPDATE_FORM_VIEW = "forms/subjectForm";
 	private static final String LIST_VIEW = "detailsNLists/subjectList";
 	private static final String DETAILS_VIEW = "detailsNLists/subjectDetails";
 	private static final String CONFIRM_DELETE_VIEW = "forms/confirmDelete";
-	
+
 	@Autowired
 	private SubjectRepository subjectRepo;
+
+	//////////////////////////////////////////////////////////
+
+	/*
+	 * nothing to populate the model first ?!
+	 * 
+	 * @ModelAttribute("schoolFormItems") public Collection<SchoolForm>
+	 * populateSchoolFormItems() { return (Collection<SchoolForm>)
+	 * this.schoolFormRepo.findAll(); }
+	 */
+
+	//////////////////////////////////////////////////////////
+
+	@InitBinder
+	public void setAllowedFields(WebDataBinder dataBinder) {
+		dataBinder.setDisallowedFields("id");
+	}
+
+	//////////////////////////// SAVE ////////////////////////////
+
+	@GetMapping("/save")
+	public String showForm(Subject subject, Model model) {
+		model.addAttribute("entityName", "subject");
+		return CREATE_OR_UPDATE_FORM_VIEW;
+	}
+
+	@PostMapping("/save")
+	public String saveSubject(@Valid Subject subject, BindingResult result, Model model) {
+
+		model.addAttribute("entityName", "subject");
+
+		if (result.hasErrors()) {
+			List<ObjectError> list = result.getAllErrors();
+			for (ObjectError error : list) {
+				System.err.println(error);
+			}
+			return CREATE_OR_UPDATE_FORM_VIEW;
+		}
+
+		subject = (Subject) this.subjectRepo.save(subject);
+		return "redirect:/subject/view/" + subject.getId();
+	}
+
+	//////////////////////////// LIST ////////////////////////////
+
+	@RequestMapping("/list")
+	public String listSubjects(@RequestParam(defaultValue = "0", required = false) int min, Model model) {
+		model.addAttribute("subjectItems", this.subjectRepo.findAll());
+		model.addAttribute("entityName", "subject");
+		return LIST_VIEW;
+	}
+
+	//////////////////////////// VIEW ONE ////////////////////////////
+	@RequestMapping("view/{id}")
+	public String viewSubject(@PathVariable long id, Model model) {
+
+		Set<Subject> subjectItems = new HashSet<>();
+		Optional<Subject> opt = (Optional<Subject>) this.subjectRepo.findById(id);
+		opt.ifPresent(subject -> subjectItems.add(subject));
+
+		model.addAttribute("subjectItems", subjectItems);
+		return DETAILS_VIEW;
+	}
+
+	//////////////////////////// DELETE ////////////////////////////
+
+	@GetMapping("/delete/{id}/confirm")
+	public String showConfirmationPage(@PathVariable long id, Model model) {
+		model.addAttribute("entityName", "subject");
+		return CONFIRM_DELETE_VIEW;
+	}
+
+	@RequestMapping(value = "/delete/{id}")
+	public String deleteSubject(@PathVariable long id) {
+		//  nie usuwać SUBJECTS!!!
+		Optional<Subject> opt = (Optional<Subject>) subjectRepo.findById(id);
+		opt.ifPresent(subject -> {
+			/*
+			for (Subject subject : subject.getSubjectSubjects()) {
+				subject.removeSubjectSubject(subjectsubject);
+			}
+
+			this.subjectRepo.deleteById(id);*/
+
+		});
+
+		return "redirect:/subject/list";
+	}
+
+	//////////////////////////// UPDATE ////////////////////////////
+	// Neither BindingResult nor plain target object for bean name 'subject'
+	//////////////////////////// available as request attribute
+	@GetMapping("/update/{id}")
+	public String showForm(@PathVariable long id, Model model) {
+
+		Optional<Subject> opt = (Optional<Subject>) subjectRepo.findById(id);
+		opt.ifPresent(subject -> {
+			model.addAttribute(subject);
+		});
+
+		return CREATE_OR_UPDATE_FORM_VIEW;
+	}
+
+	@PostMapping("/update/{id}")
+	public String updateSubject(@Valid Subject subject, BindingResult result, @PathVariable long id, Model model) {
+
+		if (result.hasErrors()) {
+			return CREATE_OR_UPDATE_FORM_VIEW;
+		} else {
+			System.err.println("--------UPDATE POST: subject: " + subject);
+			subject.setId(id);
+			this.subjectRepo.save(subject);
+			System.err.println("--------UPDATE POST: after saving subject ");
+
+			return "redirect:/subject/view/" + id;
+		}
+
+	}
 
 }
