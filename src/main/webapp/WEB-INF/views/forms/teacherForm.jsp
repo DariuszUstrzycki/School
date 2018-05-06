@@ -15,16 +15,16 @@
 
 <div>
 
-<c:if test="${student['new']}">
+<c:if test="${teacher['new']}">
 	<c:set var = "actionType" scope = "page" value = "Add"/>
 </c:if>
-<c:if test="${ not student['new']}">
+<c:if test="${ not teacher['new']}">
 	<c:set var = "actionType" scope = "page" value = "Update"/>
 </c:if>	
 
-<h1>${actionType} a student</h1>
+<h1>${actionType} a teacher</h1>
 
-<form:form action="#" method="POST" modelAttribute="student">
+<form:form action="#" method="POST" modelAttribute="teacher">
 
 <form:hidden path="password" value="unassigned"/>
 <form:hidden path="email" value="default@wonet.pl"/>
@@ -48,12 +48,6 @@
 <label for="birthDate">Date of birth:</label>
 <form:input placeholder="" path="birthDate" />
 <form:errors path="birthDate" cssClass='error'></form:errors><br><br>
-
-<form:select	path="schoolForm.id">
-				<!-- <form:option	label="undefined" value="100"/> -->
-				<form:options	items="${schoolFormItems}" itemLabel="name" itemValue="id"/>
-</form:select>
-<form:errors path='schoolForm.id' cssClass='error'></form:errors><br><br>
 
 <input type="submit" value="${actionType}" />
 <input type="reset" value="Reset" />
