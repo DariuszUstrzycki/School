@@ -7,7 +7,6 @@ import java.util.Optional;
 import java.util.Set;
 
 import javax.validation.Valid;
-import javax.validation.Validator;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -73,12 +72,12 @@ public class StudentController {
 		if(result.hasErrors()) {
 			List<ObjectError> list = result.getAllErrors();
 			for (ObjectError error : list) {
-				System.out.println(error);
+				System.err.println(error);
 			}
 			return CREATE_OR_UPDATE_FORM_VIEW; 
 		}
 		
-		student = (Student) this.studentRepo.save(student);	
+		this.studentRepo.save(student);	
 		return "redirect:/student/view/" + student.getId(); 
 	}
 

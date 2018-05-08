@@ -66,7 +66,7 @@ public class SchoolFormController {
 			return CREATE_OR_UPDATE_FORM_VIEW; 
 		}
 		
-		form = (SchoolForm) this.schooFormRepo.save(form);	
+		this.schooFormRepo.save(form);	
 		return "redirect:/schoolform/view/" + form.getId(); 
 	}
 		

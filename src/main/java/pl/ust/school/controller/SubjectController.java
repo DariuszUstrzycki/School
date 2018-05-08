@@ -72,8 +72,8 @@ public class SubjectController {
 			}
 			return CREATE_OR_UPDATE_FORM_VIEW;
 		}
-
-		subject = (Subject) this.subjectRepo.save(subject);
+		
+		this.subjectRepo.save(subject);
 		return "redirect:/subject/view/" + subject.getId();
 	}
 

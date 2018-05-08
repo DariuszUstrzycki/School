@@ -73,7 +73,7 @@ public class TeacherController {
 			return CREATE_OR_UPDATE_FORM_VIEW; 
 		}
 		
-		teacher = (Teacher) this.teacherRepo.save(teacher);	
+		this.teacherRepo.save(teacher);	
 		return "redirect:/teacher/view/" + teacher.getId(); 
 	}
 
