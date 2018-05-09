@@ -66,7 +66,7 @@ public class SubjectControllerTest {
     }
 
     @Test
-    public void shouldProcessNewSubjectWhenPostRequest() throws Exception {
+    public void shouldAddNewSubject() throws Exception {
         mockMvc.perform( post("/subject/save")
         	   .param("name", "Astrophysics") )
         		.andDo(print())
@@ -120,7 +120,7 @@ public class SubjectControllerTest {
             .andExpect(view().name(DETAILS_VIEW));
     }
 
-   // @Test
+     @Test
     public void shouldShowUpdateForm() throws Exception {
     	given(this.subjectRepo.findById(biology.getId())).willReturn((Optional.of(biology)));
     	
@@ -148,8 +148,6 @@ public class SubjectControllerTest {
     @Test
     public void shouldReturnUpdateFormWhenErrors() throws Exception {
         mockMvc.perform( post("/subject/update/{id}", TEST_SUBJECT_ID)
-        		.contentType(MediaType.TEXT_HTML)
-        		
             .param("name", "")
         )
         	.andDo(print())

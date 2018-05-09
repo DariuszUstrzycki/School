@@ -63,7 +63,7 @@ public class SchoolFormControllerTest {
 	    }
 	    
 	    @Test
-	    public void shouldShowSschoolFormWhenGetRequest() throws Exception {
+	    public void shouldShowSchoolFormWhenGetRequest() throws Exception {
 	        mockMvc.perform(get("/schoolform/save"))
 	        	.andDo(print())
 	            .andExpect(status().isOk())
@@ -72,7 +72,7 @@ public class SchoolFormControllerTest {
 	    }
 
 	    @Test
-	    public void shouldProcessNewSchooFormWhenPostRequest() throws Exception {
+	    public void shouldAddNewSchoolform() throws Exception {
 	        mockMvc.perform( post("/schoolform/save")
 	        	   .param("name", "1A") )
 	        		.andDo(print())

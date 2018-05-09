@@ -77,7 +77,7 @@ public class StudentControllerTest {
 				.andExpect(model().attributeExists("student")).andExpect(view().name(CREATE_OR_UPDATE_FORM_VIEW));
 	}
 
-	// @Test
+    @Test
 	public void shouldAddNewStudent() throws Exception {
 		mockMvc.perform(post("/student/save").param("telephone", "1111111111")
 				.param("address", "Penny Lane 12, London, England").param("email", "maria@gmail.com")
@@ -85,7 +85,7 @@ public class StudentControllerTest {
 				.andExpect(status().is3xxRedirection());
 	}
 
-	// @Test
+	@Test
 	public void shouldFindErrorsWhenInvalidValues() throws Exception {
 
 		mockMvc.perform(post("/student/save")
@@ -107,7 +107,7 @@ public class StudentControllerTest {
 				.andExpect(view().name(CREATE_OR_UPDATE_FORM_VIEW));
 	}
 
-	// @Test
+	@Test
 	public void shouldRetrieveListOfStudents() throws Exception {
 
 		given(this.studentRepo.findAll()).willReturn(Lists.newArrayList(john, new Student()));
@@ -118,7 +118,7 @@ public class StudentControllerTest {
 				.andExpect(model().attributeExists(COLLECTION_OF_STUDENTS_NAME)).andExpect(view().name(LIST_VIEW));
 	}
 
-	// @Test
+	@Test
 	public void shouldRetrieveStudentByIdWhenExists() throws Exception {
 		given(this.studentRepo.findById(john.getId())).willReturn((Optional.of(john)));
 		mockMvc.perform(get("/student/view/{id}", TEST_STUDENT_ID)).andDo(print()).andExpect(status().isOk())
@@ -134,7 +134,7 @@ public class StudentControllerTest {
 				.andExpect(model().attributeExists("notFound")).andExpect(view().name(DETAILS_VIEW));
 	}
 
-	// @Test
+	@Test
 	public void shouldShowUpdateForm() throws Exception {
 		given(this.studentRepo.findById(john.getId())).willReturn((Optional.of(john)));
 
@@ -145,7 +145,7 @@ public class StudentControllerTest {
 				.andExpect(view().name(CREATE_OR_UPDATE_FORM_VIEW));
 	}
 
-	//@Test
+	@Test
 	public void shouldProcessUpdateWhenNoErrors() throws Exception {
 		mockMvc.perform(post("/student/update/{id}", TEST_STUDENT_ID).param("telephone", "1111111111")
 				.param("address", "Penny Lane 12, London, England").param("email", "maria@gmail.com")
