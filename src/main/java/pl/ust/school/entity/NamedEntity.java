@@ -5,9 +5,6 @@ import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.validation.constraints.NotEmpty;
 
-import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.NaturalId;
-
 
 @MappedSuperclass
 public class NamedEntity extends IdEntity {
@@ -31,7 +28,7 @@ public class NamedEntity extends IdEntity {
 
 	@Override
 	public String toString() {
-		return "[name=" + name + "]";
+		return super.toString() + "[name=" + name + "]";
 	}
     
 
