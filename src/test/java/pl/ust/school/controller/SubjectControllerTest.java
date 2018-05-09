@@ -33,7 +33,8 @@ public class SubjectControllerTest {
 	private static final String DETAILS_VIEW = "detailsNLists/subjectDetails";
 	@SuppressWarnings("unused")
 	private static final String CONFIRM_DELETE_VIEW = "forms/confirmDelete";
-
+	
+	private static final String COLLECTION_OF_SUBJECTS_NAME = "subjectItems";
 
     private static final long TEST_SUBJECT_ID = 1L;
 
@@ -92,7 +93,7 @@ public class SubjectControllerTest {
         mockMvc.perform(get("/subject/list"))
         	.andDo(print())
             .andExpect(status().isOk())
-            .andExpect(model().attributeExists("subjectItems"))
+            .andExpect(model().attributeExists(COLLECTION_OF_SUBJECTS_NAME))
             .andExpect(view().name(LIST_VIEW));
     }
    
@@ -103,7 +104,7 @@ public class SubjectControllerTest {
         )
         	.andDo(print())
         	.andExpect(status().isOk())
-        	.andExpect(model().attributeExists("subjectItems"))
+        	.andExpect(model().attributeExists(COLLECTION_OF_SUBJECTS_NAME))
         	// how to check that the attribute is a collection?! and its size?
             .andExpect(view().name(DETAILS_VIEW));
     }
@@ -144,7 +145,7 @@ public class SubjectControllerTest {
             .andExpect(view().name("redirect:/subject/view/" + TEST_SUBJECT_ID));
     }
    
-    //@Test
+    @Test
     public void shouldReturnUpdateFormWhenErrors() throws Exception {
         mockMvc.perform( post("/subject/update/{id}", TEST_SUBJECT_ID)
         		.contentType(MediaType.TEXT_HTML)

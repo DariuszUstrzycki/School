@@ -32,6 +32,8 @@ public class SubjectController {
 	private static final String LIST_VIEW = "detailsNLists/subjectList";
 	private static final String DETAILS_VIEW = "detailsNLists/subjectDetails";
 	private static final String CONFIRM_DELETE_VIEW = "forms/confirmDelete";
+	
+	private static final String COLLECTION_OF_SUBJECTS_NAME = "subjectItems";
 
 	@Autowired
 	private SubjectRepository subjectRepo;
@@ -82,7 +84,7 @@ public class SubjectController {
 
 	@RequestMapping("/list")
 	public String listSubjects(@RequestParam(defaultValue = "0", required = false) int min, Model model) {
-		model.addAttribute("subjectItems", this.subjectRepo.findAll());
+		model.addAttribute(COLLECTION_OF_SUBJECTS_NAME, this.subjectRepo.findAll());
 		model.addAttribute("entityName", "subject");
 		return LIST_VIEW;
 	}
@@ -96,7 +98,7 @@ public class SubjectController {
 		
 		if(opt.isPresent()) {
 			subjectItems.add(opt.get());
-			model.addAttribute("subjectItems", subjectItems);
+			model.addAttribute(COLLECTION_OF_SUBJECTS_NAME, subjectItems);
 		} else {
 			model.addAttribute("notFound", "No item with id " + id + " has been found!");
 		}

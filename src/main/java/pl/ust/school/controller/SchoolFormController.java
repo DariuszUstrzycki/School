@@ -34,7 +34,7 @@ public class SchoolFormController {
 	private static final String DETAILS_VIEW = "detailsNLists/schoolformDetails";
 	private static final String CONFIRM_DELETE_VIEW = "forms/confirmDelete";
 	
-	private static final String COLLECTION_OF_SCHOOLFORMS_NAME= "schoolformItems";
+	private static final String COLLECTION_OF_SCHOOLFORMS_NAME = "schoolformItems";
 	private static final String COLLECTION_OF_STUDENTS_NAME = "studentItems";
 	
 	@Autowired
