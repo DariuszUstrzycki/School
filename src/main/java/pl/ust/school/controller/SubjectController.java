@@ -92,9 +92,14 @@ public class SubjectController {
 
 		Set<Subject> subjectItems = new HashSet<>();
 		Optional<Subject> opt = (Optional<Subject>) this.subjectRepo.findById(id);
-		opt.ifPresent(subject -> subjectItems.add(subject));
-
-		model.addAttribute("subjectItems", subjectItems);
+		
+		if(opt.isPresent()) {
+			subjectItems.add(opt.get());
+			model.addAttribute("subjectItems", subjectItems);
+		} else {
+			model.addAttribute("notFound", "No item with id " + id + " has been found!");
+		}
+		
 		return DETAILS_VIEW;
 	}
 

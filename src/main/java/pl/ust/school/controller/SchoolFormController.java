@@ -86,10 +86,17 @@ public class SchoolFormController {
 
 		Set<SchoolForm> schoolformItems = new HashSet<>();
 		Optional<SchoolForm> opt = (Optional<SchoolForm>) this.schooFormRepo. findById(id);
-		opt.ifPresent(schoolForm -> schoolformItems.add(schoolForm)); 
-		model.addAttribute("schoolformName", opt.get().getName());
-		model.addAttribute("schoolformItems", schoolformItems);
-		model.addAttribute("studentItems", studentRepo.findBySchoolForm_Id(id));
+		//opt.ifPresent(schoolForm -> schoolformItems.add(schoolForm)); 
+		
+		if(opt.isPresent()) {
+			schoolformItems.add(opt.get());
+			model.addAttribute("schoolformName", opt.get().getName());
+			model.addAttribute("schoolformItems", schoolformItems);
+			model.addAttribute("studentItems", studentRepo.findBySchoolForm_Id(id));
+		} else {
+			model.addAttribute("notFound", "No item with id " + id + " has been found!");
+		}
+		
 		return DETAILS_VIEW; 
 	}                        
 	

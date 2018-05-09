@@ -96,9 +96,14 @@ public class StudentController {
 
 		Set<Student> studentItems = new HashSet<>();
 		Optional<Student> opt = (Optional<Student>) this.studentRepo.findById(id);
-		opt.ifPresent(student -> studentItems.add(student));
-
-		model.addAttribute("studentItems", studentItems);
+		
+		if(opt.isPresent()) {
+			studentItems.add(opt.get());
+			model.addAttribute("studentItems", studentItems);
+		} else {
+			model.addAttribute("notFound", "No item with id " + id + " has been found!");
+		}
+		
 		return DETAILS_VIEW;
 	}
 
