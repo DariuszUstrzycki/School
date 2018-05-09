@@ -15,6 +15,7 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -138,21 +139,18 @@ public class SubjectController {
 		opt.ifPresent(subject -> {
 			model.addAttribute(subject);
 		});
-
+		
 		return CREATE_OR_UPDATE_FORM_VIEW;
 	}
 
 	@PostMapping("/update/{id}")
-	public String updateSubject(@Valid Subject subject, BindingResult result, @PathVariable long id, Model model) {
+	public String updateSubject(@Valid  Subject subject, BindingResult result, @PathVariable long id) {
 
 		if (result.hasErrors()) {
 			return CREATE_OR_UPDATE_FORM_VIEW;
 		} else {
-			System.err.println("--------UPDATE POST: subject: " + subject);
 			subject.setId(id);
 			this.subjectRepo.save(subject);
-			System.err.println("--------UPDATE POST: after saving subject ");
-
 			return "redirect:/subject/view/" + id;
 		}
 
