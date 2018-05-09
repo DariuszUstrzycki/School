@@ -36,15 +36,18 @@ public class StudentController {
 	private static final String DETAILS_VIEW = "detailsNLists/studentDetails";
 	private static final String CONFIRM_DELETE_VIEW = "forms/confirmDelete";
 	
+	private static final String COLLECTION_OF_STUDENTS_NAME = "studentItems";
+	private static final String COLLECTION_OF_SCHOOLFORMS_NAME = "schoolformItems";
+	
 	@Autowired
 	private StudentRepository studentRepo;
 	
 	@Autowired
 	private SchoolFormRepository schoolFormRepo;
 	
-	//////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////// 
 	
-	@ModelAttribute("schoolFormItems")
+	@ModelAttribute(COLLECTION_OF_SCHOOLFORMS_NAME)
     public Collection<SchoolForm> populateSchoolFormItems() {
         return (Collection<SchoolForm>) this.schoolFormRepo.findAll();
     }
@@ -85,7 +88,7 @@ public class StudentController {
 
 	@RequestMapping("/list")
 	public String listStudents(@RequestParam(defaultValue = "0", required = false) int min, Model model) {
-		model.addAttribute("studentItems", this.studentRepo.findAll());
+		model.addAttribute(COLLECTION_OF_STUDENTS_NAME, this.studentRepo.findAll());
 		model.addAttribute("entityName", "student");
 		return LIST_VIEW;
 	}
@@ -99,7 +102,7 @@ public class StudentController {
 		
 		if(opt.isPresent()) {
 			studentItems.add(opt.get());
-			model.addAttribute("studentItems", studentItems);
+			model.addAttribute(COLLECTION_OF_STUDENTS_NAME, studentItems);
 		} else {
 			model.addAttribute("notFound", "No item with id " + id + " has been found!");
 		}

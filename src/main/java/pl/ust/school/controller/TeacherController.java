@@ -32,6 +32,8 @@ public class TeacherController {
 	private static final String LIST_VIEW = "detailsNLists/teacherList";
 	private static final String DETAILS_VIEW = "detailsNLists/teacherDetails";
 	private static final String CONFIRM_DELETE_VIEW = "forms/confirmDelete";
+	
+	private static final String COLLECTION_OF_TEACHERS_NAME = "teacherItems";
 
 	@Autowired
 	private TeacherRepository teacherRepo;
@@ -40,7 +42,7 @@ public class TeacherController {
 	
 	/*
 	 *  nothing to populate the model first ?!
-	 * @ModelAttribute("schoolFormItems")
+	 * @ModelAttribute("schoolformItems")
     public Collection<SchoolForm> populateSchoolFormItems() {
         return (Collection<SchoolForm>) this.schoolFormRepo.findAll();
     }*/
@@ -81,7 +83,7 @@ public class TeacherController {
 
 	@RequestMapping("/list")
 	public String listTeachers(@RequestParam(defaultValue = "0", required = false) int min, Model model) {
-		model.addAttribute("teacherItems", this.teacherRepo.findAll());
+		model.addAttribute(COLLECTION_OF_TEACHERS_NAME, this.teacherRepo.findAll());
 		model.addAttribute("entityName", "teacher");
 		return LIST_VIEW;
 	}
@@ -95,7 +97,7 @@ public class TeacherController {
 		
 		if(opt.isPresent()) {
 			teacherItems.add(opt.get());
-			model.addAttribute("teacherItems", teacherItems);
+			model.addAttribute(COLLECTION_OF_TEACHERS_NAME, teacherItems);
 		} else {
 			model.addAttribute("notFound", "No item with id " + id + " has been found!");
 		}

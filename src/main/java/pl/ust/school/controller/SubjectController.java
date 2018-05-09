@@ -43,7 +43,7 @@ public class SubjectController {
 	/*
 	 * nothing to populate the model first ?!
 	 * 
-	 * @ModelAttribute("schoolFormItems") public Collection<SchoolForm>
+	 * @ModelAttribute("schoolformItems") public Collection<SchoolForm>
 	 * populateSchoolFormItems() { return (Collection<SchoolForm>)
 	 * this.schoolFormRepo.findAll(); }
 	 */
