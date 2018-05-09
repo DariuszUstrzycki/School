@@ -16,8 +16,16 @@
 <h1>Teacher information</h1>
 
 <div id="content">
+	
 	<%@ include file="../jspf/teacherAddButton.jspf" %>
+	
+	<c:if test="${empty notFound}">
 	<%@ include file="../jspf/teacherDetailsFrag.jspf" %>
+	</c:if>
+	
+	<c:if test="${not empty notFound}">
+		<p class='error'>${notFound}</p>
+	</c:if>
 </div>
 
 <div id="header">

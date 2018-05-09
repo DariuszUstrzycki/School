@@ -17,10 +17,15 @@
 
 <div id="content">
 	<%@ include file="../jspf/subjectAddButton.jspf" %>
-
-	<h3>nie bedzie dzialac: Schoolform|Teacher for  ${subjectName}:</h3>
-
+	
+	<c:if test="${empty notFound}">
+	<h3>Schoolform|Teacher for  ${subjectName}: (nie bedzie dzialac)</h3>
 	<%@ include file="../jspf/subjectDetailsFrag.jspf" %>
+	</c:if>
+	
+	<c:if test="${not empty notFound}">
+		<p class='error'>${notFound}</p>
+	</c:if>
 
 </div>
 
