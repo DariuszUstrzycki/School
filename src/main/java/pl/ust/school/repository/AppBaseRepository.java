@@ -1,5 +1,6 @@
 package pl.ust.school.repository;
 
+import java.util.Collection;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -9,14 +10,11 @@ import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.data.repository.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import pl.ust.school.entity.IdEntity;
-
 @SuppressWarnings("hiding")
 @NoRepositoryBean                                  
 public interface AppBaseRepository<T, Long> extends Repository<T , Long> {
 	
-	// add @Query("SELECT DISTINCT .......................") ?!
-		
+	@Transactional
 	T save(T entity);
 	
 	@Transactional(readOnly = true)  
@@ -28,11 +26,11 @@ public interface AppBaseRepository<T, Long> extends Repository<T , Long> {
 	@Transactional
 	void deleteById(Long id);
 	
-	
-		
-	
 	//from PagingAndSortingRepository 
-	Iterable<T>	findAll(Sort sort);
+	@Transactional(readOnly = true)  
+	Iterable<T> findAll(Sort sort);
+	
+	@Transactional(readOnly = true) 
 	Page<T>	findAll(Pageable pageable);
 	
 }
