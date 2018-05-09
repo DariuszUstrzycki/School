@@ -34,6 +34,9 @@ public class SchoolFormController {
 	private static final String DETAILS_VIEW = "detailsNLists/schoolformDetails";
 	private static final String CONFIRM_DELETE_VIEW = "forms/confirmDelete";
 	
+	private static final String COLLECTION_OF_SCHOOLFORMS_NAME= "schoolformItems";
+	private static final String COLLECTION_OF_STUDENTS_NAME = "studentItems";
+	
 	@Autowired
 	private SchoolFormRepository schooFormRepo;
 	
@@ -74,7 +77,7 @@ public class SchoolFormController {
 	
 	@RequestMapping("/list")
 	public String listSchoolForms(@RequestParam(defaultValue = "0", required = false) int min, Model model) {
-		model.addAttribute("schoolformItems", this.schooFormRepo. findAll());
+		model.addAttribute(COLLECTION_OF_SCHOOLFORMS_NAME, this.schooFormRepo. findAll());
 		model.addAttribute("entityName", "schoolform");
 		return LIST_VIEW;
 	}
@@ -91,8 +94,8 @@ public class SchoolFormController {
 		if(opt.isPresent()) {
 			schoolformItems.add(opt.get());
 			model.addAttribute("schoolformName", opt.get().getName());
-			model.addAttribute("schoolformItems", schoolformItems);
-			model.addAttribute("studentItems", studentRepo.findBySchoolForm_Id(id));
+			model.addAttribute(COLLECTION_OF_SCHOOLFORMS_NAME, schoolformItems);
+			model.addAttribute(COLLECTION_OF_STUDENTS_NAME, studentRepo.findBySchoolForm_Id(id));
 		} else {
 			model.addAttribute("notFound", "No item with id " + id + " has been found!");
 		}
