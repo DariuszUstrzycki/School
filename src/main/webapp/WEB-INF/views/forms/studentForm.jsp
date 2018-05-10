@@ -51,7 +51,7 @@
 
 <form:select	path="schoolForm.id">
 				<!-- <form:option	label="undefined" value="100"/> -->
-				<form:options	items="${schoolFormItems}" itemLabel="name" itemValue="id"/>
+				<form:options	items="${schoolformItems}" itemLabel="name" itemValue="id"/>
 </form:select>
 <form:errors path='schoolForm.id' cssClass='error'></form:errors><br><br>
 

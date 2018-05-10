@@ -38,7 +38,7 @@ public class SchoolFormController {
 	private static final String COLLECTION_OF_STUDENTS_NAME = "studentItems";
 	
 	@Autowired
-	private SchoolFormRepository schooFormRepo;
+	private SchoolFormRepository schoolFormRepo;
 	
 	@Autowired
 	private StudentRepository studentRepo;
@@ -69,7 +69,7 @@ public class SchoolFormController {
 			return CREATE_OR_UPDATE_FORM_VIEW; 
 		}
 		
-		this.schooFormRepo.save(form);	
+		this.schoolFormRepo.save(form);	
 		return "redirect:/schoolform/view/" + form.getId(); 
 	}
 		
@@ -77,7 +77,7 @@ public class SchoolFormController {
 	
 	@RequestMapping("/list")
 	public String listSchoolForms(@RequestParam(defaultValue = "0", required = false) int min, Model model) {
-		model.addAttribute(COLLECTION_OF_SCHOOLFORMS_NAME, this.schooFormRepo. findAll());
+		model.addAttribute(COLLECTION_OF_SCHOOLFORMS_NAME, this.schoolFormRepo. findAll());
 		model.addAttribute("entityName", "schoolform");
 		return LIST_VIEW;
 	}
@@ -88,7 +88,7 @@ public class SchoolFormController {
 	public String viewSchoolForm(@PathVariable long id, Model model) {
 
 		Set<SchoolForm> schoolformItems = new HashSet<>();
-		Optional<SchoolForm> opt = (Optional<SchoolForm>) this.schooFormRepo. findById(id);
+		Optional<SchoolForm> opt = (Optional<SchoolForm>) this.schoolFormRepo. findById(id);
 		//opt.ifPresent(schoolForm -> schoolformItems.add(schoolForm)); 
 		
 		if(opt.isPresent()) {
@@ -114,14 +114,14 @@ public class SchoolFormController {
 	@RequestMapping(value = "/delete/{id}")
 	public String deleteSchoolForm(@PathVariable long id) {
 		
-		Optional<SchoolForm> opt = (Optional<SchoolForm>) schooFormRepo.findById(id);
+		Optional<SchoolForm> opt = (Optional<SchoolForm>) schoolFormRepo.findById(id);
 		opt.ifPresent(schoolForm -> {
 
 			for (Student student : schoolForm.getStudents()) {
 				schoolForm.removeStudent(student);
 			}
 
-			this.schooFormRepo.deleteById(id);
+			this.schoolFormRepo.deleteById(id);
 
 		});
 		
@@ -131,7 +131,7 @@ public class SchoolFormController {
 	//////////////////////////// UPDATE ////////////////////////////
 	@GetMapping("/update/{id}")
 	public String showForm(@PathVariable long id, Model model) {
-		Optional<SchoolForm> opt = (Optional<SchoolForm>) schooFormRepo.findById(id);
+		Optional<SchoolForm> opt = (Optional<SchoolForm>) schoolFormRepo.findById(id);
 		opt.ifPresent(schoolForm -> {
 			model.addAttribute(schoolForm);
 			
@@ -147,7 +147,7 @@ public class SchoolFormController {
 	         return CREATE_OR_UPDATE_FORM_VIEW;
 	     } else {
 	    	 form.setId(id);
-	         this.schooFormRepo.save(form);
+	         this.schoolFormRepo.save(form);
 	         return "redirect:/schoolform/view/" + id;
 	     }
 		
