@@ -20,5 +20,10 @@ public class HomeController {
     public String home(Locale locale) {
         return locale.toString();
     }
+	
+	@RequestMapping("/helloworld")
+    public @ResponseBody String helloworld() {
+        return "Hello World";
+    }
 
 }
