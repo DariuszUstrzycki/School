@@ -2,6 +2,7 @@ package pl.ust.school.repository;
 
 import java.time.LocalDate;
 import java.util.Collection;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -14,20 +15,29 @@ public interface StudentRepository extends AppBaseRepository<Student, Long> {
 	// https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#repository-query-keywords
 	
 	// --------------NATIVE QUERIES-------------------
-		@Query(value	=	"SELECT	* FROM STUDENTS	WHERE ADDRESS = ?1", nativeQuery = true)
-		Collection<Student> findByLastNameNot(String string); // Not
+		// @Query(value	=	"SELECT	* FROM STUDENTS	WHERE ADDRESS = ?1", nativeQuery = true)
+		
+		
 		
 	// parameters ORDER -------------------------------------	
+	@Query("select s from Student s where s.email = ?1")
+	Optional<Student> findByEmail(Optional<String> email); 
 		
 	@Query("select s from Student s where s.lastName LIKE %?1%")
 	Collection<Student> findByLastNameContains(String string); // Contains
-
-	@Query("select s from Student s where s.lastName LIKE ?1%")
-	Collection<Student> findByLastNameStartingWith(); // StartingWith
-
+	
 	@Query("select s from Student s where s.schoolForm.id =	?1")
 	Collection<Student> findBySchoolForm_Id(long id); // 1. _ nie jest tu konieczny. 2.Search by field SchoolForm in
 														// Student
+	
+
+	/*
+	
+	@Query("select s from Student s where s.lastName LIKE ?1%")
+	Collection<Student> findByLastNameStartingWith(); // StartingWith
+
+	
+	Collection<Student> findByLastNameNot(String string); // Not
 
 	// parameters NAMING -------------------------------------	
 	
@@ -43,6 +53,11 @@ public interface StudentRepository extends AppBaseRepository<Student, Long> {
 	
 	long countBySchoolFormName(String firstName);
 	long countBySchoolFormId(String firstName);
+	
+	*/
+	
+	
+	
 	
 	// ----------search in a collection------------------
 	//Collection<Student> findByGradeIn(Collection<Grade> grades);
