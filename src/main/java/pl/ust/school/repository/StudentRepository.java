@@ -1,34 +1,47 @@
 package pl.ust.school.repository;
 
-import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Optional;
 
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
 import pl.ust.school.entity.Student;
 
 public interface StudentRepository extends AppBaseRepository<Student, Long> {
 	
-	// https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#jpa.query-methods.query-creation
-	// https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#repository-query-keywords
-	
-	// --------------NATIVE QUERIES-------------------
-		// @Query(value	=	"SELECT	* FROM STUDENTS	WHERE ADDRESS = ?1", nativeQuery = true)
-		
-		
-		
-	// parameters ORDER -------------------------------------	
 	@Query("select s from Student s where s.email = ?1")
-	Optional<Student> findByEmail(Optional<String> email); 
+	Optional<Student> findByEmail(String email); 
 		
 	@Query("select s from Student s where s.lastName LIKE %?1%")
 	Collection<Student> findByLastNameContains(String string); // Contains
 	
+	Collection<Student> findByFirstNameAndLastName(String firstName, String lastName); 
+	Collection<Student> findByLastNameOrderByLastNameAsc(String lastName); 
+	Collection<Student> findTop10By(Sort sort);
+	Slice<Student> findByLastNameOrderByEmailAsc(String lastName, Pageable of);
+	
 	@Query("select s from Student s where s.schoolForm.id =	?1")
 	Collection<Student> findBySchoolForm_Id(long id); // 1. _ nie jest tu konieczny. 2.Search by field SchoolForm in
 														// Student
+
+	
+	
+	
+	
+	// https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#jpa.query-methods.query-creation
+		// https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#repository-query-keywords
+		
+		// --------------NATIVE QUERIES-------------------
+			// @Query(value	=	"SELECT	* FROM STUDENTS	WHERE ADDRESS = ?1", nativeQuery = true)
+			
+			
+			
+		// parameters ORDER -------------------------------------	
+	
+	
 	
 
 	/*
