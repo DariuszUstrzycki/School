@@ -5,21 +5,25 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
 @Entity
 @Table(name = "students")
+@Getter @Setter @NoArgsConstructor
+@ToString(callSuper=true, includeFieldNames = false)
 public class Student extends Person {
 
 	private static final long serialVersionUID = 1L;
 
 	@ManyToOne
 	@JoinColumn(name = "schoolForm_id")
-	private SchoolForm schoolForm;
+	@Getter private SchoolForm schoolForm;
 
 	/////////////// getters and setters ///////////////////
 
-	public SchoolForm getSchoolForm() {
-		return schoolForm;
-	}
 
 	public void setSchoolForm(SchoolForm schoolForm) {
 
@@ -33,12 +37,5 @@ public class Student extends Person {
 
 		this.schoolForm = schoolForm;
 	}
-
-	@Override
-	public String toString() {
-		return "Student [" + schoolForm + ", " + super.toString() + "]";
-	}
-	
-	
 	
 }

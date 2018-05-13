@@ -9,14 +9,21 @@ import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
 @Entity
 @Table(name = "teachers")
+@Getter @Setter @NoArgsConstructor
+@ToString(callSuper=true, includeFieldNames = false, exclude= "teacherSubjects")
 public class Teacher extends Person {
 
 	private static final long serialVersionUID = 1L;
 
 	@OneToMany(mappedBy = "teacher", cascade = { CascadeType.MERGE, CascadeType.PERSIST })
-	private Set<TeacherSubject> teacherSubjects = new HashSet<>();
+	@Setter private Set<TeacherSubject> teacherSubjects = new HashSet<>();
 
 	/////////////// helper ///////////////////
 
@@ -30,23 +37,13 @@ public class Teacher extends Person {
 
 	/////////////// getters and setters ///////////////////
 
-	protected Set<TeacherSubject> getTeacherSubjectsInternal() {
+	public Set<TeacherSubject> getTeacherSubjects() {
 		if (this.teacherSubjects == null) {
 			this.teacherSubjects = new HashSet<>();
 		}
 		return this.teacherSubjects;
 	}
 
-	protected void setTeacherSubjectsInternal(Set<TeacherSubject> teacherSubjects) {
-		this.teacherSubjects = teacherSubjects;
-	}
-
-	public Set<TeacherSubject> getTeacherSubjects() {
-		return getTeacherSubjectsInternal();
-	}
-
-	public void setTeacherSubjects(Set<TeacherSubject> teacherSubjects) {
-		this.teacherSubjects = teacherSubjects;
-	}
+	
 
 }

@@ -8,14 +8,21 @@ import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
 @Entity
 @Table(name = "subjects")
+@Getter @Setter @NoArgsConstructor
+@ToString(callSuper=true, includeFieldNames = false, exclude= "teacherSubjects")
 public class Subject extends NamedEntity {
 
 	private static final long serialVersionUID = 1L;
 
-	@OneToMany(mappedBy = "teacher", cascade = { CascadeType.MERGE, CascadeType.PERSIST })
-	private Set<TeacherSubject> teacherSubjects = new HashSet<>();
+	@OneToMany(mappedBy = "subject", cascade = { CascadeType.MERGE, CascadeType.PERSIST })
+	@Setter private Set<TeacherSubject> teacherSubjects = new HashSet<>();
 
 	/////////////// helper ///////////////////
 
@@ -30,23 +37,11 @@ public class Subject extends NamedEntity {
 
 	/////////////// getters and setters ///////////////////
 
-	protected Set<TeacherSubject> getTeacherSubjectsInternal() {
+	public Set<TeacherSubject> getTeacherSubjects() {
 		if (this.teacherSubjects == null) {
 			this.teacherSubjects = new HashSet<>();
 		}
 		return this.teacherSubjects;
-	}
-
-	protected void setTeacherSubjectsInternal(Set<TeacherSubject> teacherSubjects) {
-		this.teacherSubjects = teacherSubjects;
-	}
-
-	public Set<TeacherSubject> getTeacherSubjects() {
-		return getTeacherSubjectsInternal();
-	}
-
-	public void setTeacherSubjects(Set<TeacherSubject> teacherSubjects) {
-		this.teacherSubjects = teacherSubjects;
 	}
 
 }

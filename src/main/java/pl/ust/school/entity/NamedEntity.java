@@ -5,8 +5,15 @@ import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.validation.constraints.NotEmpty;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
 
 @MappedSuperclass
+@Getter @Setter @NoArgsConstructor
+@ToString(includeFieldNames = false, callSuper=true )
 public class NamedEntity extends IdEntity {
 
 	private static final long serialVersionUID = 1L;
@@ -17,19 +24,5 @@ public class NamedEntity extends IdEntity {
     // https://prasanthnath.wordpress.com/2013/04/24/natural-ids-in-hibernate/
 	@Column(unique = true, nullable = true) 
     private String name;
-
-    public String getName() {
-        return this.name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-	@Override
-	public String toString() {
-		return super.toString() + "[name=" + name + "]";
-	}
-    
 
 }
