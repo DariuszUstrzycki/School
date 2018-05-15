@@ -9,11 +9,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import pl.ust.school.controller.HomeController;
-import pl.ust.school.controller.SchoolFormController;
 
-@RunWith(SpringRunner.class)
+@RunWith(SpringRunner.class) // bez tego nie zrobi Autowired
 @SpringBootTest // tells Spring Boot to go and look for a main configuration class (one with 
 //@SpringBootApplication for instance), and use that to start a Spring application context. 
+// default: loads the whole context
 public class SmokeTest { // sanity check
 	
 	@Autowired

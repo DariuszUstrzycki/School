@@ -29,7 +29,7 @@ import pl.ust.school.controller.HomeController;
 
 // with @WebMvcTest Spring Boot is only instantiating the web layer, not the whole context. In an application with multiple controllers 
 //you can even ask for just one to be instantiated, using, for example @WebMvcTest(HomeController.class)
-@WebMvcTest((HomeController.class)) // will show mapping only for this controller
+@WebMvcTest(HomeController.class) // will show mapping only for this controller
 public class HttpRequestNoServerMockTest {
 
 	@Autowired
