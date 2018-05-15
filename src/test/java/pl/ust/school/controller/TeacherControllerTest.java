@@ -57,7 +57,6 @@ public class TeacherControllerTest {
 		john.setLastName("Brown");
 		john.setPassword("123");
 		john.setTelephone("1234567");
-		given(this.teacherRepo.findById(TEST_TEACHER_ID)).willReturn(Optional.of(john));
 
 		System.err.println("----------@Before setup()-----------------"); // useful when debugging as it's easy to see
 																			// when each test starts/ends

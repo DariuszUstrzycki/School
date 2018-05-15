@@ -17,7 +17,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -51,7 +50,6 @@ public class SubjectControllerTest {
     	biology = new Subject();
     	biology.setId(TEST_SUBJECT_ID);
     	biology.setName("Biology");
-        given(this.subjectRepo.findById(TEST_SUBJECT_ID)).willReturn(Optional.of(biology));
         
         System.err.println("----------@Before setup()-----------------"); // useful when debugging as it's easy to see when each test starts/ends
     }

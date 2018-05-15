@@ -64,7 +64,6 @@ public class StudentControllerTest {
 		john.setPassword("123");
 		john.setSchoolForm(new SchoolForm());
 		john.setTelephone("1234567");
-		given(this.studentRepo.findById(TEST_STUDENT_ID)).willReturn(Optional.of(john));
 
 		System.err.println("----------@Before setup()-----------------"); // useful when debugging as it's easy to see
 																			// when each test starts/ends
@@ -72,12 +71,12 @@ public class StudentControllerTest {
 
 	@Test
 	public void shouldShowStudentFormWhenGetRequest() throws Exception {
-		mockMvc.perform(get("/student/save")).andDo(print()).andExpect(status().isOk())
-				.andExpect(model().attributeExists(COLLECTION_OF_SCHOOLFORMS_NAME))
+		mockMvc.perform(get("/student/save")).andDo(print()) // !
+				.andExpect(status().isOk()).andExpect(model().attributeExists(COLLECTION_OF_SCHOOLFORMS_NAME))
 				.andExpect(model().attributeExists("student")).andExpect(view().name(CREATE_OR_UPDATE_FORM_VIEW));
 	}
 
-    @Test
+	@Test
 	public void shouldAddNewStudent() throws Exception {
 		mockMvc.perform(post("/student/save").param("telephone", "1111111111")
 				.param("address", "Penny Lane 12, London, England").param("email", "maria@gmail.com")
@@ -87,16 +86,10 @@ public class StudentControllerTest {
 
 	@Test
 	public void shouldFindErrorsWhenInvalidValues() throws Exception {
-
-		mockMvc.perform(post("/student/save")
-				.param("firstName", "")
-				.param("email", "123")
-				.param("telephone", "abc")
+		mockMvc.perform(post("/student/save").param("firstName", "").param("email", "123").param("telephone", "abc")
 				.param("password", ""))
-				
-				.andDo(print())
-				.andExpect(status().isOk())
-				.andExpect(model().attributeHasErrors("student"))
+
+				.andDo(print()).andExpect(status().isOk()).andExpect(model().attributeHasErrors("student"))
 				.andExpect(model().attributeHasFieldErrors("student", "firstName"))
 				.andExpect(model().attributeHasFieldErrors("student", "lastName")) // null
 				.andExpect(model().attributeHasFieldErrors("student", "address")) // null
@@ -109,11 +102,9 @@ public class StudentControllerTest {
 
 	@Test
 	public void shouldRetrieveListOfStudents() throws Exception {
-
 		given(this.studentRepo.findAll()).willReturn(Lists.newArrayList(john, new Student()));
-		mockMvc.perform(get("/student/list"))
-				.andDo(print())
-				.andExpect(status().isOk())
+
+		mockMvc.perform(get("/student/list")).andDo(print()).andExpect(status().isOk())
 				.andExpect(model().attributeExists(COLLECTION_OF_SCHOOLFORMS_NAME))
 				.andExpect(model().attributeExists(COLLECTION_OF_STUDENTS_NAME)).andExpect(view().name(LIST_VIEW));
 	}
@@ -121,6 +112,7 @@ public class StudentControllerTest {
 	@Test
 	public void shouldRetrieveStudentByIdWhenExists() throws Exception {
 		given(this.studentRepo.findById(john.getId())).willReturn((Optional.of(john)));
+
 		mockMvc.perform(get("/student/view/{id}", TEST_STUDENT_ID)).andDo(print()).andExpect(status().isOk())
 				.andExpect(model().attributeExists(COLLECTION_OF_STUDENTS_NAME))
 				// how to check that the attribute is a collection?! and its size?
@@ -130,6 +122,7 @@ public class StudentControllerTest {
 	@Test
 	public void shouldDisplayNotFoundMessageWhenNoStudentFound() throws Exception {
 		given(this.studentRepo.findById(-1L)).willReturn((Optional.empty()));
+
 		mockMvc.perform(get("/student/view/{id}", -1)).andDo(print()).andExpect(status().isOk())
 				.andExpect(model().attributeExists("notFound")).andExpect(view().name(DETAILS_VIEW));
 	}
@@ -138,11 +131,9 @@ public class StudentControllerTest {
 	public void shouldShowUpdateForm() throws Exception {
 		given(this.studentRepo.findById(john.getId())).willReturn((Optional.of(john)));
 
-		mockMvc.perform(get("/student/update/{id}", TEST_STUDENT_ID))
-				.andDo(print()).andExpect(status().isOk())
+		mockMvc.perform(get("/student/update/{id}", TEST_STUDENT_ID)).andDo(print()).andExpect(status().isOk())
 				.andExpect(model().attributeExists(COLLECTION_OF_SCHOOLFORMS_NAME))
-				.andExpect(model().attributeExists("student"))
-				.andExpect(view().name(CREATE_OR_UPDATE_FORM_VIEW));
+				.andExpect(model().attributeExists("student")).andExpect(view().name(CREATE_OR_UPDATE_FORM_VIEW));
 	}
 
 	@Test
@@ -161,14 +152,10 @@ public class StudentControllerTest {
 
 	@Test
 	public void shouldReturnUpdateFormWhenErrors() throws Exception {
-		mockMvc.perform(post("/student/update/{id}", TEST_STUDENT_ID)
-				.param("firstName", "")
-				.param("email", "123")
-				.param("telephone", "abc")
-				.param("password", ""))
-		
-				.andDo(print())
-				.andExpect(status().isOk())
+		mockMvc.perform(post("/student/update/{id}", TEST_STUDENT_ID).param("firstName", "").param("email", "123")
+				.param("telephone", "abc").param("password", ""))
+
+				.andDo(print()).andExpect(status().isOk())
 				.andExpect(model().attributeExists(COLLECTION_OF_SCHOOLFORMS_NAME))
 				.andExpect(model().attributeHasErrors("student"))
 				.andExpect(model().attributeHasFieldErrors("student", "firstName"))
@@ -178,7 +165,7 @@ public class StudentControllerTest {
 				.andExpect(model().attributeHasFieldErrors("student", "telephone"))
 				.andExpect(model().attributeHasFieldErrors("student", "password"))
 				.andExpect(model().attributeErrorCount("student", 6))
-			    .andExpect(view().name(CREATE_OR_UPDATE_FORM_VIEW));
+				.andExpect(view().name(CREATE_OR_UPDATE_FORM_VIEW));
 	}
 
 }

@@ -57,7 +57,6 @@ public class SchoolFormControllerTest {
 	    	schoolform1A = new SchoolForm();
 	    	schoolform1A.setId(TEST_SCHOOLFORM_ID);
 	    	schoolform1A.setName("1A");
-	        given(this.schoolFormRepo.findById(TEST_SCHOOLFORM_ID)).willReturn(Optional.of(schoolform1A));
 	        
 	        System.err.println("----------@Before setup()-----------------"); // useful when debugging as it's easy to see when each test starts/ends
 	    }
