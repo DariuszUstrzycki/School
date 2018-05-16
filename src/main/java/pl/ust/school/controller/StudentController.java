@@ -38,6 +38,8 @@ public class StudentController {
 	
 	private static final String COLLECTION_OF_STUDENTS_NAME = "studentItems";
 	private static final String COLLECTION_OF_SCHOOLFORMS_NAME = "schoolformItems";
+	private static final String ENTITY_NAME = "entityName";
+	private static final String ENTITY_NAME_VALUE = "student";
 	
 	@Autowired
 	private StudentRepository studentRepo;
@@ -63,14 +65,14 @@ public class StudentController {
 	
 	@GetMapping("/save")
 	public String showForm(Student student, Model model) {
-		model.addAttribute("entityName", "student"); 
+		model.addAttribute(ENTITY_NAME, ENTITY_NAME_VALUE); 
 		return CREATE_OR_UPDATE_FORM_VIEW;
 	}
 	
 	@PostMapping("/save")
 	public String saveStudent(@Valid Student student, BindingResult result, Model model) {
 		
-		model.addAttribute("entityName", "student"); 
+		model.addAttribute(ENTITY_NAME, ENTITY_NAME_VALUE); 
 		
 		if(result.hasErrors()) {
 			List<ObjectError> list = result.getAllErrors();
@@ -89,7 +91,7 @@ public class StudentController {
 	@RequestMapping("/list")
 	public String listStudents(@RequestParam(defaultValue = "0", required = false) int min, Model model) {
 		model.addAttribute(COLLECTION_OF_STUDENTS_NAME, this.studentRepo.findAll());
-		model.addAttribute("entityName", "student");
+		model.addAttribute(ENTITY_NAME, ENTITY_NAME_VALUE);
 		return LIST_VIEW;
 	}
 
@@ -98,7 +100,7 @@ public class StudentController {
 	public String viewStudent(@PathVariable long id, Model model) {
 
 		Set<Student> studentItems = new HashSet<>();
-		Optional<Student> opt = (Optional<Student>) this.studentRepo.findById(id);
+		Optional<Student> opt = this.studentRepo.findById(id);
 		
 		if(opt.isPresent()) {
 			studentItems.add(opt.get());
@@ -114,17 +116,17 @@ public class StudentController {
 
 	@GetMapping("/delete/{id}/confirm")
 	public String showConfirmationPage(@PathVariable long id, Model model) {
-		model.addAttribute("entityName", "student");
+		model.addAttribute(ENTITY_NAME, ENTITY_NAME_VALUE);
 		return CONFIRM_DELETE_VIEW;
 	}
 
 	@RequestMapping(value = "/delete/{id}")
 	public String deleteStudent(@PathVariable long id) {
 
-		Optional<Student> opt = (Optional<Student>) studentRepo.findById(id);
+		Optional<Student> opt = studentRepo.findById(id);
 		opt.ifPresent(student -> {
 			
-			student.setSchoolForm(null);;
+			student.setSchoolForm(null);
 			this.studentRepo.deleteById(id);
 
 		});
@@ -137,11 +139,8 @@ public class StudentController {
 	@GetMapping("/update/{id}")
 	public String showForm(@PathVariable long id, Model model) {
 		
-		Optional<Student> opt = (Optional<Student>) studentRepo.findById(id);
-		opt.ifPresent(student -> {
-			model.addAttribute(student);
-
-		});
+		Optional<Student> opt = studentRepo.findById(id);
+		opt.ifPresent(model::addAttribute);
 		
 		return CREATE_OR_UPDATE_FORM_VIEW;
 	}

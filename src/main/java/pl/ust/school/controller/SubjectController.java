@@ -15,7 +15,6 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,6 +33,8 @@ public class SubjectController {
 	private static final String CONFIRM_DELETE_VIEW = "forms/confirmDelete";
 	
 	private static final String COLLECTION_OF_SUBJECTS_NAME = "subjectItems";
+	private static final String ENTITY_NAME = "entityName";
+	private static final String ENTITY_NAME_VALUE = "subject";
 
 	@Autowired
 	private SubjectRepository subjectRepo;
@@ -59,14 +60,14 @@ public class SubjectController {
 
 	@GetMapping("/save")
 	public String showForm(Subject subject, Model model) {
-		model.addAttribute("entityName", "subject");
+		model.addAttribute(ENTITY_NAME, ENTITY_NAME_VALUE);
 		return CREATE_OR_UPDATE_FORM_VIEW;
 	}
 
 	@PostMapping("/save")
 	public String saveSubject(@Valid Subject subject, BindingResult result, Model model) {
 
-		model.addAttribute("entityName", "subject");
+		model.addAttribute(ENTITY_NAME, ENTITY_NAME_VALUE);
 
 		if (result.hasErrors()) {
 			List<ObjectError> list = result.getAllErrors();
@@ -85,7 +86,7 @@ public class SubjectController {
 	@RequestMapping("/list")
 	public String listSubjects(@RequestParam(defaultValue = "0", required = false) int min, Model model) {
 		model.addAttribute(COLLECTION_OF_SUBJECTS_NAME, this.subjectRepo.findAll());
-		model.addAttribute("entityName", "subject");
+		model.addAttribute(ENTITY_NAME, ENTITY_NAME_VALUE);
 		return LIST_VIEW;
 	}
 
@@ -94,7 +95,7 @@ public class SubjectController {
 	public String viewSubject(@PathVariable long id, Model model) {
 
 		Set<Subject> subjectItems = new HashSet<>();
-		Optional<Subject> opt = (Optional<Subject>) this.subjectRepo.findById(id);
+		Optional<Subject> opt = this.subjectRepo.findById(id);
 		
 		if(opt.isPresent()) {
 			subjectItems.add(opt.get());
@@ -110,14 +111,14 @@ public class SubjectController {
 
 	@GetMapping("/delete/{id}/confirm")
 	public String showConfirmationPage(@PathVariable long id, Model model) {
-		model.addAttribute("entityName", "subject");
+		model.addAttribute(ENTITY_NAME, ENTITY_NAME_VALUE);
 		return CONFIRM_DELETE_VIEW;
 	}
 
 	@RequestMapping(value = "/delete/{id}")
 	public String deleteSubject(@PathVariable long id) {
 		//  nie usuwać SUBJECTS!!!
-		Optional<Subject> opt = (Optional<Subject>) subjectRepo.findById(id);
+		Optional<Subject> opt = subjectRepo.findById(id);
 		opt.ifPresent(subject -> {
 			/*
 			for (Subject subject : subject.getSubjectSubjects()) {
@@ -137,10 +138,8 @@ public class SubjectController {
 	@GetMapping("/update/{id}")
 	public String showForm(@PathVariable long id, Model model) {
 
-		Optional<Subject> opt = (Optional<Subject>) subjectRepo.findById(id);
-		opt.ifPresent(subject -> {
-			model.addAttribute(subject);
-		});
+		Optional<Subject> opt = subjectRepo.findById(id);
+		opt.ifPresent(model::addAttribute);
 		
 		return CREATE_OR_UPDATE_FORM_VIEW;
 	}

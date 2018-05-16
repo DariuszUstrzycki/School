@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import pl.ust.school.entity.SchoolForm;
-import pl.ust.school.entity.Student;
 import pl.ust.school.repository.SchoolFormRepository;
 import pl.ust.school.repository.StudentRepository;
 
@@ -36,6 +35,8 @@ public class SchoolFormController {
 	
 	private static final String COLLECTION_OF_SCHOOLFORMS_NAME = "schoolformItems";
 	private static final String COLLECTION_OF_STUDENTS_NAME = "studentItems";
+	private static final String ENTITY_NAME = "entityName";
+	private static final String ENTITY_NAME_VALUE = "schoolform";
 	
 	@Autowired
 	private SchoolFormRepository schoolFormRepo;
@@ -52,14 +53,14 @@ public class SchoolFormController {
 	
 	@GetMapping("/save")
 	public String showForm(SchoolForm form, Model model) {
-		model.addAttribute("entityName", "schoolform"); // endpoint should be read some config file
+		model.addAttribute(ENTITY_NAME, ENTITY_NAME_VALUE); // endpoint should be read some config file
 		return CREATE_OR_UPDATE_FORM_VIEW;
 	}
 	
 	@PostMapping("/save")
 	public String saveSchoolForm(@Valid SchoolForm form, BindingResult result, Model model) {
 		
-		model.addAttribute("entityName", "schoolform"); // endpoint should be read some config file
+		model.addAttribute(ENTITY_NAME, ENTITY_NAME_VALUE); // endpoint should be read some config file
 		
 		if(result.hasErrors()) {
 			List<ObjectError> list = result.getAllErrors();
@@ -78,7 +79,7 @@ public class SchoolFormController {
 	@RequestMapping("/list")
 	public String listSchoolForms(@RequestParam(defaultValue = "0", required = false) int min, Model model) {
 		model.addAttribute(COLLECTION_OF_SCHOOLFORMS_NAME, this.schoolFormRepo. findAll());
-		model.addAttribute("entityName", "schoolform");
+		model.addAttribute(ENTITY_NAME, ENTITY_NAME_VALUE);
 		return LIST_VIEW;
 	}
 	
@@ -88,7 +89,7 @@ public class SchoolFormController {
 	public String viewSchoolForm(@PathVariable long id, Model model) {
 
 		Set<SchoolForm> schoolformItems = new HashSet<>();
-		Optional<SchoolForm> opt = (Optional<SchoolForm>) this.schoolFormRepo. findById(id);
+		Optional<SchoolForm> opt =  this.schoolFormRepo. findById(id);
 		//opt.ifPresent(schoolForm -> schoolformItems.add(schoolForm)); 
 		
 		if(opt.isPresent()) {
@@ -107,19 +108,22 @@ public class SchoolFormController {
 
 	@GetMapping("/delete/{id}/confirm")
 	public String showConfirmationPage(@PathVariable long id, Model model) {
-		model.addAttribute("entityName", "schoolform");
+		model.addAttribute(ENTITY_NAME, ENTITY_NAME_VALUE);
 		return CONFIRM_DELETE_VIEW;
 	}
 
 	@RequestMapping(value = "/delete/{id}")
 	public String deleteSchoolForm(@PathVariable long id) {
 		
-		Optional<SchoolForm> opt = (Optional<SchoolForm>) schoolFormRepo.findById(id);
+		Optional<SchoolForm> opt =  schoolFormRepo.findById(id);
 		opt.ifPresent(schoolForm -> {
-
+/*
 			for (Student student : schoolForm.getStudents()) {
 				schoolForm.removeStudent(student);
-			}
+			}*/
+			
+			schoolForm.getStudents().stream()
+		      .forEach(schoolForm::removeStudent);
 
 			this.schoolFormRepo.deleteById(id);
 
@@ -131,11 +135,8 @@ public class SchoolFormController {
 	//////////////////////////// UPDATE ////////////////////////////
 	@GetMapping("/update/{id}")
 	public String showForm(@PathVariable long id, Model model) {
-		Optional<SchoolForm> opt = (Optional<SchoolForm>) schoolFormRepo.findById(id);
-		opt.ifPresent(schoolForm -> {
-			model.addAttribute(schoolForm);
-			
-		});
+		Optional<SchoolForm> opt = schoolFormRepo.findById(id);
+		opt.ifPresent(model::addAttribute);
 
 		return CREATE_OR_UPDATE_FORM_VIEW;
 	}

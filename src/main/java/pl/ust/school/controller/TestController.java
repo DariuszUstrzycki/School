@@ -14,15 +14,15 @@ import pl.ust.school.repository.TestEntityRepository;
 public class TestController {
 
 	@Autowired
-	TestEntityRepository repo;
+	TestEntityRepository<?> repo;
 
 	@PostMapping("/test/save")
 	public void saveTestEntity(@ModelAttribute TestEntity testEntity) {
-		TestEntity saved =  (TestEntity) repo.save(testEntity);
+		 repo.save(testEntity);
 	}
 
 	@GetMapping("/test/view/{id}")
 	public TestEntity saveTestEntity(@PathVariable Long id) {
-		return (TestEntity) repo.findById(id).get();
+		return repo.findById(id).get();
 	}
 }

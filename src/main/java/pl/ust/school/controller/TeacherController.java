@@ -34,6 +34,8 @@ public class TeacherController {
 	private static final String CONFIRM_DELETE_VIEW = "forms/confirmDelete";
 	
 	private static final String COLLECTION_OF_TEACHERS_NAME = "teacherItems";
+	private static final String ENTITY_NAME = "entityName";
+	private static final String ENTITY_NAME_VALUE = "teacher";
 
 	@Autowired
 	private TeacherRepository teacherRepo;
@@ -58,14 +60,14 @@ public class TeacherController {
 	
 	@GetMapping("/save")
 	public String showForm(Teacher teacher, Model model) {
-		model.addAttribute("entityName", "teacher"); 
+		model.addAttribute(ENTITY_NAME, ENTITY_NAME_VALUE); 
 		return CREATE_OR_UPDATE_FORM_VIEW;
 	}
 	
 	@PostMapping("/save")
 	public String saveTeacher(@Valid Teacher teacher, BindingResult result, Model model) {
 		
-		model.addAttribute("entityName", "teacher"); 
+		model.addAttribute(ENTITY_NAME, ENTITY_NAME_VALUE); 
 		
 		if(result.hasErrors()) {
 			List<ObjectError> list = result.getAllErrors();
@@ -84,7 +86,7 @@ public class TeacherController {
 	@RequestMapping("/list")
 	public String listTeachers(@RequestParam(defaultValue = "0", required = false) int min, Model model) {
 		model.addAttribute(COLLECTION_OF_TEACHERS_NAME, this.teacherRepo.findAll());
-		model.addAttribute("entityName", "teacher");
+		model.addAttribute(ENTITY_NAME, ENTITY_NAME_VALUE);
 		return LIST_VIEW;
 	}
 
@@ -93,7 +95,7 @@ public class TeacherController {
 	public String viewTeacher(@PathVariable long id, Model model) {
 
 		Set<Teacher> teacherItems = new HashSet<>();
-		Optional<Teacher> opt = (Optional<Teacher>) this.teacherRepo.findById(id);
+		Optional<Teacher> opt = this.teacherRepo.findById(id);
 		
 		if(opt.isPresent()) {
 			teacherItems.add(opt.get());
@@ -109,14 +111,14 @@ public class TeacherController {
 
 	@GetMapping("/delete/{id}/confirm")
 	public String showConfirmationPage(@PathVariable long id, Model model) {
-		model.addAttribute("entityName", "teacher");
+		model.addAttribute(ENTITY_NAME, ENTITY_NAME_VALUE);
 		return CONFIRM_DELETE_VIEW;
 	}
 
 	@RequestMapping(value = "/delete/{id}")
 	public String deleteTeacher(@PathVariable long id) {
 
-		Optional<Teacher> opt = (Optional<Teacher>) teacherRepo.findById(id);
+		Optional<Teacher> opt = teacherRepo.findById(id);
 		opt.ifPresent(teacher -> {
 			
 			for(TeacherSubject teachersubject : teacher.getTeacherSubjects()) {
@@ -135,11 +137,8 @@ public class TeacherController {
 	@GetMapping("/update/{id}")
 	public String showForm(@PathVariable long id, Model model) {
 		
-		Optional<Teacher> opt = (Optional<Teacher>) teacherRepo.findById(id);
-		opt.ifPresent(teacher -> {
-			model.addAttribute(teacher);
-
-		});
+		Optional<Teacher> opt = teacherRepo.findById(id);
+		opt.ifPresent(model::addAttribute);
 		
 		return CREATE_OR_UPDATE_FORM_VIEW;
 	}

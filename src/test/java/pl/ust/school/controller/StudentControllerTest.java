@@ -27,6 +27,10 @@ import pl.ust.school.entity.Student;
 import pl.ust.school.repository.SchoolFormRepository;
 import pl.ust.school.repository.StudentRepository;
 
+
+// allows the Web App Context to be loaded. By default Spring will load the context into a Static variable so it only gets 
+//initialized once per test run saving a lot of time. This his helpful if you create a base test class with the context 
+//info and reuse it across your project.
 @RunWith(SpringRunner.class)
 @WebMvcTest(StudentController.class)
 public class StudentControllerTest {
