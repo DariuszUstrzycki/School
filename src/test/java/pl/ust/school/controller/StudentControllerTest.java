@@ -65,6 +65,9 @@ public class StudentControllerTest {
 		john.setPassword("123");
 		john.setSchoolForm(new SchoolForm());
 		john.setTelephone("1234567");
+		
+		given(this.studentRepo.findById(TEST_STUDENT_ID)).willReturn(Optional.of(this.john));
+
 
 		System.err.println("----------@Before setup()-----------------"); // useful when debugging as it's easy to see
 																			// when each test starts/ends
@@ -112,7 +115,6 @@ public class StudentControllerTest {
 
 	@Test
 	public void shouldRetrieveStudentByIdWhenExists() throws Exception {
-		given(this.studentRepo.findById(john.getId())).willReturn((Optional.of(john)));
 
 		mockMvc.perform(get("/student/view/{id}", TEST_STUDENT_ID)).andDo(print()).andExpect(status().isOk())
 				.andExpect(model().attributeExists(COLLECTION_OF_STUDENTS_NAME))
@@ -130,7 +132,6 @@ public class StudentControllerTest {
 
 	@Test
 	public void shouldShowUpdateForm() throws Exception {
-		given(this.studentRepo.findById(john.getId())).willReturn((Optional.of(john)));
 
 		mockMvc.perform(get("/student/update/{id}", TEST_STUDENT_ID)).andDo(print()).andExpect(status().isOk())
 				.andExpect(model().attributeExists(COLLECTION_OF_SCHOOLFORMS_NAME))

@@ -58,6 +58,8 @@ public class TeacherControllerTest {
 		john.setLastName("Brown");
 		john.setPassword("123");
 		john.setTelephone("1234567");
+		
+		 given(this.teacherRepo.findById(TEST_TEACHER_ID)).willReturn(Optional.of(this.john));
 
 		System.err.println("----------@Before setup()-----------------"); // useful when debugging as it's easy to see
 																			// when each test starts/ends
@@ -111,7 +113,7 @@ public class TeacherControllerTest {
 
 	@Test
 	public void shouldRetrieveTeacherByIdWhenExists() throws Exception {
-		given(this.teacherRepo.findById(john.getId())).willReturn((Optional.of(john)));
+
 		mockMvc.perform(get("/teacher/view/{id}", TEST_TEACHER_ID)).andDo(print()).andExpect(status().isOk())
 				.andExpect(model().attributeExists(COLLECTION_OF_TEACHERS_NAME))
 				// how to check that the attribute is a collection?! and its size?
@@ -127,7 +129,6 @@ public class TeacherControllerTest {
 
 	@Test
 	public void shouldShowUpdateForm() throws Exception {
-		given(this.teacherRepo.findById(john.getId())).willReturn((Optional.of(john)));
 
 		mockMvc.perform(get("/teacher/update/{id}", TEST_TEACHER_ID))
 				.andDo(print()).andExpect(status().isOk())

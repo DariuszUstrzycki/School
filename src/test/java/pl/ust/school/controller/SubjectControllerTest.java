@@ -51,6 +51,9 @@ public class SubjectControllerTest {
     	this.biology = new Subject();
     	this.biology.setId(TEST_SUBJECT_ID);
     	this.biology.setName("Biology");
+    	
+		given(this.subjectRepo.findById(TEST_SUBJECT_ID)).willReturn(Optional.of(this.biology));
+
         
         System.err.println("----------@Before setup()-----------------"); // useful when debugging as it's easy to see when each test starts/ends
     }
@@ -67,6 +70,7 @@ public class SubjectControllerTest {
     @Test
     public void shouldAddNewSubject() throws Exception {
         mockMvc.perform( post("/subject/save")
+        		//.expectBody(String.class).isEqualTo("Hello World");
         	   .param("name", "Astrophysics") )
         	   .andDo(print())
                .andExpect(status().is3xxRedirection()); // 307/8 Temporary/Permament Redirect
@@ -98,7 +102,6 @@ public class SubjectControllerTest {
    
     @Test
     public void shouldRetrieveSubjectByIdWhenExists() throws Exception {
-        given(this.subjectRepo.findById(biology.getId())).willReturn((Optional.of(this.biology)));
         mockMvc.perform(get("/subject/view/{id}", TEST_SUBJECT_ID)
         )
         	.andDo(print())
@@ -121,7 +124,6 @@ public class SubjectControllerTest {
 
      @Test
     public void shouldShowUpdateForm() throws Exception {
-    	given(this.subjectRepo.findById(this.biology.getId())).willReturn((Optional.of(this.biology)));
     	
         mockMvc.perform(get("/subject/update/{id}", TEST_SUBJECT_ID))
         	.andDo(print())
@@ -169,8 +171,6 @@ public class SubjectControllerTest {
     
     @Test
     public void shouldSetIsDeletedToTrue() throws Exception {
-    	// given
-    	given(this.subjectRepo.findById(this.biology.getId())).willReturn((Optional.of(this.biology)));
     	
     	//then
     	mockMvc.perform(get("/subject/delete/{id}", TEST_SUBJECT_ID))
@@ -179,6 +179,13 @@ public class SubjectControllerTest {
     	.andDo(print())
     	.andExpect(status().is3xxRedirection())
     	.andExpect(view().name("redirect:/subject/list"));
-    }
+    }/*
+    
+    @Test
+	public void testExample() throws Exception {
+		given(this.userVehicleService.getVehicleDetails("sboot"))
+				.willReturn(new VehicleDetails("Honda", "Civic"));
+		this.mvc.perform(get("/sboot/vehicle").accept(MediaType.TEXT_PLAIN))
+				.andExpect(status().isOk()).andExpect(content().string("Honda Civic"));*/
 
 }

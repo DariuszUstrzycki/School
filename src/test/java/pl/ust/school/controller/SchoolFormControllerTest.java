@@ -58,6 +58,8 @@ public class SchoolFormControllerTest {
 	    	schoolform1A = new SchoolForm();
 	    	schoolform1A.setId(TEST_SCHOOLFORM_ID);
 	    	schoolform1A.setName("1A");
+	    	
+	    	given(this.schoolFormRepo.findById(TEST_SCHOOLFORM_ID)).willReturn(Optional.of(this.schoolform1A));
 	        
 	        System.err.println("----------@Before setup()-----------------"); // useful when debugging as it's easy to see when each test starts/ends
 	    }
@@ -105,7 +107,6 @@ public class SchoolFormControllerTest {
 	    
 	    @Test
 	    public void shouldRetrieveSchooFormByIdWhenExists() throws Exception {
-	        given(this.schoolFormRepo.findById(schoolform1A.getId())).willReturn((Optional.of(schoolform1A)));
 	        mockMvc.perform(get("/schoolform/view/{id}", TEST_SCHOOLFORM_ID)
 	        )
 	        	.andDo(print())
@@ -130,7 +131,6 @@ public class SchoolFormControllerTest {
 	    
 	    @Test
 	    public void shouldShowUpdateForm() throws Exception {
-	    	given(this.schoolFormRepo.findById(schoolform1A.getId())).willReturn((Optional.of(schoolform1A)));
 	    	
 	        mockMvc.perform(get("/schoolform/update/{id}", TEST_SCHOOLFORM_ID))
 	        	.andDo(print())
