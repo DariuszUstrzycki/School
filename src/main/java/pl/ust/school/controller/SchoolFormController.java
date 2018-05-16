@@ -101,7 +101,7 @@ public class SchoolFormController {
 			model.addAttribute(COLLECTION_OF_SCHOOLFORMS_NAME, schoolformItems);
 			model.addAttribute(COLLECTION_OF_STUDENTS_NAME, studentRepo.findBySchoolForm_Id(id));
 		} else {
-			throw new ItemNotFoundException("No school form with id " + id + " has been found.");
+			throw new RecordNotFoundException("No school form with id " + id + " has been found.");
 		}
 		
 		return DETAILS_VIEW; 
@@ -161,8 +161,8 @@ public class SchoolFormController {
 
 	@ExceptionHandler
 	@ResponseStatus(HttpStatus.NOT_FOUND)
-	private String itemNotFoundHandler(ItemNotFoundException ex, Model model) {
-		System.err.println("----------------ItemNotFoundException");
+	private String itemNotFoundHandler(RecordNotFoundException ex, Model model) {
+		System.err.println("----------------RecordNotFoundException");
 		model.addAttribute("notFound", ex.getMessage());
 
 		return DETAILS_VIEW;

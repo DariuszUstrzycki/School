@@ -1,6 +1,8 @@
 package pl.ust.school.controller;
 
-import static org.mockito.BDDMockito.*;
+import static org.hamcrest.Matchers.hasProperty;
+import static org.hamcrest.Matchers.is;
+import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -64,13 +66,13 @@ public class SubjectControllerTest {
         	.andDo(print())
             .andExpect(status().isOk())
             .andExpect(model().attributeExists("subject"))
+           // .andExpect(model().attribute("teacher",  SubjectDTO.class))
             .andExpect(view().name(CREATE_OR_UPDATE_FORM_VIEW));
     }
 
     @Test
     public void shouldAddNewSubject() throws Exception {
         mockMvc.perform( post("/subject/save")
-        		//.expectBody(String.class).isEqualTo("Hello World");
         	   .param("name", "Astrophysics") )
         	   .andDo(print())
                .andExpect(status().is3xxRedirection()); // 307/8 Temporary/Permament Redirect
@@ -107,12 +109,13 @@ public class SubjectControllerTest {
         	.andDo(print())
         	.andExpect(status().isOk())
         	.andExpect(model().attributeExists(COLLECTION_OF_SUBJECTS_NAME))
+        	.andExpect(model().attribute("subject", hasProperty("name", is(this.biology.getName()))))
         	// how to check that the attribute is a collection?! and its size?
             .andExpect(view().name(DETAILS_VIEW));
     }
   
     @Test
-    public void shouldDisplayNotFoundMessageWhenNoSubjectFound() throws Exception {
+    public void shouldReturn404HttpWhenNotFound() throws Exception {
     	 given(this.subjectRepo.findById(-1L)).willReturn((Optional.empty()));
         mockMvc.perform(get("/subject/view/{id}", -1)
         )
@@ -129,13 +132,14 @@ public class SubjectControllerTest {
         	.andDo(print())
             .andExpect(status().isOk())
             .andExpect(model().attributeExists("subject"))
+            .andExpect(model().attribute("subject", hasProperty("name", is(this.biology.getName()))))
             .andExpect(view().name(CREATE_OR_UPDATE_FORM_VIEW));
     }
 
     @Test
     public void shouldProcessUpdateWhenNoErrors() throws Exception {
         mockMvc.perform( post("/subject/update/{id}", TEST_SUBJECT_ID)
-            .param("name", "Maths")
+            .param("name", "Astrophysics")
         )
         	// .andExpect(model().attributeHasNoErrors("subject"))  No BindingResult for attribute: product WHY?!
         	// This exception is caused because the view returned by tested controller is a redirect: "redirect:....". 

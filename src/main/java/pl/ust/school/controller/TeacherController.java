@@ -23,8 +23,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
-
 import pl.ust.school.entity.Teacher;
 import pl.ust.school.entity.TeacherSubject;
 import pl.ust.school.repository.TeacherRepository;
@@ -106,7 +104,7 @@ public class TeacherController {
 			teacherItems.add(opt.get());
 			model.addAttribute(COLLECTION_OF_TEACHERS_NAME, teacherItems);
 		} else {
-			throw new ItemNotFoundException("No teacher with id " + id + " has been found.");
+			throw new RecordNotFoundException("No teacher with id " + id + " has been found.");
 		}
 		
 		return DETAILS_VIEW;
@@ -167,8 +165,8 @@ public class TeacherController {
 	
 	@ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    private String itemNotFoundHandler(ItemNotFoundException ex, Model model) {
-		System.err.println("----------------ItemNotFoundException");
+    private String itemNotFoundHandler(RecordNotFoundException ex, Model model) {
+		System.err.println("----------------RecordNotFoundException");
 		model.addAttribute("notFound", ex.getMessage());
 		
 		return DETAILS_VIEW;

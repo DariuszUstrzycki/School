@@ -109,7 +109,7 @@ public class StudentController {
 			studentItems.add(opt.get());
 			model.addAttribute(COLLECTION_OF_STUDENTS_NAME, studentItems);
 		} else {
-			throw new ItemNotFoundException("No student with id " + id + " has been found.");
+			throw new RecordNotFoundException("No student with id " + id + " has been found.");
 		}
 		
 		return DETAILS_VIEW;
@@ -168,8 +168,8 @@ public class StudentController {
 
 	@ExceptionHandler
 	@ResponseStatus(HttpStatus.NOT_FOUND)
-	private String itemNotFoundHandler(ItemNotFoundException ex, Model model) {
-		System.err.println("----------------ItemNotFoundException");
+	private String itemNotFoundHandler(RecordNotFoundException ex, Model model) {
+		System.err.println("----------------RecordNotFoundException");
 		model.addAttribute("notFound", ex.getMessage());
 
 		return DETAILS_VIEW;

@@ -80,24 +80,37 @@ public class StudentControllerTest {
 	@Test
 	public void shouldShowStudentFormWhenGetRequest() throws Exception {
 		mockMvc.perform(get("/student/save")).andDo(print()) // !
-				.andExpect(status().isOk()).andExpect(model().attributeExists(COLLECTION_OF_SCHOOLFORMS_NAME))
-				.andExpect(model().attributeExists("student")).andExpect(view().name(CREATE_OR_UPDATE_FORM_VIEW));
+				.andExpect(status().isOk())
+				.andExpect(model().attributeExists(COLLECTION_OF_SCHOOLFORMS_NAME))
+	            .andExpect(model().attributeExists("student"))
+	            // // .andExpect(model().attribute("student",  StudentDTO.class))
+				.andExpect(view().name(CREATE_OR_UPDATE_FORM_VIEW));
 	}
 
 	@Test
 	public void shouldAddNewStudent() throws Exception {
-		mockMvc.perform(post("/student/save").param("telephone", "1111111111")
-				.param("address", "Penny Lane 12, London, England").param("email", "maria@gmail.com")
-				.param("firstName", "Maria").param("lastName", "Smith").param("password", "000777")).andDo(print())
+		mockMvc.perform(post("/student/save")
+				.param("telephone", "1111111111")
+				.param("address", "Penny Lane 12, London, England")
+				.param("email", "maria@gmail.com")
+				.param("firstName", "Maria")
+				.param("lastName", "Smith")
+				.param("password", "000777"))
+				.andDo(print())
 				.andExpect(status().is3xxRedirection());
 	}
 
 	@Test
 	public void shouldFindErrorsWhenInvalidValues() throws Exception {
-		mockMvc.perform(post("/student/save").param("firstName", "").param("email", "123").param("telephone", "abc")
+		mockMvc.perform(post("/student/save")
+				.param("firstName", "")
+				.param("email", "<error>")
+				.param("telephone", "<error>")
 				.param("password", ""))
 
-				.andDo(print()).andExpect(status().isOk()).andExpect(model().attributeHasErrors("student"))
+				.andDo(print())
+				.andExpect(status().isOk())
+				.andExpect(model().attributeHasErrors("student"))
 				.andExpect(model().attributeHasFieldErrors("student", "firstName"))
 				.andExpect(model().attributeHasFieldErrors("student", "lastName")) // null
 				.andExpect(model().attributeHasFieldErrors("student", "address")) // null
@@ -112,7 +125,9 @@ public class StudentControllerTest {
 	public void shouldRetrieveListOfStudents() throws Exception {
 		given(this.studentRepo.findAll()).willReturn(Lists.newArrayList(john, new Student()));
 
-		mockMvc.perform(get("/student/list")).andDo(print()).andExpect(status().isOk())
+		mockMvc.perform(get("/student/list"))
+				.andDo(print())
+				.andExpect(status().isOk())
 				.andExpect(model().attributeExists(COLLECTION_OF_SCHOOLFORMS_NAME))
 				.andExpect(model().attributeExists(COLLECTION_OF_STUDENTS_NAME)).andExpect(view().name(LIST_VIEW));
 	}
@@ -120,24 +135,31 @@ public class StudentControllerTest {
 	@Test
 	public void shouldRetrieveStudentByIdWhenExists() throws Exception {
 
-		mockMvc.perform(get("/student/view/{id}", TEST_STUDENT_ID)).andDo(print()).andExpect(status().isOk())
+		mockMvc.perform(get("/student/view/{id}", TEST_STUDENT_ID))
+				
+				.andDo(print())
+				.andExpect(status().isOk())
 				.andExpect(model().attributeExists(COLLECTION_OF_STUDENTS_NAME))
 				// how to check that the attribute is a collection?! and its size?
 				.andExpect(view().name(DETAILS_VIEW));
 	}
 
 	@Test
-	public void shouldDisplayNotFoundMessageWhenNoStudentFound() throws Exception {
+	public void shouldReturn404HttpWhenNotFound() throws Exception {
 		given(this.studentRepo.findById(-1L)).willReturn((Optional.empty()));
 
-		mockMvc.perform(get("/student/view/{id}", -1)).andDo(print()).andExpect(status().isOk())
+		mockMvc.perform(get("/student/view/{id}", -1))
+				.andDo(print())
+				.andExpect(status().isNotFound())
 				.andExpect(model().attributeExists("notFound")).andExpect(view().name(DETAILS_VIEW));
 	}
 
 	@Test
 	public void shouldShowUpdateForm() throws Exception {
 
-		mockMvc.perform(get("/student/update/{id}", TEST_STUDENT_ID)).andDo(print()).andExpect(status().isOk())
+		mockMvc.perform(get("/student/update/{id}", TEST_STUDENT_ID))
+				.andDo(print())
+				.andExpect(status().isOk())
 				.andExpect(model().attributeExists(COLLECTION_OF_SCHOOLFORMS_NAME))
 				.andExpect(model().attributeExists("student")).andExpect(view().name(CREATE_OR_UPDATE_FORM_VIEW));
 	}
@@ -152,14 +174,19 @@ public class StudentControllerTest {
 				// This exception is caused because the view returned by tested controller is a
 				// redirect: "redirect:....".
 				// You could use it only for a view not being a redirect.
-				.andDo(print()).andExpect(model().hasNoErrors()).andExpect(status().is3xxRedirection())
+				.andDo(print())
+				.andExpect(model().hasNoErrors())
+				.andExpect(status().is3xxRedirection())
 				.andExpect( redirectedUrl("/student/view/" + TEST_STUDENT_ID));
 	}
 
 	@Test
 	public void shouldReturnUpdateFormWhenErrors() throws Exception {
-		mockMvc.perform(post("/student/update/{id}", TEST_STUDENT_ID).param("firstName", "").param("email", "123")
-				.param("telephone", "abc").param("password", ""))
+		mockMvc.perform(post("/student/update/{id}", TEST_STUDENT_ID)
+				.param("firstName", "")
+				.param("email", "<error>")
+				.param("telephone", "<error>")
+				.param("password", ""))
 
 				.andDo(print()).andExpect(status().isOk())
 				.andExpect(model().attributeExists(COLLECTION_OF_SCHOOLFORMS_NAME))

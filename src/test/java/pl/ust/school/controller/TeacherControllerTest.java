@@ -1,5 +1,6 @@
 package pl.ust.school.controller;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -22,6 +23,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import pl.ust.school.entity.SchoolForm;
 import pl.ust.school.entity.Teacher;
 import pl.ust.school.repository.TeacherRepository;
 
@@ -67,15 +69,23 @@ public class TeacherControllerTest {
 	
 	@Test
 	public void shouldShowTeacherFormWhenGetRequest() throws Exception {
-		mockMvc.perform(get("/teacher/save")).andDo(print()).andExpect(status().isOk())
-				.andExpect(model().attributeExists("teacher")).andExpect(view().name(CREATE_OR_UPDATE_FORM_VIEW));
+		mockMvc.perform(get("/teacher/save"))
+		.andDo(print())
+		.andExpect(status().isOk())
+        .andExpect(model().attributeExists("teacher")) 
+        // .andExpect(model().attribute("teacher",  TeacherDTO.class))
+		.andExpect(view().name(CREATE_OR_UPDATE_FORM_VIEW));
 	}
 
 	@Test
 	public void shouldAddNewTeacher() throws Exception {
-		mockMvc.perform(post("/teacher/save").param("telephone", "1111111111")
-				.param("address", "Penny Lane 12, London, England").param("email", "maria@gmail.com")
-				.param("firstName", "Maria").param("lastName", "Smith").param("password", "000777")).andDo(print())
+		mockMvc.perform(post("/teacher/save")
+				.param("telephone", "1111111111")
+				.param("address", "Penny Lane 12, London, England")
+				.param("email", "maria@gmail.com")
+				.param("firstName", "Maria")
+				.param("lastName", "Smith").param("password", "000777"))
+				.andDo(print())
 				.andExpect(status().is3xxRedirection());
 	}
 
@@ -114,16 +124,21 @@ public class TeacherControllerTest {
 	@Test
 	public void shouldRetrieveTeacherByIdWhenExists() throws Exception {
 
-		mockMvc.perform(get("/teacher/view/{id}", TEST_TEACHER_ID)).andDo(print()).andExpect(status().isOk())
+		mockMvc.perform(get("/teacher/view/{id}", TEST_TEACHER_ID))
+				.andDo(print())
+				.andExpect(status().isOk())
 				.andExpect(model().attributeExists(COLLECTION_OF_TEACHERS_NAME))
 				// how to check that the attribute is a collection?! and its size?
 				.andExpect(view().name(DETAILS_VIEW));
 	}
 
 	@Test
-	public void shouldDisplayNotFoundMessageWhenNoTeacherFound() throws Exception {
+	public void shouldReturn404HttpWhenNotFound() throws Exception {
 		given(this.teacherRepo.findById(-1L)).willReturn((Optional.empty()));
-		mockMvc.perform(get("/teacher/view/{id}", -1)).andDo(print()).andExpect(status().isOk())
+		
+		mockMvc.perform(get("/teacher/view/{id}", -1))
+				.andDo(print())
+				.andExpect(status().isNotFound())
 				.andExpect(model().attributeExists("notFound")).andExpect(view().name(DETAILS_VIEW));
 	}
 
@@ -131,7 +146,8 @@ public class TeacherControllerTest {
 	public void shouldShowUpdateForm() throws Exception {
 
 		mockMvc.perform(get("/teacher/update/{id}", TEST_TEACHER_ID))
-				.andDo(print()).andExpect(status().isOk())
+				.andDo(print())
+				.andExpect(status().isOk())
 				.andExpect(model().attributeExists("teacher"))
 				.andExpect(view().name(CREATE_OR_UPDATE_FORM_VIEW));
 	}
@@ -146,16 +162,19 @@ public class TeacherControllerTest {
 				// This exception is caused because the view returned by tested controller is a
 				// redirect: "redirect:....".
 				// You could use it only for a view not being a redirect.
-				.andDo(print()).andExpect(model().hasNoErrors()).andExpect(status().is3xxRedirection())
-				 .andExpect( redirectedUrl("/teacher/view/" + TEST_TEACHER_ID));
+				.andDo(print())
+				.andExpect(model()
+				.hasNoErrors())
+				.andExpect(status().is3xxRedirection())
+				.andExpect( redirectedUrl("/teacher/view/" + TEST_TEACHER_ID));
 	}
 
 	@Test
 	public void shouldReturnUpdateFormWhenErrors() throws Exception {
 		mockMvc.perform(post("/teacher/update/{id}", TEST_TEACHER_ID)
 				.param("firstName", "")
-				.param("email", "123")
-				.param("telephone", "abc")
+				.param("email", "<error>")
+				.param("telephone", "<error>")
 				.param("password", ""))
 		
 				.andDo(print())

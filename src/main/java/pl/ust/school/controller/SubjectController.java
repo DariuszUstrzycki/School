@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.servlet.ModelAndView;
 
 import pl.ust.school.entity.Subject;
 import pl.ust.school.repository.SubjectRepository;
@@ -104,11 +105,12 @@ public class SubjectController {
 			subjectItems.add(opt.get());
 			model.addAttribute(COLLECTION_OF_SUBJECTS_NAME, subjectItems);
 		} else {
-			throw new ItemNotFoundException("No subject with id " + id + " has been found.");
+			throw new RecordNotFoundException("No subject with id " + id + " has been found.");
 		}
 		
 		return DETAILS_VIEW;
 	}
+	
 
 	//////////////////////////// DELETE ////////////////////////////
 
@@ -163,9 +165,8 @@ public class SubjectController {
 	////////////////////// exception handling ////////////////////////////////////
 	
 	@ExceptionHandler
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    private String itemNotFoundHandler(ItemNotFoundException ex, Model model) {
-		System.err.println("----------------ItemNotFoundException");
+    private String recordNotFoundHandler(RecordNotFoundException ex, Model model) {
+		System.err.println("----------------RecordNotFoundException");
 		model.addAttribute("notFound", ex.getMessage());
 		
 		return DETAILS_VIEW;

@@ -70,6 +70,7 @@ public class SchoolFormControllerTest {
 	        	.andDo(print())
 	            .andExpect(status().isOk())
 	            .andExpect(model().attributeExists("schoolForm"))
+	            // // .andExpect(model().attribute("teacher",  SchoolFormDTO.class))
 	            .andExpect(view().name(CREATE_OR_UPDATE_FORM_VIEW));
 	    }
 
@@ -118,12 +119,12 @@ public class SchoolFormControllerTest {
 	    }
 	  
 	    @Test
-	    public void shouldDisplayNotFoundMessageWhenNoSchooFormFound() throws Exception {
+	    public void shouldReturn404HttpWhenNotFound() throws Exception {
 	    	 given(this.schoolFormRepo.findById(-1L)).willReturn((Optional.empty()));
 	        mockMvc.perform(get("/schoolform/view/{id}", -1)
 	        )
 	        	.andDo(print())
-	        	.andExpect(status().isOk())
+	        	.andExpect(status().isNotFound())
 	        	.andExpect(model().attributeExists("notFound"))
 	            .andExpect(view().name(DETAILS_VIEW));
 	    }
