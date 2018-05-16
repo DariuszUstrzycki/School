@@ -5,6 +5,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
@@ -145,7 +146,7 @@ public class TeacherControllerTest {
 				// redirect: "redirect:....".
 				// You could use it only for a view not being a redirect.
 				.andDo(print()).andExpect(model().hasNoErrors()).andExpect(status().is3xxRedirection())
-				.andExpect(view().name("redirect:/teacher/view/" + TEST_TEACHER_ID));
+				 .andExpect( redirectedUrl("/teacher/view/" + TEST_TEACHER_ID));
 	}
 
 	@Test

@@ -1,10 +1,11 @@
 package pl.ust.school.controller;
 
-import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
@@ -47,9 +48,9 @@ public class SubjectControllerTest {
     
     @Before
     public void setup() {
-    	biology = new Subject();
-    	biology.setId(TEST_SUBJECT_ID);
-    	biology.setName("Biology");
+    	this.biology = new Subject();
+    	this.biology.setId(TEST_SUBJECT_ID);
+    	this.biology.setName("Biology");
         
         System.err.println("----------@Before setup()-----------------"); // useful when debugging as it's easy to see when each test starts/ends
     }
@@ -67,7 +68,7 @@ public class SubjectControllerTest {
     public void shouldAddNewSubject() throws Exception {
         mockMvc.perform( post("/subject/save")
         	   .param("name", "Astrophysics") )
-        		.andDo(print())
+        	   .andDo(print())
                .andExpect(status().is3xxRedirection()); // 307/8 Temporary/Permament Redirect
     }
     
@@ -87,7 +88,7 @@ public class SubjectControllerTest {
     @Test
     public void shouldRetrieveListOfSubjects() throws Exception {
     	
-        given(this.subjectRepo.findAll()).willReturn(Lists.newArrayList(biology, new Subject()));
+        given(this.subjectRepo.findAll()).willReturn(Lists.newArrayList(this.biology, new Subject()));
         mockMvc.perform(get("/subject/list"))
         	.andDo(print())
             .andExpect(status().isOk())
@@ -97,7 +98,7 @@ public class SubjectControllerTest {
    
     @Test
     public void shouldRetrieveSubjectByIdWhenExists() throws Exception {
-        given(this.subjectRepo.findById(biology.getId())).willReturn((Optional.of(biology)));
+        given(this.subjectRepo.findById(biology.getId())).willReturn((Optional.of(this.biology)));
         mockMvc.perform(get("/subject/view/{id}", TEST_SUBJECT_ID)
         )
         	.andDo(print())
@@ -120,7 +121,7 @@ public class SubjectControllerTest {
 
      @Test
     public void shouldShowUpdateForm() throws Exception {
-    	given(this.subjectRepo.findById(biology.getId())).willReturn((Optional.of(biology)));
+    	given(this.subjectRepo.findById(this.biology.getId())).willReturn((Optional.of(this.biology)));
     	
         mockMvc.perform(get("/subject/update/{id}", TEST_SUBJECT_ID))
         	.andDo(print())
@@ -140,7 +141,7 @@ public class SubjectControllerTest {
         	.andDo(print())
         	.andExpect(model().hasNoErrors())
         	.andExpect(status().is3xxRedirection())
-            .andExpect(view().name("redirect:/subject/view/" + TEST_SUBJECT_ID));
+            .andExpect( redirectedUrl("/subject/view/" + TEST_SUBJECT_ID));
     }
    
     @Test
@@ -157,6 +158,27 @@ public class SubjectControllerTest {
     }
     
     
-    /// MIssing tests for delete operations
+    @Test
+    public void shouldAskForConfirmationBeforeDeleting() throws Exception {
+    	
+    	mockMvc.perform(get("/subject/delete/{id}/confirm", TEST_SUBJECT_ID))
+    	.andDo(print())
+    	.andExpect(status().isOk())
+    	.andExpect(view().name(CONFIRM_DELETE_VIEW));
+    }
+    
+    @Test
+    public void shouldSetIsDeletedToTrue() throws Exception {
+    	// given
+    	given(this.subjectRepo.findById(this.biology.getId())).willReturn((Optional.of(this.biology)));
+    	
+    	//then
+    	mockMvc.perform(get("/subject/delete/{id}", TEST_SUBJECT_ID))
+    	
+    	//assert
+    	.andDo(print())
+    	.andExpect(status().is3xxRedirection())
+    	.andExpect(view().name("redirect:/subject/list"));
+    }
 
 }
