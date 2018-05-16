@@ -9,6 +9,8 @@ import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Where;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,6 +18,7 @@ import lombok.ToString;
 
 @Entity
 @Table(name = "teachers")
+@Where(clause = "is_deleted=false")
 @Getter @Setter @NoArgsConstructor
 @ToString(callSuper=true, includeFieldNames = false, exclude= "teacherSubjects")
 public class Teacher extends Person {

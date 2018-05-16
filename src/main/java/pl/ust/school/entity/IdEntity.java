@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.Where;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -32,11 +34,5 @@ public class IdEntity implements Serializable {
     public boolean isNew() {
         return this.id == null;
     }
-    
-    
-	
-    
-    
-    
 
 }

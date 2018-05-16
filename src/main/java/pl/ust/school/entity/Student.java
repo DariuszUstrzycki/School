@@ -5,6 +5,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Where;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,6 +14,7 @@ import lombok.ToString;
 
 @Entity
 @Table(name = "students")
+@Where(clause = "is_deleted=false")
 @Getter @Setter @NoArgsConstructor
 @ToString(callSuper=true, includeFieldNames = false)
 public class Student extends Person {
