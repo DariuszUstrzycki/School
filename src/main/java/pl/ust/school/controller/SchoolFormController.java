@@ -1,7 +1,6 @@
 package pl.ust.school.controller;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -66,8 +65,7 @@ public class SchoolFormController {
 		model.addAttribute(ENTITY_NAME, ENTITY_NAME_VALUE); // endpoint should be read some config file
 		
 		if(result.hasErrors()) {
-			List<ObjectError> list = result.getAllErrors();
-			for (ObjectError error : list) {
+			for (ObjectError error : result.getAllErrors()) {
 				System.out.println(error);
 			}
 			return CREATE_OR_UPDATE_FORM_VIEW; 
@@ -93,7 +91,6 @@ public class SchoolFormController {
 
 		Set<SchoolForm> schoolformItems = new HashSet<>();
 		Optional<SchoolForm> opt =  this.schoolFormRepo. findById(id);
-		//opt.ifPresent(schoolForm -> schoolformItems.add(schoolForm)); 
 		
 		if(opt.isPresent()) {
 			schoolformItems.add(opt.get());
@@ -120,16 +117,8 @@ public class SchoolFormController {
 		
 		Optional<SchoolForm> opt =  schoolFormRepo.findById(id);
 		opt.ifPresent(schoolForm -> {
-/*
-			for (Student student : schoolForm.getStudents()) {
-				schoolForm.removeStudent(student);
-			}*/
-			
-			schoolForm.getStudents().stream()
-		      .forEach(schoolForm::removeStudent);
-
-			this.schoolFormRepo.deleteById(id);
-
+				schoolForm.remove();
+				this.schoolFormRepo.save(schoolForm);
 		});
 		
 		return "redirect:/schoolform/list";
@@ -161,10 +150,8 @@ public class SchoolFormController {
 
 	@ExceptionHandler
 	@ResponseStatus(HttpStatus.NOT_FOUND)
-	private String itemNotFoundHandler(RecordNotFoundException ex, Model model) {
-		System.err.println("----------------RecordNotFoundException");
+	private String recordNotFoundHandler(RecordNotFoundException ex, Model model) {
 		model.addAttribute("notFound", ex.getMessage());
-
 		return DETAILS_VIEW;
 	}
 

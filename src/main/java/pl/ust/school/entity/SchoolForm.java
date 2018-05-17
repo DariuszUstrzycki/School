@@ -24,7 +24,7 @@ public class SchoolForm extends NamedEntity {
 	private static final long serialVersionUID = 1L;
 
 	@OneToMany(mappedBy = "schoolForm", cascade = { CascadeType.MERGE, CascadeType.PERSIST })
-	@Setter private Set<Student> students; // = new HashSet<>();
+	private Set<Student> students; 
 
 	/////////////// helper ///////////////////
 
@@ -43,6 +43,21 @@ public class SchoolForm extends NamedEntity {
 			this.students = new HashSet<>();
 		}
 		return this.students;
+	}
+
+	/////////////// remove ///////////////////
+
+	public void remove() {
+		this.setDeleted(true);
+		this.removeAllStudents();
+	}
+
+	private void removeAllStudents() {
+		
+		for (Student s : this.getStudents()) {
+			s.setSchoolForm(null);
+		}
+		this.students.clear();
 	}
 	
 }

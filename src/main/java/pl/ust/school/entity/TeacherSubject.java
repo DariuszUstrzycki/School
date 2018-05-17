@@ -29,31 +29,30 @@ public class TeacherSubject extends IdEntity {
 
 	/////////////// getters and setters ///////////////////
 
-	public void setTeacher(Teacher teacher) {
+	public void setTeacher(Teacher newTeacher) {
 
-		if (teacher != null) {
-			teacher.getTeacherSubjects().add(this);
+		if (newTeacher != null) {
+			newTeacher.getTeacherSubjects().add(this);
 		}
 
-		if (this.teacher != null) { // TeacherSubject takes care of unlisting from the previous teacher before new
-									// teacher is set
+		if (this.teacher != null && newTeacher != null) { // Teacher class takes care of removal when argument subject is null
 			this.teacher.getTeacherSubjects().remove(this);
 		}
 
-		this.teacher = teacher;
+		this.teacher = newTeacher;
 	}
 
-	public void setSubject(Subject subject) {
-		if (subject != null) {
-			subject.getTeacherSubjects().add(this);
+	public void setSubject(Subject newSubject) {
+		
+		if (newSubject != null) {
+			newSubject.getTeacherSubjects().add(this);
 		}
 
-		if (this.subject != null) { // TeacherSubject takes care of unlisting from the previous teacher before new
-									// teacher is set
+		if (this.subject != null && newSubject != null) { // Subject class takes care of removal when argument subject is null
 			this.subject.getTeacherSubjects().remove(this);
 		}
 
-		this.subject = subject;
+		this.subject = newSubject;
 	}
 
 }

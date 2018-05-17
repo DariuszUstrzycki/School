@@ -1,5 +1,8 @@
 package pl.ust.school.entity;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -23,22 +26,23 @@ public class Student extends Person {
 
 	@ManyToOne
 	@JoinColumn(name = "schoolForm_id")
-	@Getter private SchoolForm schoolForm;
+	private SchoolForm schoolForm;
 
 	/////////////// getters and setters ///////////////////
 
 
-	public void setSchoolForm(SchoolForm schoolForm) {
+	public void setSchoolForm(SchoolForm newSchoolForm) {
 
-		if (schoolForm != null) {
-			schoolForm.getStudents().add(this);
+		if (newSchoolForm != null) {
+			newSchoolForm.getStudents().add(this);
 		} 
 		
-		if (this.schoolForm != null) { // student takes care of unlisting from the previous Form before new Form is set
+		if (this.schoolForm != null && newSchoolForm != null) { // SchoolForm class takes care of removal when argument schoolForm is null
 			this.schoolForm.getStudents().remove(this);
 		}
 
-		this.schoolForm = schoolForm;
+		this.schoolForm = newSchoolForm;
 	}
+	
 	
 }

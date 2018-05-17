@@ -25,7 +25,7 @@ public class Subject extends NamedEntity {
 	private static final long serialVersionUID = 1L;
 
 	@OneToMany(mappedBy = "subject", cascade = { CascadeType.MERGE, CascadeType.PERSIST })
-	@Setter private Set<TeacherSubject> teacherSubjects = new HashSet<>();
+	private Set<TeacherSubject> teacherSubjects = new HashSet<>();
 
 	/////////////// helper ///////////////////
 
@@ -34,6 +34,8 @@ public class Subject extends NamedEntity {
 	}
 
 	public void removeTeacherSubject(TeacherSubject teacherSubject) {
+		System.err.println("\n---2.teacherSubject.setSubject(null) ");
+
 		teacherSubject.setSubject(null); // Subject methods are identical to Teacher's, with this exception
 											// setTeacher(null)
 	}
@@ -45,6 +47,21 @@ public class Subject extends NamedEntity {
 			this.teacherSubjects = new HashSet<>();
 		}
 		return this.teacherSubjects;
+	}
+	
+	/////////////// remove ///////////////////
+	
+	public void remove() {
+		this.setDeleted(true);
+		this.removeAllTeacherSubjects();
+	}
+	
+	private void removeAllTeacherSubjects() {
+		
+		for(TeacherSubject ts : this.getTeacherSubjects()) {
+			ts.setSubject(null);
+		}
+		this.teacherSubjects.clear();
 	}
 
 }

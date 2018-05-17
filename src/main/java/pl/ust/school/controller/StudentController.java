@@ -2,7 +2,6 @@ package pl.ust.school.controller;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -78,8 +77,7 @@ public class StudentController {
 		model.addAttribute(ENTITY_NAME, ENTITY_NAME_VALUE); 
 		
 		if(result.hasErrors()) {
-			List<ObjectError> list = result.getAllErrors();
-			for (ObjectError error : list) {
+			for (ObjectError error : result.getAllErrors()) {
 				System.err.println(error);
 			}
 			return CREATE_OR_UPDATE_FORM_VIEW; 
@@ -154,11 +152,8 @@ public class StudentController {
 		if (result.hasErrors()) {
 			return CREATE_OR_UPDATE_FORM_VIEW;
 		} else {
-			System.out.println("--------UPDATE POST: student: " + student);
 			student.setId(id);
 			this.studentRepo.save(student);
-			System.out.println("--------UPDATE POST: after saving student ");
-
 			return "redirect:/student/view/" + id;
 		}
 		
@@ -168,10 +163,8 @@ public class StudentController {
 
 	@ExceptionHandler
 	@ResponseStatus(HttpStatus.NOT_FOUND)
-	private String itemNotFoundHandler(RecordNotFoundException ex, Model model) {
-		System.err.println("----------------RecordNotFoundException");
+	private String recordNotFoundHandler(RecordNotFoundException ex, Model model) {
 		model.addAttribute("notFound", ex.getMessage());
-
 		return DETAILS_VIEW;
 	}
 

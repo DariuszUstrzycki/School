@@ -1,8 +1,13 @@
 package pl.ust.school.controller;
 
-import static org.hamcrest.Matchers.hasProperty;
-import static org.hamcrest.Matchers.is;
+import static org.assertj.core.api.Assertions.*;
+import org.assertj.core.util.*;
 import static org.mockito.BDDMockito.given;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -11,17 +16,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
-import java.util.Optional;
-
-import org.assertj.core.util.Lists;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+
+import java.util.Collections;
+import java.util.Optional;
 
 import pl.ust.school.entity.Subject;
 import pl.ust.school.repository.SubjectRepository;
@@ -71,11 +73,11 @@ public class SubjectControllerTest {
     }
 
     @Test
-    public void shouldAddNewSubject() throws Exception {
+    public void shouldAddNewSubjectWhenNoErrors() throws Exception {
         mockMvc.perform( post("/subject/save")
         	   .param("name", "Astrophysics") )
         	   .andDo(print())
-               .andExpect(status().is3xxRedirection()); // 307/8 Temporary/Permament Redirect
+               .andExpect(status().is3xxRedirection()); 
     }
     
     @Test
@@ -96,7 +98,6 @@ public class SubjectControllerTest {
     	
         given(this.subjectRepo.findAll()).willReturn(Lists.newArrayList(this.biology, new Subject()));
         mockMvc.perform(get("/subject/list"))
-        	.andDo(print())
             .andExpect(status().isOk())
             .andExpect(model().attributeExists(COLLECTION_OF_SUBJECTS_NAME))
             .andExpect(view().name(LIST_VIEW));
@@ -109,8 +110,7 @@ public class SubjectControllerTest {
         	.andDo(print())
         	.andExpect(status().isOk())
         	.andExpect(model().attributeExists(COLLECTION_OF_SUBJECTS_NAME))
-        	.andExpect(model().attribute("subject", hasProperty("name", is(this.biology.getName()))))
-        	// how to check that the attribute is a collection?! and its size?
+        	//.andExpect(model().attribute("subjectItems", this.b)
             .andExpect(view().name(DETAILS_VIEW));
     }
   
@@ -132,7 +132,7 @@ public class SubjectControllerTest {
         	.andDo(print())
             .andExpect(status().isOk())
             .andExpect(model().attributeExists("subject"))
-            .andExpect(model().attribute("subject", hasProperty("name", is(this.biology.getName()))))
+            .andExpect(model().attribute("subject", this.biology))
             .andExpect(view().name(CREATE_OR_UPDATE_FORM_VIEW));
     }
 
@@ -174,22 +174,15 @@ public class SubjectControllerTest {
     }
     
     @Test
-    public void shouldSetIsDeletedToTrue() throws Exception {
+    public void shouldDeleteSuccessfully() throws Exception {
     	
     	//then
     	mockMvc.perform(get("/subject/delete/{id}", TEST_SUBJECT_ID))
+    	.andDo(print())
     	
     	//assert
-    	.andDo(print())
     	.andExpect(status().is3xxRedirection())
-    	.andExpect(view().name("redirect:/subject/list"));
-    }/*
-    
-    @Test
-	public void testExample() throws Exception {
-		given(this.userVehicleService.getVehicleDetails("sboot"))
-				.willReturn(new VehicleDetails("Honda", "Civic"));
-		this.mvc.perform(get("/sboot/vehicle").accept(MediaType.TEXT_PLAIN))
-				.andExpect(status().isOk()).andExpect(content().string("Honda Civic"));*/
+    	.andExpect( redirectedUrl("/subject/list"));
+    }
 
 }

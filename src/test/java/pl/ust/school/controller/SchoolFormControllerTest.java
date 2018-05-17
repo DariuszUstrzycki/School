@@ -1,7 +1,14 @@
 package pl.ust.school.controller;
 
 
+import static org.assertj.core.api.Assertions.*;
+import org.assertj.core.util.*;
 import static org.mockito.BDDMockito.given;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -10,18 +17,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
-import java.util.Optional;
-
-import org.assertj.core.util.Lists;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Optional;
 
 import pl.ust.school.entity.SchoolForm;
 import pl.ust.school.repository.SchoolFormRepository;
@@ -170,7 +175,26 @@ public class SchoolFormControllerTest {
 	    }
 	    
 	    
-	    /// MIssing tests for delete operations
+	   @Test
+	    public void shouldAskForConfirmationBeforeDeleting() throws Exception {
+	    	
+	    	mockMvc.perform(get("/schoolform/delete/{id}/confirm", TEST_SCHOOLFORM_ID))
+	    	.andDo(print())
+	    	.andExpect(status().isOk())
+	    	.andExpect(view().name(CONFIRM_DELETE_VIEW));
+	    }
+	    
+	    @Test
+	    public void shouldDeleteSuccessfully() throws Exception {
+	    	
+	    	//then
+	    	mockMvc.perform(get("/schoolform/delete/{id}", TEST_SCHOOLFORM_ID))
+	    	.andDo(print())
+	    	
+	    	//assert
+	    	.andExpect(status().is3xxRedirection())
+	    	.andExpect( redirectedUrl("/schoolform/list"));
+	    }
 	   
 
 }

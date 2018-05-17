@@ -26,7 +26,7 @@ public class Teacher extends Person {
 	private static final long serialVersionUID = 1L;
 
 	@OneToMany(mappedBy = "teacher", cascade = { CascadeType.MERGE, CascadeType.PERSIST })
-	@Setter private Set<TeacherSubject> teacherSubjects = new HashSet<>();
+	private Set<TeacherSubject> teacherSubjects = new HashSet<>();
 
 	/////////////// helper ///////////////////
 
@@ -46,7 +46,19 @@ public class Teacher extends Person {
 		}
 		return this.teacherSubjects;
 	}
-
 	
-
+	/////////////// remove ///////////////////
+	
+	public void remove() {
+		this.setDeleted(true);
+		this.removeAllTeacherSubjects();
+	}
+	
+	private void removeAllTeacherSubjects() {
+		
+		for(TeacherSubject ts : this.getTeacherSubjects()) {
+			ts.setTeacher(null);
+		}
+		this.teacherSubjects.clear();
+	}
 }

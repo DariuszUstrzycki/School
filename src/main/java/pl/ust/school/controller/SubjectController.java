@@ -1,14 +1,12 @@
 package pl.ust.school.controller;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -21,8 +19,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.servlet.ModelAndView;
 
 import pl.ust.school.entity.Subject;
 import pl.ust.school.repository.SubjectRepository;
@@ -45,16 +41,6 @@ public class SubjectController {
 
 	//////////////////////////////////////////////////////////
 
-	/*
-	 * nothing to populate the model first ?!
-	 * 
-	 * @ModelAttribute("schoolformItems") public Collection<SchoolForm>
-	 * populateSchoolFormItems() { return (Collection<SchoolForm>)
-	 * this.schoolFormRepo.findAll(); }
-	 */
-
-	//////////////////////////////////////////////////////////
-
 	@InitBinder
 	public void setAllowedFields(WebDataBinder dataBinder) {
 		dataBinder.setDisallowedFields("id");
@@ -74,8 +60,7 @@ public class SubjectController {
 		model.addAttribute(ENTITY_NAME, ENTITY_NAME_VALUE);
 
 		if (result.hasErrors()) {
-			List<ObjectError> list = result.getAllErrors();
-			for (ObjectError error : list) {
+			for (ObjectError error : result.getAllErrors()) {
 				System.err.println(error);
 			}
 			return CREATE_OR_UPDATE_FORM_VIEW;
@@ -122,24 +107,18 @@ public class SubjectController {
 
 	@RequestMapping(value = "/delete/{id}")
 	public String deleteSubject(@PathVariable long id) {
-		//  nie usuwać SUBJECTS!!!
+		
 		Optional<Subject> opt = subjectRepo.findById(id);
 		opt.ifPresent(subject -> {
-			/*
-			for (Subject subject : subject.getSubjectSubjects()) {
-				subject.removeSubjectSubject(subjectsubject);
-			}
-
-			this.subjectRepo.deleteById(id);*/
-
+			subject.remove();
+			this.subjectRepo.save(subject);
 		});
-
+			
 		return "redirect:/subject/list";
 	}
 
 	//////////////////////////// UPDATE ////////////////////////////
-	// Neither BindingResult nor plain target object for bean name 'subject'
-	//////////////////////////// available as request attribute
+	
 	@GetMapping("/update/{id}")
 	public String showForm(@PathVariable long id, Model model) {
 
@@ -166,9 +145,7 @@ public class SubjectController {
 	
 	@ExceptionHandler
     private String recordNotFoundHandler(RecordNotFoundException ex, Model model) {
-		System.err.println("----------------RecordNotFoundException");
 		model.addAttribute("notFound", ex.getMessage());
-		
 		return DETAILS_VIEW;
     }
 

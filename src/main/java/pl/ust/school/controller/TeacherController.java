@@ -1,7 +1,6 @@
 package pl.ust.school.controller;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -24,7 +23,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import pl.ust.school.entity.Teacher;
-import pl.ust.school.entity.TeacherSubject;
 import pl.ust.school.repository.TeacherRepository;
 
 @Controller
@@ -43,15 +41,6 @@ public class TeacherController {
 	@Autowired
 	private TeacherRepository teacherRepo;
 	
-	//////////////////////////////////////////////////////////
-	
-	/*
-	 *  nothing to populate the model first ?!
-	 * @ModelAttribute("schoolformItems")
-    public Collection<SchoolForm> populateSchoolFormItems() {
-        return (Collection<SchoolForm>) this.schoolFormRepo.findAll();
-    }*/
-		
 	//////////////////////////////////////////////////////////
 	
 	@InitBinder
@@ -73,10 +62,10 @@ public class TeacherController {
 		model.addAttribute(ENTITY_NAME, ENTITY_NAME_VALUE); 
 		
 		if(result.hasErrors()) {
-			List<ObjectError> list = result.getAllErrors();
-			for (ObjectError error : list) {
+			for (ObjectError error : result.getAllErrors()) {
 				System.out.println(error);
 			}
+			
 			return CREATE_OR_UPDATE_FORM_VIEW; 
 		}
 		
@@ -123,20 +112,15 @@ public class TeacherController {
 
 		Optional<Teacher> opt = teacherRepo.findById(id);
 		opt.ifPresent(teacher -> {
-			
-			for(TeacherSubject teachersubject : teacher.getTeacherSubjects()) {
-				teacher.removeTeacherSubject(teachersubject);
-			}
-			
-			this.teacherRepo.deleteById(id);
-
+			teacher.remove();
+			this.teacherRepo.save(teacher);
 		});
 
 		return "redirect:/teacher/list";
 	}
 
 	//////////////////////////// UPDATE ////////////////////////////
-	// Neither BindingResult nor plain target object for bean name 'teacher' available as request attribute
+	
 	@GetMapping("/update/{id}")
 	public String showForm(@PathVariable long id, Model model) {
 		
@@ -152,11 +136,8 @@ public class TeacherController {
 		if (result.hasErrors()) {
 			return CREATE_OR_UPDATE_FORM_VIEW;
 		} else {
-			System.out.println("--------UPDATE POST: teacher: " + teacher);
 			teacher.setId(id);
 			this.teacherRepo.save(teacher);
-			System.out.println("--------UPDATE POST: after saving teacher ");
-
 			return "redirect:/teacher/view/" + id;
 		}
 	}
@@ -165,10 +146,8 @@ public class TeacherController {
 	
 	@ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    private String itemNotFoundHandler(RecordNotFoundException ex, Model model) {
-		System.err.println("----------------RecordNotFoundException");
+    private String recordNotFoundHandler(RecordNotFoundException ex, Model model) {
 		model.addAttribute("notFound", ex.getMessage());
-		
 		return DETAILS_VIEW;
     }
 	/* TODO

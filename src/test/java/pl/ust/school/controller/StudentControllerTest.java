@@ -1,6 +1,13 @@
 package pl.ust.school.controller;
 
+import static org.assertj.core.api.Assertions.*;
+import org.assertj.core.util.*;
 import static org.mockito.BDDMockito.given;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -9,18 +16,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
-import java.time.LocalDate;
-import java.util.Optional;
-
-import org.assertj.core.util.Lists;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+
+import java.time.LocalDate;
+import java.util.Collections;
+import java.util.Optional;
 
 import pl.ust.school.entity.SchoolForm;
 import pl.ust.school.entity.Student;
@@ -129,7 +133,8 @@ public class StudentControllerTest {
 				.andDo(print())
 				.andExpect(status().isOk())
 				.andExpect(model().attributeExists(COLLECTION_OF_SCHOOLFORMS_NAME))
-				.andExpect(model().attributeExists(COLLECTION_OF_STUDENTS_NAME)).andExpect(view().name(LIST_VIEW));
+				.andExpect(model().attributeExists(COLLECTION_OF_STUDENTS_NAME))
+				.andExpect(view().name(LIST_VIEW));
 	}
 
 	@Test
@@ -200,5 +205,26 @@ public class StudentControllerTest {
 				.andExpect(model().attributeErrorCount("student", 6))
 				.andExpect(view().name(CREATE_OR_UPDATE_FORM_VIEW));
 	}
+	
+	 @Test
+	    public void shouldAskForConfirmationBeforeDeleting() throws Exception {
+	    	
+	    	mockMvc.perform(get("/student/delete/{id}/confirm", TEST_STUDENT_ID))
+	    	.andDo(print())
+	    	.andExpect(status().isOk())
+	    	.andExpect(view().name(CONFIRM_DELETE_VIEW));
+	    }
+	    
+	    @Test
+	    public void shouldDeleteSuccessfully() throws Exception {
+	    	
+	    	//then
+	    	mockMvc.perform(get("/student/delete/{id}", TEST_STUDENT_ID))
+	    	.andDo(print())
+	    	
+	    	//assert
+	    	.andExpect(status().is3xxRedirection())
+	    	.andExpect( redirectedUrl("/student/list"));
+	    }
 
 }
