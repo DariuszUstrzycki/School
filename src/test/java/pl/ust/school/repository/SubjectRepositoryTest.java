@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.catchThrowable;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.Before;
@@ -61,7 +62,7 @@ public class SubjectRepositoryTest {
 	}
 	
 	@Test
-	public void shouldThrowExceptionWhenSavingSubjectWithNonUniqueEmail() {
+	public void shouldThrowExceptionWhenSavingSubjectWithNonUniqueName() {
 		
 			assertThatCode(() -> {
 				//when
@@ -93,5 +94,21 @@ public class SubjectRepositoryTest {
     		// then
     		assertThat(thrown).isInstanceOf(org.springframework.dao.DataIntegrityViolationException.class);
     }
-
+	/*
+	@Test
+	public void shouldDeleteSubject() {
+		
+		// given
+		Subject persisted = subjectRepo.save(this.subject);
+		persisted = subjectRepo.findById(persisted.getId()).get();
+		persisted.setDeleted(true);
+		subjectRepo.save(persisted);
+		
+		//when
+		List<Subject> subjects = (List<Subject>) subjectRepo.findAll();
+		
+		assertThat(subjects.size()).isEqualTo(0);
+		
+	}
+*/
 }
