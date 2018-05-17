@@ -5,7 +5,6 @@ import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.catchThrowable;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
 
 import org.junit.Before;
@@ -94,21 +93,25 @@ public class SubjectRepositoryTest {
     		// then
     		assertThat(thrown).isInstanceOf(org.springframework.dao.DataIntegrityViolationException.class);
     }
-	/*
+	
+	
+	
 	@Test
-	public void shouldDeleteSubject() {
+	public void shouldNotReturnSubject_WhenIsDeletedIsTrue() {
 		
 		// given
-		Subject persisted = subjectRepo.save(this.subject);
-		persisted = subjectRepo.findById(persisted.getId()).get();
-		persisted.setDeleted(true);
-		subjectRepo.save(persisted);
+		subjectRepo.save(this.subject);
 		
-		//when
-		List<Subject> subjects = (List<Subject>) subjectRepo.findAll();
+		Subject deleted = new Subject();
+		deleted.setName("Maths");
+		deleted.setDeleted(true);
+		subjectRepo.save(deleted);
 		
-		assertThat(subjects.size()).isEqualTo(0);
+		//then 
+		Iterable<Subject> list = subjectRepo.findAll();
+		assertThat(list).size().isEqualTo(1);
+		
 		
 	}
-*/
+
 }

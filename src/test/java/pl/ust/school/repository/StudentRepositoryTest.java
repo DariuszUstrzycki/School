@@ -295,5 +295,39 @@ public class StudentRepositoryTest {
 	    		// then
 	    		assertThat(thrown).isInstanceOf(org.springframework.dao.DataIntegrityViolationException.class);
 	    }
+		
+		@Test
+		public void shouldNotReturnStudents_WhenIsDeletedIsTrue() {
+			
+			// given
+			studentRepo.save(this.student);
+			
+			Student deleted = createStudent("Dexter");
+			deleted.setDeleted(true);
+			studentRepo.save(deleted);
+			
+			//then 
+			Iterable<Student> list = studentRepo.findAll();
+			assertThat(list).size().isEqualTo(1);
+			
+			
+		}
+		
+		private Student createStudent(String name) {
+			
+			Student student = new Student();
+			student = new Student();
+			student.setFirstName(name);
+			student.setLastName("Motgmomery");
+			student.setEmail(name + "@gamil.com");
+			student.setPassword("567");
+			student.setTelephone("1234567");
+			student.setBirthDate(LocalDate.of(2000, 1, 1));
+			student.setAddress("Manchester, England");
+			
+			return student;
+		}
+		
+		
 	    	    
 }

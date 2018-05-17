@@ -34,14 +34,7 @@ public class TeacherRepositoryTest {
 	@Before
 	public void setUp() {
 
-		teacher = new Teacher();
-		teacher.setFirstName("Mike");
-		teacher.setLastName("SmithXYZ");
-		teacher.setEmail("smithXYZ@gamil.com");
-		teacher.setPassword("567");
-		teacher.setTelephone("1234567");
-		teacher.setBirthDate(LocalDate.of(2000, 1, 1));
-		teacher.setAddress("Manchester, England");
+		teacher = createTeacher("Alex");
 
 	}
 
@@ -240,5 +233,38 @@ public class TeacherRepositoryTest {
 	    		// then
 	    		assertThat(thrown).isInstanceOf(org.springframework.dao.DataIntegrityViolationException.class);
 	    }
-	    	    
+		
+		@Test
+		public void shouldNotReturnTeachers_WhenIsDeletedIsTrue() {
+			
+			// given
+			teacherRepo.save(this.teacher);
+			
+			Teacher deleted = createTeacher("Dexter");
+			deleted.setDeleted(true);
+			teacherRepo.save(deleted);
+			
+			//then 
+			Iterable<Teacher> list = teacherRepo.findAll();
+			assertThat(list).size().isEqualTo(1);
+			
+			
+		}
+		
+		private Teacher createTeacher(String name) {
+			
+			Teacher teacher = new Teacher();
+			teacher = new Teacher();
+			teacher.setFirstName(name);
+			teacher.setLastName("Motgmomery");
+			teacher.setEmail(name + "@gamil.com");
+			teacher.setPassword("567");
+			teacher.setTelephone("1234567");
+			teacher.setBirthDate(LocalDate.of(2000, 1, 1));
+			teacher.setAddress("Manchester, England");
+			
+			return teacher;
+		}
+		
+		
 }

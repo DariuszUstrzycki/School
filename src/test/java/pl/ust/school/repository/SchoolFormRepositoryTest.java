@@ -93,5 +93,25 @@ public class SchoolFormRepositoryTest {
     		// then
     		assertThat(thrown).isInstanceOf(org.springframework.dao.DataIntegrityViolationException.class);
     }
+	
+	@Test
+	public void shouldNotReturnSchoolForm_WhenIsDeletedIsTrue() {
+		
+		// given
+		schoolFormRepo.save(this.schoolForm);
+		
+		SchoolForm deleted = new SchoolForm();
+		deleted.setName("");
+		deleted.setDeleted(true);
+		schoolFormRepo.save(deleted);
+		
+		//then 
+		Iterable<SchoolForm> list = schoolFormRepo.findAll();
+		assertThat(list).size().isEqualTo(1);
+		
+		
+	}
+    	    
+	
 
 }
