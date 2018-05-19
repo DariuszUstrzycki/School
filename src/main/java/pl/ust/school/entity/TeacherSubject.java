@@ -55,4 +55,12 @@ public class TeacherSubject extends IdEntity {
 		this.subject = newSubject;
 	}
 
+	///////////////// removal ///////////////////////////////
+
+	public void remove() {
+		this.getTeacher().getTeacherSubjects().remove(this); // @WhereJoinTable ?!
+		this.getSubject().getTeacherSubjects().remove(this); 
+		this.setDeleted(true);
+	}
+
 }

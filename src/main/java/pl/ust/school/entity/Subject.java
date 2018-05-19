@@ -25,7 +25,7 @@ public class Subject extends NamedEntity {
 	private static final long serialVersionUID = 1L;
 
 	@OneToMany(mappedBy = "subject", cascade = { CascadeType.MERGE, CascadeType.PERSIST })
-	private Set<TeacherSubject> teacherSubjects = new HashSet<>();
+	private Set<TeacherSubject> teacherSubjects;
 
 	/////////////// helper ///////////////////
 

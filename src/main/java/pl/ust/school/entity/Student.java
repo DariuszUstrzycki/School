@@ -44,5 +44,12 @@ public class Student extends Person {
 		this.schoolForm = newSchoolForm;
 	}
 	
+	///////////////// removal ///////////////////////////////
+	
+	public void remove() {
+		this.getSchoolForm().getStudents().remove(this); // @WhereJoinTable ?!
+		this.setDeleted(true);
+	}
+	
 	
 }
