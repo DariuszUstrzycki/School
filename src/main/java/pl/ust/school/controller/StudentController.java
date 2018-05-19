@@ -124,12 +124,10 @@ public class StudentController {
 	@RequestMapping(value = "/delete/{id}")
 	public String deleteStudent(@PathVariable long id) {
 
-		Optional<Student> opt = studentRepo.findById(id);
-		opt.ifPresent(student -> {
-			
-			student.setSchoolForm(null);
-			this.studentRepo.deleteById(id);
-
+		Optional<Student> opt = this.studentRepo.findById(id);
+		opt.ifPresent(student -> {			
+			student.remove();
+			this.studentRepo.save(student);
 		});
 
 		return "redirect:/student/list";

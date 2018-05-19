@@ -110,7 +110,7 @@ public class TeacherController {
 	@RequestMapping(value = "/delete/{id}")
 	public String deleteTeacher(@PathVariable long id) {
 
-		Optional<Teacher> opt = teacherRepo.findById(id);
+		Optional<Teacher> opt = this.teacherRepo.findById(id);
 		opt.ifPresent(teacher -> {
 			teacher.remove();
 			this.teacherRepo.save(teacher);
