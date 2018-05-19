@@ -1,33 +1,56 @@
 package pl.ust.school.dto;
 
+import java.time.LocalDate;
 import java.util.Set;
 
+import lombok.Builder;
 import lombok.Getter;
 import pl.ust.school.entity.TeacherSubject;
 
-@Getter
+@Builder @Getter
 public class TeacherDto {
 
 	private Long id;
-	private String name;
-	private Set<TeacherSubject> teacherSubject;
+	private Boolean isDeleted;
+	private String firstName;
+    private String lastName;
+    private String email;
+    private String password;
+    private String address;
+    private String telephone;    
+    private LocalDate birthDate;
+	private Set<TeacherSubject> teacherSubjects;
+	
+	
+	
+	
+	/*
+	 * 
+	 * 
+	 * 
+	 * A method annotated with @Builder (from now on called the target) causes the following 7 things to be generated:
 
+An inner static class named FooBuilder, with the same type arguments as the static method (called the builder).
+In the builder: One private non-static non-final field for each parameter of the target.
+In the builder: A package private no-args empty constructor.
+In the builder: A 'setter'-like method for each parameter of the target: It has the same type as that parameter and the same name. It returns the builder itself, so that the setter calls can be chained, as in the above example.
+In the builder: A build() method which calls the method, passing in each field. It returns the same type that the target returns.
+In the builder: A sensible toString() implementation.
+In the class containing the target: A builder() method, which creates a new instance of the builder.
+	 * 
 	public static class Builder {
 
 		private TeacherDto teacherDto = new TeacherDto();
 
-		public Builder withId(Long id) {
-			teacherDto.id = id;
-			return this;
-		}
-
-		public Builder withName(String name) {
-			teacherDto.name = name;
+		.......
+		
+		public Builder withBirthDate(LocalDate birthDate) {
+			teacherDto.birthDate = birthDate;
 			return this;
 		}
 		
-		public Builder withStudents(Set<TeacherSubject> teacherSubject) {
-			teacherDto.teacherSubject = teacherSubject;
+		public Builder withTeacherSubjects(Set<TeacherSubject> teacherSubjects) {
+			teacherDto.teacherSubjects = teacherSubjects;
 			return this;
 		}
 
@@ -35,6 +58,6 @@ public class TeacherDto {
 			return teacherDto;
 		}
 
-	}
+	}*/
 
 }
