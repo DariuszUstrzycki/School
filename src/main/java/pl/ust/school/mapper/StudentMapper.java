@@ -1,0 +1,41 @@
+package pl.ust.school.mapper;
+
+import org.springframework.stereotype.Component;
+
+import pl.ust.school.dto.StudentDto;
+import pl.ust.school.entity.Student;
+
+@Component
+public class StudentMapper {
+	
+	public StudentDto toDTO(Student student){
+		return StudentDto.builder()
+					.id(student.getId())
+					.isDeleted(student.isDeleted())
+					.firstName(student.getFirstName())
+					.lastName(student.getLastName())
+					.address(student.getAddress())
+					.birthDate(student.getBirthDate())
+					.email(student.getEmail())
+					.password(student.getPassword())
+					.telephone(student.getTelephone())
+					.schoolForm(student.getSchoolForm()) 
+					.build();
+	}
+
+	public Student fromDTO(StudentDto dto) {
+		Student student = new Student();
+		student.setId(dto.getId());
+		student.setDeleted(dto.getIsDeleted());
+		student.setFirstName(dto.getFirstName());
+		student.setLastName(dto.getLastName());
+		student.setAddress(dto.getAddress());
+		student.setBirthDate(dto.getBirthDate());
+		student.setEmail(dto.getEmail());
+		student.setPassword(dto.getPassword());
+		student.setTelephone(dto.getTelephone());
+		student.setSchoolForm(dto.getSchoolForm());
+		return student;
+	}
+
+}
