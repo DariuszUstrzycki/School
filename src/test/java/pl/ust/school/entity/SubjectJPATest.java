@@ -1,6 +1,7 @@
 package pl.ust.school.entity;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.junit.Before;
@@ -38,7 +39,7 @@ public class SubjectJPATest {
 	}
 	
 	@Test
-	public void shouldNotFindSubjects_WhenIsDeletedSetToTrue() {  
+	public void shouldNotLoadSubjects_WhenIsDeletedSetToTrue() {  
 		
 		//given
 		Subject deleted = new Subject();
@@ -65,6 +66,50 @@ public class SubjectJPATest {
 	    		.getResultList();
 	    		
 	    assertThat(subjects.size()).isEqualTo(noOfNotDeletedSubjects);
+	}
+
+	public void shouldSetTeachersSubjectsToNull_WhenSubjectDeleted() {
+		// arrange
+		Subject subject1 = new Subject();
+		subject1.setName("Maths");
+		Teacher teacher1 = createTeacher("John");
+		TeacherSubject ts1 = new TeacherSubject();
+		ts1.setTeacher(teacher1);
+		ts1.setSubject(subject1);
+
+		Subject subject2 = new Subject();
+		subject2.setName("Biology");
+		TeacherSubject ts2 = new TeacherSubject();
+		ts2.setTeacher(teacher1);
+		ts2.setSubject(subject2);
+
+		assertThat(subject1.getTeacherSubjects().size()).isEqualTo(2);
+		assertThat(ts1.getTeacher()).isNotNull();
+		assertThat(ts2.getTeacher()).isNotNull();
+
+		// act
+		teacher1.remove();
+
+		// assert
+		assertThat(subject1.getTeacherSubjects().size()).isEqualTo(0);
+		assertThat(ts1.getTeacher()).isNull();
+		assertThat(ts2.getTeacher()).isNull();
+
+	}
+
+	private Teacher createTeacher(String name) {
+
+		Teacher teacher = new Teacher();
+		teacher = new Teacher();
+		teacher.setFirstName("Jessica");
+		teacher.setLastName("Motgmomery");
+		teacher.setEmail(name + "@gamil.com");
+		teacher.setPassword("567");
+		teacher.setTelephone("1234567");
+		teacher.setBirthDate(LocalDate.of(2000, 1, 1));
+		teacher.setAddress("Manchester, England");
+
+		return teacher;
 	}
 
 }

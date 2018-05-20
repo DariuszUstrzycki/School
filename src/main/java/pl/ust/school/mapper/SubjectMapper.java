@@ -1,5 +1,7 @@
 package pl.ust.school.mapper;
 
+import java.util.Optional;
+
 import org.springframework.stereotype.Component;
 
 import pl.ust.school.dto.SubjectDto;
@@ -24,6 +26,14 @@ public class SubjectMapper {
 		subject.setName(dto.getName());
 		subject.setTeacherSubjects(dto.getTeacherSubjects());
 		return subject;
+	}
+
+	public Optional<SubjectDto> toDTO(Optional<Subject> findById) {
+		if(findById.isPresent()) {
+			return Optional.of(toDTO(findById.get()));
+		} else {
+			return Optional.empty();
+		}
 	}
 
 }

@@ -20,8 +20,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import pl.ust.school.dto.SubjectDto;
 import pl.ust.school.entity.Subject;
 import pl.ust.school.repository.SubjectRepository;
+import pl.ust.school.service.SubjectService;
 
 @Controller
 @RequestMapping("subject")
@@ -37,7 +39,7 @@ public class SubjectController {
 	private static final String ENTITY_NAME_VALUE = "subject";
 
 	@Autowired
-	private SubjectRepository subjectRepo;
+	private SubjectService subjectService;
 
 	//////////////////////////////////////////////////////////
 
@@ -49,13 +51,13 @@ public class SubjectController {
 	//////////////////////////// SAVE ////////////////////////////
 
 	@GetMapping("/save")
-	public String showForm(Subject subject, Model model) {
+	public String showForm(SubjectDto subjectDto, Model model) {
 		model.addAttribute(ENTITY_NAME, ENTITY_NAME_VALUE);
 		return CREATE_OR_UPDATE_FORM_VIEW;
 	}
 
 	@PostMapping("/save")
-	public String saveSubject(@Valid Subject subject, BindingResult result, Model model) {
+	public String saveSubject(@Valid SubjectDto subjectDto, BindingResult result, Model model) {
 
 		model.addAttribute(ENTITY_NAME, ENTITY_NAME_VALUE);
 
@@ -66,15 +68,15 @@ public class SubjectController {
 			return CREATE_OR_UPDATE_FORM_VIEW;
 		}
 		
-		this.subjectRepo.save(subject);
-		return "redirect:/subject/view/" + subject.getId();
+		this.subjectService.createSubject(subjectDto);
+		return "redirect:/subject/view/" + subjectDto.getId();
 	}
 
 	//////////////////////////// LIST ////////////////////////////
 
 	@RequestMapping("/list")
 	public String listSubjects(@RequestParam(defaultValue = "0", required = false) int min, Model model) {
-		model.addAttribute(COLLECTION_OF_SUBJECTS_NAME, this.subjectRepo.findAll());
+		model.addAttribute(COLLECTION_OF_SUBJECTS_NAME, this.subjectService.getAllSubjects());
 		model.addAttribute(ENTITY_NAME, ENTITY_NAME_VALUE);
 		return LIST_VIEW;
 	}
@@ -82,16 +84,17 @@ public class SubjectController {
 	//////////////////////////// VIEW ONE ////////////////////////////
 	@RequestMapping("view/{id}")
 	public String viewSubject(@PathVariable long id, Model model) {
-
-		Set<Subject> subjectItems = new HashSet<>();
-		Optional<Subject> opt = this.subjectRepo.findById(id);
 		
-		if(opt.isPresent()) {
-			subjectItems.add(opt.get());
+		Optional<SubjectDto> subjectDto = this.subjectService.getSubjectById(id);
+		
+		if(subjectDto.isPresent()) {
+			Set<SubjectDto> subjectItems = new HashSet<>();
+			subjectItems.add(subjectDto.get());
 			model.addAttribute(COLLECTION_OF_SUBJECTS_NAME, subjectItems);
 		} else {
 			throw new RecordNotFoundException("No subject with id " + id + " has been found.");
 		}
+		
 		
 		return DETAILS_VIEW;
 	}
@@ -108,11 +111,7 @@ public class SubjectController {
 	@RequestMapping(value = "/delete/{id}")
 	public String deleteSubject(@PathVariable long id) {
 		
-		Optional<Subject> opt = subjectRepo.findById(id);
-		opt.ifPresent(subject -> {
-			subject.remove();
-			this.subjectRepo.save(subject);
-		});
+		this.subjectService.deleteSubject(id);
 			
 		return "redirect:/subject/list";
 	}
@@ -122,20 +121,23 @@ public class SubjectController {
 	@GetMapping("/update/{id}")
 	public String showForm(@PathVariable long id, Model model) {
 
-		Optional<Subject> opt = subjectRepo.findById(id);
-		opt.ifPresent(model::addAttribute);
+		Optional<SubjectDto> subjectDto = this.subjectService.getSubjectById(id);
+		
+		if(subjectDto.isPresent()) {
+			model.addAttribute(subjectDto.get());
+		}
 		
 		return CREATE_OR_UPDATE_FORM_VIEW;
 	}
 
 	@PostMapping("/update/{id}")
-	public String updateSubject(@Valid  Subject subject, BindingResult result, @PathVariable long id) {
+	public String updateSubject(@Valid SubjectDto subjectDto, BindingResult result, @PathVariable long id) {
 
 		if (result.hasErrors()) {
 			return CREATE_OR_UPDATE_FORM_VIEW;
 		} else {
-			subject.setId(id);
-			this.subjectRepo.save(subject);
+			subjectDto.setId(id);
+			this.subjectService.createSubject(subjectDto);
 			return "redirect:/subject/view/" + id;
 		}
 

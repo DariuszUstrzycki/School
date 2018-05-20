@@ -1,13 +1,6 @@
 package pl.ust.school.controller;
 
-import static org.assertj.core.api.Assertions.*;
-import org.assertj.core.util.*;
 import static org.mockito.BDDMockito.given;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -16,17 +9,20 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
+import java.util.Optional;
+
+import org.assertj.core.util.Lists;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.Collections;
-import java.util.Optional;
-
-import pl.ust.school.entity.Subject;
-import pl.ust.school.repository.SubjectRepository;
+import pl.ust.school.dto.SubjectDto;
+import pl.ust.school.service.SubjectService;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(SubjectController.class)
@@ -44,19 +40,19 @@ public class SubjectControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
-
+    
     @MockBean
-    private SubjectRepository subjectRepo;
+    private SubjectService subjectService;
 
-    private Subject biology;
+    private SubjectDto biology;
     
     @Before
     public void setup() {
-    	this.biology = new Subject();
+    	this.biology = new SubjectDto();
     	this.biology.setId(TEST_SUBJECT_ID);
     	this.biology.setName("Biology");
     	
-		given(this.subjectRepo.findById(TEST_SUBJECT_ID)).willReturn(Optional.of(this.biology));
+		given(this.subjectService.getSubjectById(TEST_SUBJECT_ID)).willReturn(Optional.of(this.biology));
 
         
         System.err.println("----------@Before setup()-----------------"); // useful when debugging as it's easy to see when each test starts/ends
@@ -67,8 +63,7 @@ public class SubjectControllerTest {
         mockMvc.perform(get("/subject/save"))
         	.andDo(print())
             .andExpect(status().isOk())
-            .andExpect(model().attributeExists("subject"))
-           // .andExpect(model().attribute("teacher",  SubjectDTO.class))
+            .andExpect(model().attributeExists("subjectDto"))
             .andExpect(view().name(CREATE_OR_UPDATE_FORM_VIEW));
     }
 
@@ -87,16 +82,16 @@ public class SubjectControllerTest {
             .param("name", "")
         )
         	.andDo(print())
-            .andExpect(status().isOk())
-            .andExpect(model().attributeHasErrors("subject"))
-            .andExpect(model().attributeHasFieldErrors("subject", "name"))
+            .andExpect(status().isOk()) 
+            .andExpect(model().attributeHasErrors("subjectDto"))
+            .andExpect(model().attributeHasFieldErrors("subjectDto", "name"))
             .andExpect(view().name(CREATE_OR_UPDATE_FORM_VIEW));
     }
    
     @Test
     public void shouldRetrieveListOfSubjects() throws Exception {
     	
-        given(this.subjectRepo.findAll()).willReturn(Lists.newArrayList(this.biology, new Subject()));
+        given(this.subjectService.getAllSubjects()).willReturn(Lists.newArrayList(this.biology, new SubjectDto()));
         mockMvc.perform(get("/subject/list"))
             .andExpect(status().isOk())
             .andExpect(model().attributeExists(COLLECTION_OF_SUBJECTS_NAME))
@@ -116,7 +111,7 @@ public class SubjectControllerTest {
   
     @Test
     public void shouldReturn404HttpWhenNotFound() throws Exception {
-    	 given(this.subjectRepo.findById(-1L)).willReturn((Optional.empty()));
+    	 given(this.subjectService.getSubjectById(-1L)).willReturn((Optional.empty()));
         mockMvc.perform(get("/subject/view/{id}", -1)
         )
         	.andDo(print())
@@ -131,8 +126,8 @@ public class SubjectControllerTest {
         mockMvc.perform(get("/subject/update/{id}", TEST_SUBJECT_ID))
         	.andDo(print())
             .andExpect(status().isOk())
-            .andExpect(model().attributeExists("subject"))
-            .andExpect(model().attribute("subject", this.biology))
+            .andExpect(model().attributeExists("subjectDto"))
+            .andExpect(model().attribute("subjectDto", this.biology))
             .andExpect(view().name(CREATE_OR_UPDATE_FORM_VIEW));
     }
 
@@ -157,8 +152,8 @@ public class SubjectControllerTest {
         )
         	.andDo(print())
         	.andExpect(status().isOk())
-        	.andExpect(model().attributeHasErrors("subject"))
-        	.andExpect(model().attributeHasFieldErrors("subject", "name"))
+        	.andExpect(model().attributeHasErrors("subjectDto"))
+        	.andExpect(model().attributeHasFieldErrors("subjectDto", "name"))
         	.andExpect(model().errorCount(1))
             .andExpect(view().name(CREATE_OR_UPDATE_FORM_VIEW));
     }
