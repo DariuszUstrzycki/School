@@ -101,7 +101,7 @@ public class SchoolFormRepositoryTest {
 		schoolFormRepo.save(this.schoolForm);
 		
 		SchoolForm deleted = new SchoolForm();
-		deleted.setName("");
+		deleted.setName("Third year");
 		deleted.setDeleted(true);
 		schoolFormRepo.save(deleted);
 		

@@ -1,14 +1,7 @@
 package pl.ust.school.controller;
 
 
-import static org.assertj.core.api.Assertions.*;
-import org.assertj.core.util.*;
 import static org.mockito.BDDMockito.given;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -17,6 +10,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
+import java.util.Optional;
+
+import org.assertj.core.util.Lists;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -24,13 +23,10 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Optional;
-
+import pl.ust.school.dto.SchoolFormDto;
 import pl.ust.school.entity.SchoolForm;
-import pl.ust.school.repository.SchoolFormRepository;
 import pl.ust.school.repository.StudentRepository;
+import pl.ust.school.service.SchoolFormService;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(SchoolFormController.class)
@@ -51,20 +47,20 @@ public class SchoolFormControllerTest {
 	    private MockMvc mockMvc;
 
 	    @MockBean
-	    private SchoolFormRepository schoolFormRepo;
+	    private SchoolFormService schoolFormService;
 	    
 	    @MockBean
 		private StudentRepository studentRepo;
 
-	    private SchoolForm schoolform1A;
+	    private SchoolFormDto schoolform1A;
 	    
 	    @Before
 	    public void setup() {
-	    	schoolform1A = new SchoolForm();
+	    	schoolform1A = new SchoolFormDto();
 	    	schoolform1A.setId(TEST_SCHOOLFORM_ID);
 	    	schoolform1A.setName("1A");
 	    	
-	    	given(this.schoolFormRepo.findById(TEST_SCHOOLFORM_ID)).willReturn(Optional.of(this.schoolform1A));
+	    	given(this.schoolFormService.getSchoolFormById(TEST_SCHOOLFORM_ID)).willReturn(Optional.of(this.schoolform1A));
 	        
 	        System.err.println("----------@Before setup()-----------------"); // useful when debugging as it's easy to see when each test starts/ends
 	    }
@@ -74,7 +70,7 @@ public class SchoolFormControllerTest {
 	        mockMvc.perform(get("/schoolform/save"))
 	        	.andDo(print())
 	            .andExpect(status().isOk())
-	            .andExpect(model().attributeExists("schoolForm"))
+	            .andExpect(model().attributeExists("schoolFormDto"))
 	            // // .andExpect(model().attribute("teacher",  SchoolFormDTO.class))
 	            .andExpect(view().name(CREATE_OR_UPDATE_FORM_VIEW));
 	    }
@@ -95,15 +91,15 @@ public class SchoolFormControllerTest {
 	        )
 	        	.andDo(print())
 	            .andExpect(status().isOk())
-	            .andExpect(model().attributeHasErrors("schoolForm"))
-	            .andExpect(model().attributeHasFieldErrors("schoolForm", "name"))
+	            .andExpect(model().attributeHasErrors("schoolFormDto"))
+	            .andExpect(model().attributeHasFieldErrors("schoolFormDto", "name"))
 	            .andExpect(view().name(CREATE_OR_UPDATE_FORM_VIEW));
 	    }
 	   
 	    @Test
 	    public void shouldRetrieveListOfSchooForms() throws Exception {
 	    	
-	        given(this.schoolFormRepo.findAll()).willReturn(Lists.newArrayList(schoolform1A, new SchoolForm()));
+	        given(this.schoolFormService.getAllSchoolForms()).willReturn(Lists.newArrayList(schoolform1A, new SchoolFormDto()));
 	        mockMvc.perform(get("/schoolform/list"))
 	        	.andDo(print())
 	            .andExpect(status().isOk())
@@ -125,7 +121,7 @@ public class SchoolFormControllerTest {
 	  
 	    @Test
 	    public void shouldReturn404HttpWhenNotFound() throws Exception {
-	    	 given(this.schoolFormRepo.findById(-1L)).willReturn((Optional.empty()));
+	    	 given(this.schoolFormService.getSchoolFormById(-1L)).willReturn((Optional.empty()));
 	        mockMvc.perform(get("/schoolform/view/{id}", -1)
 	        )
 	        	.andDo(print())
@@ -141,7 +137,7 @@ public class SchoolFormControllerTest {
 	        mockMvc.perform(get("/schoolform/update/{id}", TEST_SCHOOLFORM_ID))
 	        	.andDo(print())
 	            .andExpect(status().isOk())
-	            .andExpect(model().attributeExists("schoolForm"))
+	            .andExpect(model().attributeExists("schoolFormDto"))
 	            .andExpect(view().name(CREATE_OR_UPDATE_FORM_VIEW));
 	    }
 
@@ -168,8 +164,8 @@ public class SchoolFormControllerTest {
 	        )
 	        	.andDo(print())
 	        	.andExpect(status().isOk())
-	        	.andExpect(model().attributeHasErrors("schoolForm"))
-	        	.andExpect(model().attributeHasFieldErrors("schoolForm", "name"))
+	        	.andExpect(model().attributeHasErrors("schoolFormDto"))
+	        	.andExpect(model().attributeHasFieldErrors("schoolFormDto", "name"))
 	        	.andExpect(model().errorCount(1))
 	            .andExpect(view().name(CREATE_OR_UPDATE_FORM_VIEW));
 	    }

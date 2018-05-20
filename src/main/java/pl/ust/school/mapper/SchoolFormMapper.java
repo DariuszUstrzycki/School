@@ -1,9 +1,13 @@
 package pl.ust.school.mapper;
 
+import java.util.Optional;
+
 import org.springframework.stereotype.Component;
 
 import pl.ust.school.dto.SchoolFormDto;
+import pl.ust.school.dto.SubjectDto;
 import pl.ust.school.entity.SchoolForm;
+import pl.ust.school.entity.Subject;
 
 @Component
 public class SchoolFormMapper {
@@ -15,6 +19,14 @@ public class SchoolFormMapper {
 					.name(schoolForm.getName())
 					.students(schoolForm.getStudents())
 					.build();
+	}
+	
+	public Optional<SchoolFormDto> toDTO(Optional<SchoolForm> opt) {
+		if(opt.isPresent()) {
+			return Optional.of(toDTO(opt.get()));
+		} else {
+			return Optional.empty();
+		}
 	}
 
 	public SchoolForm fromDTO(SchoolFormDto dto) {

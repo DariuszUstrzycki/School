@@ -2,6 +2,7 @@ package pl.ust.school.entity;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.junit.Before;
@@ -40,7 +41,7 @@ public class SchoolFormJPATest {
 	}
 	
 	@Test
-	public void shouldNotFindSchoolForms_WhenIsDeletedSetToTrue() {  
+	public void shouldNotLoadSchoolForms_WhenIsDeletedSetToTrue() {  
 		
 		//given
 		SchoolForm deleted = new SchoolForm();
@@ -68,7 +69,44 @@ public class SchoolFormJPATest {
 	    		
 	    assertThat(schoolForms.size()).isEqualTo(noOfNotDeletedSchoolForms);
 	}
+	
+	@Test
+	public void shouldSetStudentsSchoolformToNull_WhenSchoolformDeleted() {
+		
+		//arrange
+		Student student1 = createStudent("John");
+		Student student2 = createStudent("Mike");
+		student1.setSchoolForm(this.schoolForm);
+		student2.setSchoolForm(this.schoolForm);
+		
+		assertThat(this.schoolForm.getStudents().size()).isEqualTo(2);
+		assertThat(student1.getSchoolForm()).isNotNull();
+		assertThat(student2.getSchoolForm()).isNotNull();
+		
+		//act
+		this.schoolForm.remove();
+		
+		//assert
+		assertThat(this.schoolForm.getStudents().size()).isEqualTo(0);
+		assertThat(student1.getSchoolForm()).isNull();
+		assertThat(student2.getSchoolForm()).isNull();
+		
+		
+	}
 
+	private Student createStudent(String name) {
 
+		Student student = new Student();
+		student = new Student();
+		student.setFirstName("Jessica");
+		student.setLastName("Motgmomery");
+		student.setEmail(name + "@gamil.com");
+		student.setPassword("567");
+		student.setTelephone("1234567");
+		student.setBirthDate(LocalDate.of(2000, 1, 1));
+		student.setAddress("Manchester, England");
+
+		return student;
+	}
 	
 }

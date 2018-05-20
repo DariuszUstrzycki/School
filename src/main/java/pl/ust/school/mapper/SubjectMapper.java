@@ -18,6 +18,14 @@ public class SubjectMapper {
 					.teacherSubjects(subject.getTeacherSubjects())
 					.build();
 	}
+	
+	public Optional<SubjectDto> toDTO(Optional<Subject> opt) {
+		if(opt.isPresent()) {
+			return Optional.of(toDTO(opt.get()));
+		} else {
+			return Optional.empty();
+		}
+	}
 
 	public Subject fromDTO(SubjectDto dto) {
 		Subject subject = new Subject();
@@ -28,12 +36,6 @@ public class SubjectMapper {
 		return subject;
 	}
 
-	public Optional<SubjectDto> toDTO(Optional<Subject> findById) {
-		if(findById.isPresent()) {
-			return Optional.of(toDTO(findById.get()));
-		} else {
-			return Optional.empty();
-		}
-	}
+	
 
 }
