@@ -24,7 +24,7 @@
 
 <h1>${actionType} a student</h1>
 
-<form:form action="#" method="POST" modelAttribute="student">
+<form:form action="#" method="POST" modelAttribute="studentDto">
 
 <form:hidden path="password" value="unassigned"/>
 <form:hidden path="email" value="default@wonet.pl"/>

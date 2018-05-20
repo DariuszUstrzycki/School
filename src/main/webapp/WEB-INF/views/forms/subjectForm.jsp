@@ -24,7 +24,7 @@
 
 <h1>${actionType} a subject</h1>
 
-<form:form action="#" method="POST" modelAttribute="subject">
+<form:form action="#" method="POST" modelAttribute="subjectDto">
 <label for="name">Name of the subject:</label>
 <form:input placeholder="eg 1B, 2C, 4D, etc." path="name" />
 <form:errors path="name" cssClass='error'></form:errors>
