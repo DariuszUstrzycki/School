@@ -25,6 +25,8 @@
 <h1>${actionType} a school form</h1>
 
 <form:form action="#" method="POST" modelAttribute="schoolFormDto">
+
+<form:hidden path="isDeleted"/>
 <label for="name">Name of the form:</label>
 <form:input placeholder="eg 1B, 2C, 4D, etc." path="name" />
 <form:errors path="name" cssClass='error'></form:errors>

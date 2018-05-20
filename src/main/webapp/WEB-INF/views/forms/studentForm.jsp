@@ -26,8 +26,9 @@
 
 <form:form action="#" method="POST" modelAttribute="studentDto">
 
-<form:hidden path="password" value="unassigned"/>
-<form:hidden path="email" value="default@wonet.pl"/>
+<form:hidden path="isDeleted"/>
+<form:hidden path="password" />
+<form:hidden path="email" />
 
 <label for="firstName">First name:</label>
 <form:input placeholder="" path="firstName" />
