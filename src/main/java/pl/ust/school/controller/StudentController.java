@@ -24,10 +24,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import pl.ust.school.entity.SchoolForm;
-import pl.ust.school.entity.Student;
-import pl.ust.school.repository.SchoolFormRepository;
-import pl.ust.school.repository.StudentRepository;
+import pl.ust.school.dto.SchoolFormDto;
+import pl.ust.school.dto.StudentDto;
+import pl.ust.school.service.SchoolFormService;
+import pl.ust.school.service.StudentService;
 
 @Controller
 @RequestMapping("student") 
@@ -44,16 +44,16 @@ public class StudentController {
 	private static final String ENTITY_NAME_VALUE = "student";
 	
 	@Autowired
-	private StudentRepository studentRepo;
+	private StudentService studentService;
 	
 	@Autowired
-	private SchoolFormRepository schoolFormRepo;
+	private SchoolFormService schoolFormService;
 	
 	////////////////////////////////////////////////////////// 
 	
 	@ModelAttribute(COLLECTION_OF_SCHOOLFORMS_NAME)
-    public Collection<SchoolForm> populateSchoolFormItems() {
-        return (Collection<SchoolForm>) this.schoolFormRepo.findAll();
+    public Collection<SchoolFormDto> populateSchoolFormItems() {
+        return this.schoolFormService.getAllSchoolForms();
     }
 		
 	//////////////////////////////////////////////////////////
@@ -66,13 +66,13 @@ public class StudentController {
 	////////////////////////////SAVE ////////////////////////////
 	
 	@GetMapping("/save")
-	public String showForm(Student student, Model model) {
+	public String showForm(StudentDto studentDto, Model model) {
 		model.addAttribute(ENTITY_NAME, ENTITY_NAME_VALUE); 
 		return CREATE_OR_UPDATE_FORM_VIEW;
 	}
 	
 	@PostMapping("/save")
-	public String saveStudent(@Valid Student student, BindingResult result, Model model) {
+	public String saveStudent(@Valid StudentDto studentDto, BindingResult result, Model model) {
 		
 		model.addAttribute(ENTITY_NAME, ENTITY_NAME_VALUE); 
 		
@@ -83,15 +83,15 @@ public class StudentController {
 			return CREATE_OR_UPDATE_FORM_VIEW; 
 		}
 		
-		this.studentRepo.save(student);	
-		return "redirect:/student/view/" + student.getId(); 
+		this.studentService.createStudent(studentDto);	
+		return "redirect:/student/view/" + studentDto.getId(); 
 	}
 
 	//////////////////////////// LIST ////////////////////////////
 
 	@RequestMapping("/list")
 	public String listStudents(@RequestParam(defaultValue = "0", required = false) int min, Model model) {
-		model.addAttribute(COLLECTION_OF_STUDENTS_NAME, this.studentRepo.findAll());
+		model.addAttribute(COLLECTION_OF_STUDENTS_NAME, this.studentService.getAllStudents());
 		model.addAttribute(ENTITY_NAME, ENTITY_NAME_VALUE);
 		return LIST_VIEW;
 	}
@@ -100,10 +100,11 @@ public class StudentController {
 	@RequestMapping("view/{id}")
 	public String viewStudent(@PathVariable long id, Model model) {
 
-		Set<Student> studentItems = new HashSet<>();
-		Optional<Student> opt = this.studentRepo.findById(id);
 		
-		if(opt.isPresent()) {
+		Optional<StudentDto> opt = this.studentService.getStudentById(id);
+		
+		if (opt.isPresent()) {
+			Set<StudentDto> studentItems = new HashSet<>();
 			studentItems.add(opt.get());
 			model.addAttribute(COLLECTION_OF_STUDENTS_NAME, studentItems);
 		} else {
@@ -124,11 +125,7 @@ public class StudentController {
 	@RequestMapping(value = "/delete/{id}")
 	public String deleteStudent(@PathVariable long id) {
 
-		Optional<Student> opt = this.studentRepo.findById(id);
-		opt.ifPresent(student -> {			
-			student.remove();
-			this.studentRepo.save(student);
-		});
+		this.studentService.deleteStudent(id);
 
 		return "redirect:/student/list";
 	}
@@ -138,20 +135,20 @@ public class StudentController {
 	@GetMapping("/update/{id}")
 	public String showForm(@PathVariable long id, Model model) {
 		
-		Optional<Student> opt = studentRepo.findById(id);
+		Optional<StudentDto> opt = studentService.getStudentById(id);
 		opt.ifPresent(model::addAttribute);
 		
 		return CREATE_OR_UPDATE_FORM_VIEW;
 	}
 
 	@PostMapping("/update/{id}")
-	public String updateStudent(@Valid Student student, BindingResult result, @PathVariable long id, Model model) {
+	public String updateStudent(@Valid StudentDto studentDto, BindingResult result, @PathVariable long id, Model model) {
 
 		if (result.hasErrors()) {
 			return CREATE_OR_UPDATE_FORM_VIEW;
 		} else {
-			student.setId(id);
-			this.studentRepo.save(student);
+			studentDto.setId(id);
+			this.studentService.createStudent(studentDto);
 			return "redirect:/student/view/" + id;
 		}
 		

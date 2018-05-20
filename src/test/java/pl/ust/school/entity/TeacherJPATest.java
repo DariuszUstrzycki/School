@@ -13,8 +13,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import pl.ust.school.entity.Teacher;
-
 @RunWith(SpringRunner.class)
 @DataJpaTest
 public class TeacherJPATest {
@@ -47,7 +45,7 @@ public class TeacherJPATest {
 	}
 	
 	@Test
-	public void shouldNotFindTeachers_WhenIsDeletedSetToTrue() {  
+	public void shouldNotLoadTeachers_WhenIsDeletedSetToTrue() {  
 		
 		//given
 		Teacher deleted = createTeacher("Andy");
@@ -71,6 +69,37 @@ public class TeacherJPATest {
 	    		.getResultList();
 	    		
 	    assertThat(teachers.size()).isEqualTo(noOfNotDeletedTeachers);
+	}
+	
+	@Test
+	public void shouldSetTeachersSubjectsToNull_WhenTeacherDeleted() {
+		
+		//arrange
+		Subject subject1 = new Subject();
+		subject1.setName("Maths");
+		Teacher teacher1 = createTeacher("John");
+		TeacherSubject ts1 = new TeacherSubject();
+		ts1.setTeacher(teacher1);
+		ts1.setSubject(subject1);
+		
+		Subject subject2 = new Subject();
+		subject2.setName("Biology");
+		TeacherSubject ts2 = new TeacherSubject();
+		ts2.setTeacher(teacher1);
+		ts2.setSubject(subject2);
+		
+		assertThat(teacher1.getTeacherSubjects().size()).isEqualTo(2);
+		assertThat(ts1.getTeacher()).isNotNull();
+		assertThat(ts2.getTeacher()).isNotNull();
+		
+		//act
+		teacher1.remove();
+		
+		//assert
+		assertThat(teacher1.getTeacherSubjects().size()).isEqualTo(0);
+		assertThat(ts1.getTeacher()).isNull();
+		assertThat(ts2.getTeacher()).isNull();
+		
 	}
 	
 	private Teacher createTeacher(String name) {

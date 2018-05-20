@@ -5,7 +5,7 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 import pl.ust.school.controller.StudentControllerTest;
-import pl.ust.school.repository.StudentJPATest;
+import pl.ust.school.entity.StudentJPATest;
 import pl.ust.school.repository.StudentRepositoryTest;
 
 @RunWith(Suite.class)

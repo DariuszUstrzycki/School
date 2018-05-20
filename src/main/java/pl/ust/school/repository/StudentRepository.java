@@ -30,7 +30,6 @@ public interface StudentRepository extends AppBaseRepository<Student, Long> {
 	
 	
 	
-	
 	// https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#jpa.query-methods.query-creation
 		// https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#repository-query-keywords
 		

@@ -1,13 +1,6 @@
 package pl.ust.school.controller;
 
-import static org.assertj.core.api.Assertions.*;
-import org.assertj.core.util.*;
 import static org.mockito.BDDMockito.given;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -16,18 +9,21 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
+import java.time.LocalDate;
+import java.util.Optional;
+
+import org.assertj.core.util.Lists;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.time.LocalDate;
-import java.util.Collections;
-import java.util.Optional;
-
-import pl.ust.school.entity.Teacher;
-import pl.ust.school.repository.TeacherRepository;
+import pl.ust.school.dto.TeacherDto;
+import pl.ust.school.service.TeacherService;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(TeacherController.class)
@@ -47,13 +43,13 @@ public class TeacherControllerTest {
 	private MockMvc mockMvc;
 
 	@MockBean
-	private TeacherRepository teacherRepo;
+	private TeacherService teacherService;
 
-	private Teacher john;
+	private TeacherDto john;
 	
 	@Before
 	public void setup() {
-		john = new Teacher();
+		john = new TeacherDto();
 		john.setId(TEST_TEACHER_ID);
 		john.setAddress("Penny Lane 12, London, England");
 		john.setBirthDate(LocalDate.of(2000, 1, 1));
@@ -63,7 +59,7 @@ public class TeacherControllerTest {
 		john.setPassword("123");
 		john.setTelephone("1234567");
 		
-		 given(this.teacherRepo.findById(TEST_TEACHER_ID)).willReturn(Optional.of(this.john));
+		given(this.teacherService.getTeacherById(TEST_TEACHER_ID)).willReturn(Optional.of(this.john));
 
 		System.err.println("----------@Before setup()-----------------"); // useful when debugging as it's easy to see
 																			// when each test starts/ends
@@ -102,21 +98,21 @@ public class TeacherControllerTest {
 				
 				.andDo(print())
 				.andExpect(status().isOk())
-				.andExpect(model().attributeHasErrors("teacher"))
-				.andExpect(model().attributeHasFieldErrors("teacher", "firstName"))
-				.andExpect(model().attributeHasFieldErrors("teacher", "lastName")) // null
-				.andExpect(model().attributeHasFieldErrors("teacher", "address")) // null
-				.andExpect(model().attributeHasFieldErrors("teacher", "email"))
-				.andExpect(model().attributeHasFieldErrors("teacher", "telephone"))
-				.andExpect(model().attributeHasFieldErrors("teacher", "password"))
-				.andExpect(model().attributeErrorCount("teacher", 6))
+				.andExpect(model().attributeHasErrors("teacherDto"))
+				.andExpect(model().attributeHasFieldErrors("teacherDto", "firstName"))
+				.andExpect(model().attributeHasFieldErrors("teacherDto", "lastName")) // null
+				.andExpect(model().attributeHasFieldErrors("teacherDto", "address")) // null
+				.andExpect(model().attributeHasFieldErrors("teacherDto", "email"))
+				.andExpect(model().attributeHasFieldErrors("teacherDto", "telephone"))
+				.andExpect(model().attributeHasFieldErrors("teacherDto", "password"))
+				.andExpect(model().attributeErrorCount("teacherDto", 6))
 				.andExpect(view().name(CREATE_OR_UPDATE_FORM_VIEW));
 	}
 	
 	@Test
 	public void shouldRetrieveListOfTeachers() throws Exception {
 
-		given(this.teacherRepo.findAll()).willReturn(Lists.newArrayList(john, new Teacher()));
+		given(this.teacherService.getAllTeachers()).willReturn(Lists.newArrayList(john, new TeacherDto()));
 		mockMvc.perform(get("/teacher/list"))
 				.andDo(print())
 				.andExpect(status().isOk())
@@ -131,13 +127,12 @@ public class TeacherControllerTest {
 				.andDo(print())
 				.andExpect(status().isOk())
 				.andExpect(model().attributeExists(COLLECTION_OF_TEACHERS_NAME))
-				// how to check that the attribute is a collection?! and its size?
 				.andExpect(view().name(DETAILS_VIEW));
 	}
 
 	@Test
 	public void shouldReturn404HttpWhenNotFound() throws Exception {
-		given(this.teacherRepo.findById(-1L)).willReturn((Optional.empty()));
+		given(this.teacherService.getTeacherById(-1L)).willReturn((Optional.empty()));
 		
 		mockMvc.perform(get("/teacher/view/{id}", -1))
 				.andDo(print())
@@ -151,7 +146,7 @@ public class TeacherControllerTest {
 		mockMvc.perform(get("/teacher/update/{id}", TEST_TEACHER_ID))
 				.andDo(print())
 				.andExpect(status().isOk())
-				.andExpect(model().attributeExists("teacher"))
+				.andExpect(model().attributeExists("teacherDto"))
 				.andExpect(view().name(CREATE_OR_UPDATE_FORM_VIEW));
 	}
 
@@ -182,14 +177,14 @@ public class TeacherControllerTest {
 		
 				.andDo(print())
 				.andExpect(status().isOk())
-				.andExpect(model().attributeHasErrors("teacher"))
-				.andExpect(model().attributeHasFieldErrors("teacher", "firstName"))
-				.andExpect(model().attributeHasFieldErrors("teacher", "lastName")) // null
-				.andExpect(model().attributeHasFieldErrors("teacher", "address")) // null
-				.andExpect(model().attributeHasFieldErrors("teacher", "email"))
-				.andExpect(model().attributeHasFieldErrors("teacher", "telephone"))
-				.andExpect(model().attributeHasFieldErrors("teacher", "password"))
-				.andExpect(model().attributeErrorCount("teacher", 6))
+				.andExpect(model().attributeHasErrors("teacherDto"))
+				.andExpect(model().attributeHasFieldErrors("teacherDto", "firstName"))
+				.andExpect(model().attributeHasFieldErrors("teacherDto", "lastName")) // null
+				.andExpect(model().attributeHasFieldErrors("teacherDto", "address")) // null
+				.andExpect(model().attributeHasFieldErrors("teacherDto", "email"))
+				.andExpect(model().attributeHasFieldErrors("teacherDto", "telephone"))
+				.andExpect(model().attributeHasFieldErrors("teacherDto", "password"))
+				.andExpect(model().attributeErrorCount("teacherDto", 6))
 			    .andExpect(view().name(CREATE_OR_UPDATE_FORM_VIEW));
 	}
 

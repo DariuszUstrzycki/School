@@ -22,6 +22,8 @@ public interface AppBaseRepository<T, Long> extends CrudRepository<T , Long> {
 	@Transactional(readOnly = true) 
 	Page<T>	findAll(Pageable pageable);
 	
+	Collection<T> findAll();
+	
 
 	
 	

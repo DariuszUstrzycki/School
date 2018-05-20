@@ -21,8 +21,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import pl.ust.school.dto.SubjectDto;
-import pl.ust.school.entity.Subject;
-import pl.ust.school.repository.SubjectRepository;
 import pl.ust.school.service.SubjectService;
 
 @Controller
@@ -85,11 +83,11 @@ public class SubjectController {
 	@RequestMapping("view/{id}")
 	public String viewSubject(@PathVariable long id, Model model) {
 		
-		Optional<SubjectDto> subjectDto = this.subjectService.getSubjectById(id);
+		Optional<SubjectDto> opt = this.subjectService.getSubjectById(id);
 		
-		if(subjectDto.isPresent()) {
+		if(opt.isPresent()) {
 			Set<SubjectDto> subjectItems = new HashSet<>();
-			subjectItems.add(subjectDto.get());
+			subjectItems.add(opt.get());
 			model.addAttribute(COLLECTION_OF_SUBJECTS_NAME, subjectItems);
 		} else {
 			throw new RecordNotFoundException("No subject with id " + id + " has been found.");

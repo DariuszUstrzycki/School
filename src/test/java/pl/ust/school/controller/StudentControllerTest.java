@@ -1,13 +1,6 @@
 package pl.ust.school.controller;
 
-import static org.assertj.core.api.Assertions.*;
-import org.assertj.core.util.*;
 import static org.mockito.BDDMockito.given;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -16,20 +9,23 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
+import java.time.LocalDate;
+import java.util.Optional;
+
+import org.assertj.core.util.Lists;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.time.LocalDate;
-import java.util.Collections;
-import java.util.Optional;
-
+import pl.ust.school.dto.StudentDto;
 import pl.ust.school.entity.SchoolForm;
-import pl.ust.school.entity.Student;
-import pl.ust.school.repository.SchoolFormRepository;
-import pl.ust.school.repository.StudentRepository;
+import pl.ust.school.service.SchoolFormService;
+import pl.ust.school.service.StudentService;
 
 
 // allows the Web App Context to be loaded. By default Spring will load the context into a Static variable so it only gets 
@@ -54,16 +50,16 @@ public class StudentControllerTest {
 	private MockMvc mockMvc;
 
 	@MockBean
-	private StudentRepository studentRepo;
+	private StudentService studentService;
 
 	@MockBean
-	private SchoolFormRepository schoolFormRepo;
+	private SchoolFormService schoolFormService;
 
-	private Student john;
+	private StudentDto john;
 
 	@Before
 	public void setup() {
-		john = new Student();
+		john = new StudentDto();
 		john.setId(TEST_STUDENT_ID);
 		john.setAddress("Penny Lane 12, London, England");
 		john.setBirthDate(LocalDate.of(2000, 1, 1));
@@ -74,11 +70,9 @@ public class StudentControllerTest {
 		john.setSchoolForm(new SchoolForm());
 		john.setTelephone("1234567");
 		
-		given(this.studentRepo.findById(TEST_STUDENT_ID)).willReturn(Optional.of(this.john));
-
+		given(this.studentService.getStudentById(TEST_STUDENT_ID)).willReturn( Optional.of(this.john));
 
 		System.err.println("----------@Before setup()-----------------"); // useful when debugging as it's easy to see
-																			// when each test starts/ends
 	}
 
 	@Test
@@ -86,8 +80,7 @@ public class StudentControllerTest {
 		mockMvc.perform(get("/student/save")).andDo(print()) // !
 				.andExpect(status().isOk())
 				.andExpect(model().attributeExists(COLLECTION_OF_SCHOOLFORMS_NAME))
-	            .andExpect(model().attributeExists("student"))
-	            // // .andExpect(model().attribute("student",  StudentDTO.class))
+	            .andExpect(model().attributeExists("studentDto"))
 				.andExpect(view().name(CREATE_OR_UPDATE_FORM_VIEW));
 	}
 
@@ -114,20 +107,20 @@ public class StudentControllerTest {
 
 				.andDo(print())
 				.andExpect(status().isOk())
-				.andExpect(model().attributeHasErrors("student"))
-				.andExpect(model().attributeHasFieldErrors("student", "firstName"))
-				.andExpect(model().attributeHasFieldErrors("student", "lastName")) // null
-				.andExpect(model().attributeHasFieldErrors("student", "address")) // null
-				.andExpect(model().attributeHasFieldErrors("student", "email"))
-				.andExpect(model().attributeHasFieldErrors("student", "telephone"))
-				.andExpect(model().attributeHasFieldErrors("student", "password"))
-				.andExpect(model().attributeErrorCount("student", 6))
+				.andExpect(model().attributeHasErrors("studentDto"))
+				.andExpect(model().attributeHasFieldErrors("studentDto", "firstName"))
+				.andExpect(model().attributeHasFieldErrors("studentDto", "lastName")) // null
+				.andExpect(model().attributeHasFieldErrors("studentDto", "address")) // null
+				.andExpect(model().attributeHasFieldErrors("studentDto", "email"))
+				.andExpect(model().attributeHasFieldErrors("studentDto", "telephone"))
+				.andExpect(model().attributeHasFieldErrors("studentDto", "password"))
+				.andExpect(model().attributeErrorCount("studentDto", 6))
 				.andExpect(view().name(CREATE_OR_UPDATE_FORM_VIEW));
 	}
 
 	@Test
 	public void shouldRetrieveListOfStudents() throws Exception {
-		given(this.studentRepo.findAll()).willReturn(Lists.newArrayList(john, new Student()));
+		given(this.studentService.getAllStudents()).willReturn(Lists.newArrayList(john, new StudentDto()));
 
 		mockMvc.perform(get("/student/list"))
 				.andDo(print())
@@ -151,7 +144,7 @@ public class StudentControllerTest {
 
 	@Test
 	public void shouldReturn404HttpWhenNotFound() throws Exception {
-		given(this.studentRepo.findById(-1L)).willReturn((Optional.empty()));
+		given(this.studentService.getStudentById(-1L)).willReturn((Optional.empty()));
 
 		mockMvc.perform(get("/student/view/{id}", -1))
 				.andDo(print())
@@ -166,7 +159,7 @@ public class StudentControllerTest {
 				.andDo(print())
 				.andExpect(status().isOk())
 				.andExpect(model().attributeExists(COLLECTION_OF_SCHOOLFORMS_NAME))
-				.andExpect(model().attributeExists("student")).andExpect(view().name(CREATE_OR_UPDATE_FORM_VIEW));
+				.andExpect(model().attributeExists("studentDto")).andExpect(view().name(CREATE_OR_UPDATE_FORM_VIEW));
 	}
 
 	@Test
@@ -195,14 +188,14 @@ public class StudentControllerTest {
 
 				.andDo(print()).andExpect(status().isOk())
 				.andExpect(model().attributeExists(COLLECTION_OF_SCHOOLFORMS_NAME))
-				.andExpect(model().attributeHasErrors("student"))
-				.andExpect(model().attributeHasFieldErrors("student", "firstName"))
-				.andExpect(model().attributeHasFieldErrors("student", "lastName")) // null
-				.andExpect(model().attributeHasFieldErrors("student", "address")) // null
-				.andExpect(model().attributeHasFieldErrors("student", "email"))
-				.andExpect(model().attributeHasFieldErrors("student", "telephone"))
-				.andExpect(model().attributeHasFieldErrors("student", "password"))
-				.andExpect(model().attributeErrorCount("student", 6))
+				.andExpect(model().attributeHasErrors("studentDto"))
+				.andExpect(model().attributeHasFieldErrors("studentDto", "firstName"))
+				.andExpect(model().attributeHasFieldErrors("studentDto", "lastName")) // null
+				.andExpect(model().attributeHasFieldErrors("studentDto", "address")) // null
+				.andExpect(model().attributeHasFieldErrors("studentDto", "email"))
+				.andExpect(model().attributeHasFieldErrors("studentDto", "telephone"))
+				.andExpect(model().attributeHasFieldErrors("studentDto", "password"))
+				.andExpect(model().attributeErrorCount("studentDto", 6))
 				.andExpect(view().name(CREATE_OR_UPDATE_FORM_VIEW));
 	}
 	

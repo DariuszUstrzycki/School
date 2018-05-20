@@ -51,14 +51,7 @@ public class StudentRepositoryTest {
 	@Before
 	public void setUp() {
 
-		student = new Student();
-		student.setFirstName("John");
-		student.setLastName("BrownXYZ");
-		student.setEmail("johnXYZ@gamil.com");
-		student.setPassword("123");
-		student.setTelephone("1234567");
-		student.setBirthDate(LocalDate.of(2000, 1, 1));
-		student.setAddress("London, England");
+		student = createStudent("George");
 
 	}
     

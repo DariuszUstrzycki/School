@@ -46,7 +46,7 @@ public class StudentJPATest {
 	}
 	
 	@Test
-	public void shouldNotFindStudents_WhenIsDeletedSetToTrue() {  
+	public void shouldNotLoadStudents_WhenIsDeletedSetToTrue() {  
 		
 		//given
 		Student deleted = createStudent("Andy");
@@ -70,6 +70,27 @@ public class StudentJPATest {
 	    		.getResultList();
 	    		
 	    assertThat(students.size()).isEqualTo(noOfNotDeletedStudents);
+	}
+	
+	@Test
+	public void shouldRemoveStudentFromSchoolForm_WhenStudentIsDeleted() {
+		
+		//assert
+		Student notDeleted = createStudent("NotDeleted");
+		SchoolForm form = new SchoolForm();
+		form.setName("First Year");
+		notDeleted.setSchoolForm(form);
+		
+		Student deleted = createStudent("deleted");
+		deleted.setSchoolForm(form);
+		
+		assertThat(form.getStudents().size()).isEqualTo(2);
+		
+		//act
+		deleted.remove();
+		
+		//assert
+		assertThat(form.getStudents().size()).isEqualTo(1);
 	}
 	
 	private Student createStudent(String name) {

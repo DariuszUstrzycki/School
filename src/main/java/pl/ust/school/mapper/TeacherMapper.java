@@ -1,8 +1,12 @@
 package pl.ust.school.mapper;
 
+import java.util.Optional;
+
 import org.springframework.stereotype.Component;
 
 import pl.ust.school.dto.TeacherDto;
+import pl.ust.school.dto.TeacherDto;
+import pl.ust.school.entity.Teacher;
 import pl.ust.school.entity.Teacher;
 
 @Component
@@ -19,8 +23,15 @@ public class TeacherMapper {
 					.email(teacher.getEmail())
 					.password(teacher.getPassword())
 					.telephone(teacher.getTelephone())
-					.teacherSubjects(teacher.getTeacherSubjects())
 					.build();
+	}
+	
+	public Optional<TeacherDto> toDTO(Optional<Teacher> opt) {
+		if(opt.isPresent()) {
+			return Optional.of(toDTO(opt.get()));
+		} else {
+			return Optional.empty();
+		}
 	}
 
 	public Teacher fromDTO(TeacherDto dto) {
@@ -34,7 +45,6 @@ public class TeacherMapper {
 		teacher.setEmail(dto.getEmail());
 		teacher.setPassword(dto.getPassword());
 		teacher.setTelephone(dto.getTelephone());
-		teacher.setTeacherSubjects(dto.getTeacherSubjects());
 		return teacher;
 	}
 

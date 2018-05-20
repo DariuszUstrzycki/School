@@ -22,8 +22,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import pl.ust.school.dto.TeacherDto;
 import pl.ust.school.entity.Teacher;
-import pl.ust.school.repository.TeacherRepository;
+import pl.ust.school.service.TeacherService;
 
 @Controller
 @RequestMapping("teacher")
@@ -39,7 +40,7 @@ public class TeacherController {
 	private static final String ENTITY_NAME_VALUE = "teacher";
 
 	@Autowired
-	private TeacherRepository teacherRepo;
+	private TeacherService teacherService;
 	
 	//////////////////////////////////////////////////////////
 	
@@ -57,7 +58,7 @@ public class TeacherController {
 	}
 	
 	@PostMapping("/save")
-	public String saveTeacher(@Valid Teacher teacher, BindingResult result, Model model) {
+	public String saveTeacher(@Valid TeacherDto teacherDto, BindingResult result, Model model) {
 		
 		model.addAttribute(ENTITY_NAME, ENTITY_NAME_VALUE); 
 		
@@ -69,15 +70,15 @@ public class TeacherController {
 			return CREATE_OR_UPDATE_FORM_VIEW; 
 		}
 		
-		this.teacherRepo.save(teacher);	
-		return "redirect:/teacher/view/" + teacher.getId(); 
+		this.teacherService.createTeacher(teacherDto);	
+		return "redirect:/teacher/view/" + teacherDto.getId(); 
 	}
 
 	//////////////////////////// LIST ////////////////////////////
 
 	@RequestMapping("/list")
 	public String listTeachers(@RequestParam(defaultValue = "0", required = false) int min, Model model) {
-		model.addAttribute(COLLECTION_OF_TEACHERS_NAME, this.teacherRepo.findAll());
+		model.addAttribute(COLLECTION_OF_TEACHERS_NAME, this.teacherService.getAllTeachers());
 		model.addAttribute(ENTITY_NAME, ENTITY_NAME_VALUE);
 		return LIST_VIEW;
 	}
@@ -86,10 +87,10 @@ public class TeacherController {
 	@RequestMapping("view/{id}")
 	public String viewTeacher(@PathVariable long id, Model model) {
 
-		Set<Teacher> teacherItems = new HashSet<>();
-		Optional<Teacher> opt = this.teacherRepo.findById(id);
+		Optional<TeacherDto> opt = this.teacherService.getTeacherById(id);
 		
-		if(opt.isPresent()) {
+		if (opt.isPresent()) {
+			Set<TeacherDto> teacherItems = new HashSet<>();
 			teacherItems.add(opt.get());
 			model.addAttribute(COLLECTION_OF_TEACHERS_NAME, teacherItems);
 		} else {
@@ -110,11 +111,7 @@ public class TeacherController {
 	@RequestMapping(value = "/delete/{id}")
 	public String deleteTeacher(@PathVariable long id) {
 
-		Optional<Teacher> opt = this.teacherRepo.findById(id);
-		opt.ifPresent(teacher -> {
-			teacher.remove();
-			this.teacherRepo.save(teacher);
-		});
+		this.teacherService.deleteTeacher(id);
 
 		return "redirect:/teacher/list";
 	}
@@ -124,20 +121,20 @@ public class TeacherController {
 	@GetMapping("/update/{id}")
 	public String showForm(@PathVariable long id, Model model) {
 		
-		Optional<Teacher> opt = teacherRepo.findById(id);
+		Optional<TeacherDto> opt = this.teacherService.getTeacherById(id);
 		opt.ifPresent(model::addAttribute);
 		
 		return CREATE_OR_UPDATE_FORM_VIEW;
 	}
 
 	@PostMapping("/update/{id}")
-	public String updateTeacher(@Valid Teacher teacher, BindingResult result, @PathVariable long id, Model model) {
+	public String updateTeacher(@Valid TeacherDto teacherDto, BindingResult result, @PathVariable long id, Model model) {
 
 		if (result.hasErrors()) {
 			return CREATE_OR_UPDATE_FORM_VIEW;
 		} else {
-			teacher.setId(id);
-			this.teacherRepo.save(teacher);
+			teacherDto.setId(id);
+			this.teacherService.createTeacher(teacherDto);
 			return "redirect:/teacher/view/" + id;
 		}
 	}

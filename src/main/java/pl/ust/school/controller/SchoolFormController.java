@@ -23,12 +23,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import pl.ust.school.dto.SchoolFormDto;
-import pl.ust.school.entity.SchoolForm;
-import pl.ust.school.repository.StudentRepository;
 import pl.ust.school.service.SchoolFormService;
+import pl.ust.school.service.StudentService;
 
 @Controller
-@RequestMapping("schoolform") // endpoint should be read some config file
+@RequestMapping("schoolform") 
 public class SchoolFormController {
 	
 	private static final String CREATE_OR_UPDATE_FORM_VIEW = "forms/schoolformForm";
@@ -45,7 +44,7 @@ public class SchoolFormController {
 	private SchoolFormService schoolFormService;
 	
 	@Autowired
-	private StudentRepository studentRepo;
+	private StudentService studentService;
 	
 	@InitBinder
     public void setAllowedFields(WebDataBinder dataBinder) {
@@ -98,7 +97,8 @@ public class SchoolFormController {
 			schoolformItems.add(schoolformDto.get());
 			model.addAttribute("schoolformName", schoolformDto.get().getName());
 			model.addAttribute(COLLECTION_OF_SCHOOLFORMS_NAME, schoolformItems);
-			model.addAttribute(COLLECTION_OF_STUDENTS_NAME, studentRepo.findBySchoolForm_Id(id));
+			model.addAttribute(COLLECTION_OF_STUDENTS_NAME, this.studentService.getStudentBySchoolForm_Id(id));
+			// 
 		} else {
 			throw new RecordNotFoundException("No school form with id " + id + " has been found.");
 		}
