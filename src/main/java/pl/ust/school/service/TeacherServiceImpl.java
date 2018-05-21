@@ -21,9 +21,10 @@ public class TeacherServiceImpl implements TeacherService{
 	@Autowired
 	private TeacherMapper mapper;
 
-	public void createTeacher(TeacherDto teacherDto) {
+	public long createTeacher(TeacherDto teacherDto) {
 		Teacher teacher = this.mapper.fromDTO(teacherDto);
-		this.repo.save(teacher);
+		teacher = this.repo.save(teacher);
+		return teacher.getId();
 	}
 
 	public Collection<TeacherDto> getAllTeachers() {

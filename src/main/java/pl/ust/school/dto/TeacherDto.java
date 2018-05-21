@@ -26,8 +26,8 @@ import pl.ust.school.entity.TeacherSubject;
 @AllArgsConstructor
 public class TeacherDto {
 
-	private Long id;
-	private Boolean isDeleted;
+	private long id;
+	private boolean isDeleted;
 
 	@NotEmpty
 	private String firstName;
@@ -47,7 +47,17 @@ public class TeacherDto {
 	private LocalDate birthDate;
 	private Set<TeacherSubject> teacherSubjects;
 	
+	public boolean isNew() {
+        return this.id < 1;
+    }
 	
+	public boolean getIsDeleted() {
+		return this.isDeleted;
+	}
+	
+	public boolean setIsDeleted(boolean isDeleted) {
+		return this.isDeleted = isDeleted;
+	}
 	
 	
 	/*

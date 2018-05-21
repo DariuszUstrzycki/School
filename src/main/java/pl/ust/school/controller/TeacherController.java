@@ -52,7 +52,7 @@ public class TeacherController {
 	////////////////////////////SAVE ////////////////////////////
 	
 	@GetMapping("/save")
-	public String showForm(Teacher teacher, Model model) {
+	public String showForm(TeacherDto teacherDto, Model model) {
 		model.addAttribute(ENTITY_NAME, ENTITY_NAME_VALUE); 
 		return CREATE_OR_UPDATE_FORM_VIEW;
 	}
@@ -70,8 +70,8 @@ public class TeacherController {
 			return CREATE_OR_UPDATE_FORM_VIEW; 
 		}
 		
-		this.teacherService.createTeacher(teacherDto);	
-		return "redirect:/teacher/view/" + teacherDto.getId(); 
+		long id = this.teacherService.createTeacher(teacherDto);	
+		return "redirect:/teacher/view/" + id; 
 	}
 
 	//////////////////////////// LIST ////////////////////////////

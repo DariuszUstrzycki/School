@@ -7,7 +7,7 @@ import pl.ust.school.dto.TeacherDto;
 
 public interface TeacherService {
 	
-	void createTeacher(TeacherDto teacherDto);
+	long createTeacher(TeacherDto teacherDto);
 	Collection<TeacherDto> getAllTeachers();
 	Optional<TeacherDto> getTeacherById(Long id);
 	void deleteTeacher(Long id);
