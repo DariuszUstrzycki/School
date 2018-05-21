@@ -13,7 +13,7 @@
     <%@ include file="../jspf/header.jspf" %>
 </div>
 
-<h1>School forms</h1>
+<h1>Subjects</h1>
 
 <div id="content">
 	<%@ include file="../jspf/subjectAddButton.jspf" %>

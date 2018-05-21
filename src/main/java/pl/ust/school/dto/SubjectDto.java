@@ -16,11 +16,23 @@ import pl.ust.school.entity.TeacherSubject;
 public class SubjectDto {
 
 	
-	private Long id;
-	private Boolean isDeleted;
+	private long id;
+	private boolean isDeleted;
 	@NotEmpty
 	private String name;
 	private Set<TeacherSubject> teacherSubjects;
+	
+	public boolean isNew() {
+        return this.id < 1;
+    }
+	
+	public boolean getIsDeleted() {
+		return this.isDeleted;
+	}
+	
+	public boolean setIsDeleted(boolean isDeleted) {
+		return this.isDeleted = isDeleted;
+	}
 	
 	
 }

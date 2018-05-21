@@ -65,9 +65,9 @@ public class SubjectController {
 			}
 			return CREATE_OR_UPDATE_FORM_VIEW;
 		}
-		
-		this.subjectService.createSubject(subjectDto);
-		return "redirect:/subject/view/" + subjectDto.getId();
+
+		long id = this.subjectService.createSubject(subjectDto);
+		return "redirect:/subject/view/" + id;
 	}
 
 	//////////////////////////// LIST ////////////////////////////

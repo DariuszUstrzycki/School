@@ -27,12 +27,13 @@ public class SubjectMapper {
 		}
 	}
 
-	public Subject fromDTO(SubjectDto dto) {
+	public Subject fromDTO(SubjectDto subjectDto) {
+		
 		Subject subject = new Subject();
-		subject.setId(dto.getId());
-		subject.setDeleted(dto.getIsDeleted());
-		subject.setName(dto.getName());
-		subject.setTeacherSubjects(dto.getTeacherSubjects());
+		subject.setId(subjectDto.getId());
+		subject.setDeleted(subjectDto.getIsDeleted());
+		subject.setName(subjectDto.getName());
+		subject.setTeacherSubjects(subjectDto.getTeacherSubjects());
 		return subject;
 	}
 

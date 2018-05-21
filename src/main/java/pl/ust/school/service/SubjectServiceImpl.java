@@ -21,9 +21,10 @@ public class SubjectServiceImpl implements SubjectService {
 	@Autowired
 	private SubjectMapper mapper;
 
-	public void createSubject(SubjectDto subjectDto) {
+	public long createSubject(SubjectDto subjectDto) {
 		Subject subject = this.mapper.fromDTO(subjectDto);
-		this.repo.save(subject);
+		subject = this.repo.save(subject);
+		return subject.getId();
 	}
 
 	public Collection<SubjectDto> getAllSubjects() {

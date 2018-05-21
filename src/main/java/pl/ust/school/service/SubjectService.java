@@ -9,7 +9,7 @@ import pl.ust.school.dto.SubjectDto;
 
 public interface SubjectService {
 	
-	void createSubject(SubjectDto subjectDto);
+	long createSubject(SubjectDto subjectDto);
 	Collection<SubjectDto> getAllSubjects();
 	Optional<SubjectDto> getSubjectById(Long id);
 	void deleteSubject(Long id);
