@@ -71,8 +71,8 @@ public class SchoolFormController {
 			return CREATE_OR_UPDATE_FORM_VIEW; 
 		}
 		
-		this.schoolFormService.createSchoolForm(schoolFormDto);	
-		return "redirect:/schoolform/view/" + schoolFormDto.getId(); 
+		long id = this.schoolFormService.createSchoolForm(schoolFormDto);	
+		return "redirect:/schoolform/view/" + id; 
 	}
 		
 	////////////////////////////LIST ////////////////////////////

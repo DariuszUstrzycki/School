@@ -30,8 +30,10 @@ public class SchoolFormMapper {
 	}
 
 	public SchoolForm fromDTO(SchoolFormDto dto) {
+		
 		SchoolForm schoolForm = new SchoolForm();
 		schoolForm.setId(dto.getId());
+		
 		schoolForm.setDeleted(dto.getIsDeleted());
 		schoolForm.setName(dto.getName());
 		schoolForm.setStudents(dto.getStudents());

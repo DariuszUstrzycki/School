@@ -15,10 +15,10 @@
 
 <div>
 
-<c:if test="${schoolForm['new']}">
+<c:if test="${schoolFormDto['new']}">
 	<c:set var = "actionType" scope = "page" value = "Add"/>
 </c:if>
-<c:if test="${ not schoolForm['new']}">
+<c:if test="${ not schoolFormDto['new']}">
 	<c:set var = "actionType" scope = "page" value = "Update"/>
 </c:if>	
 
@@ -27,6 +27,7 @@
 <form:form action="#" method="POST" modelAttribute="schoolFormDto">
 
 <form:hidden path="isDeleted"/>
+
 <label for="name">Name of the form:</label>
 <form:input placeholder="eg 1B, 2C, 4D, etc." path="name" />
 <form:errors path="name" cssClass='error'></form:errors>

@@ -7,7 +7,7 @@ import pl.ust.school.dto.SchoolFormDto;
 
 public interface SchoolFormService {
 	
-	void createSchoolForm(SchoolFormDto subjectDto);
+	long createSchoolForm(SchoolFormDto subjectDto);
 	Collection<SchoolFormDto> getAllSchoolForms();
 	Optional<SchoolFormDto> getSchoolFormById(Long id);
 	void deleteSchoolForm(Long id);

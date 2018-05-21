@@ -21,9 +21,10 @@ public class SchoolFormServiceImpl implements SchoolFormService{
 	@Autowired
 	private SchoolFormMapper mapper;
 
-	public void createSchoolForm(SchoolFormDto schoolFormDto) {
+	public long  createSchoolForm(SchoolFormDto schoolFormDto) {
 		SchoolForm schoolForm = this.mapper.fromDTO(schoolFormDto);
-		this.repo.save(schoolForm);
+		schoolForm = this.repo.save(schoolForm);
+		return schoolForm.getId();
 	}
 
 	public Collection<SchoolFormDto> getAllSchoolForms() {
