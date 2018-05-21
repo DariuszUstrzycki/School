@@ -23,8 +23,8 @@ import pl.ust.school.entity.SchoolForm;
 @AllArgsConstructor
 public class StudentDto {
 
-	private Long id;
-	private Boolean isDeleted;
+	private long id;
+	private boolean isDeleted;
 
 	@NotEmpty
 	private String firstName;
@@ -43,4 +43,16 @@ public class StudentDto {
 	@Past
 	private LocalDate birthDate;
 	private SchoolForm schoolForm;
+	
+	public boolean isNew() {
+        return this.id < 1;
+    }
+	
+	public boolean getIsDeleted() {
+		return this.isDeleted;
+	}
+	
+	public boolean setIsDeleted(boolean isDeleted) {
+		return this.isDeleted = isDeleted;
+	}
 }

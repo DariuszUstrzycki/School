@@ -83,8 +83,8 @@ public class StudentController {
 			return CREATE_OR_UPDATE_FORM_VIEW; 
 		}
 		
-		this.studentService.createStudent(studentDto);	
-		return "redirect:/student/view/" + studentDto.getId(); 
+		long id = this.studentService.createStudent(studentDto);	
+		return "redirect:/student/view/" + id; 
 	}
 
 	//////////////////////////// LIST ////////////////////////////

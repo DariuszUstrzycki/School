@@ -22,9 +22,10 @@ public class StudentServiceImpl implements StudentService {
 	@Autowired
 	private StudentMapper mapper;
 
-	public void createStudent(StudentDto studentDto) {
+	public long createStudent(StudentDto studentDto) {
 		Student student = this.mapper.fromDTO(studentDto);
-		this.repo.save(student);
+		student = this.repo.save(student);
+		return student.getId();
 	}
 
 	public Collection<StudentDto> getAllStudents() {

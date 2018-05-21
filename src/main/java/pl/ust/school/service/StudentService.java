@@ -7,7 +7,7 @@ import pl.ust.school.dto.StudentDto;
 
 public interface StudentService {
 	 
-	void createStudent(StudentDto studentDto);
+	long createStudent(StudentDto studentDto);
 	Collection<StudentDto> getAllStudents();
 	Optional<StudentDto> getStudentById(Long id);
 	void deleteStudent(Long id);
