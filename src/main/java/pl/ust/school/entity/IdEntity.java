@@ -24,7 +24,7 @@ public class IdEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long id;
 	
 	@NotNull
 	@Column(nullable=false)
@@ -32,7 +32,7 @@ public class IdEntity implements Serializable {
 	private boolean isDeleted;
 
     public boolean isNew() {
-        return this.id == null;
+        return this.id < 1;
     }
 
 }
