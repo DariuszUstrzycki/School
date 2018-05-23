@@ -90,12 +90,13 @@ public class SchoolFormController {
 	public String viewSchoolForm(@PathVariable long id, Model model) {
 
 		
-		Optional<SchoolFormDto> schoolformDto =  this.schoolFormService.getSchoolFormById(id);
+		Optional<SchoolFormDto> opt =  this.schoolFormService.getSchoolFormById(id);
 		
-		if(schoolformDto.isPresent()) {
+		if(opt.isPresent()) {
 			Set<SchoolFormDto> schoolformItems = new HashSet<>();
-			schoolformItems.add(schoolformDto.get());
-			model.addAttribute("schoolformName", schoolformDto.get().getName());
+			SchoolFormDto schoolFormDto = opt.get();
+			schoolformItems.add(schoolFormDto);
+			model.addAttribute("schoolformName", schoolFormDto.getName());
 			model.addAttribute(COLLECTION_OF_SCHOOLFORMS_NAME, schoolformItems);
 			model.addAttribute(COLLECTION_OF_STUDENTS_NAME, this.studentService.getStudentBySchoolForm_Id(id));
 			// 

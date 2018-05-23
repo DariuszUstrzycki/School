@@ -6,19 +6,34 @@
 <table border='1px'>
 <thead>
 <tr>
-    <th>Id</th><th>First Name</th><th>Last Name</th><th>Action</th>
+    <th>Id</th><th>First Name</th><th>Last Name</th><th>Email</th><th>Action</th>
 </tr>
 </thead>
 <tbody>
-
-<c:forEach items='${teacherItems}' var='teacher'>
 <tr>
-	<td>${teacher.id}</td>
-	<td>${teacher.firstName}</td>
-	<td>${teacher.lastName}</td>
-	<td><a href='${pageContext.request.contextPath}/teacher/delete/${teacher.id}/confirm'>Delete</a>
-	<a href='${pageContext.request.contextPath}/teacher/update/${teacher.id}'>Update</a>
+	<td>${teacherDto.id}</td>
+	<td>${teacherDto.firstName}</td>
+	<td>${teacherDto.lastName}</td>
+	<td>${teacherDto.email}</td>
+	<td><a href='${pageContext.request.contextPath}/teacher/delete/${teacherDto.id}/confirm'>Delete</a>
+	<a href='${pageContext.request.contextPath}/teacher/update/${teacherDto.id}'>Update</a>
+</tr>
+</tbody>
+</table><br><br>
+
+
+<table border='1px'> 
+<thead>
+<tr>
+    <th>Subjects</th>
+</tr>
+</thead>
+<tbody>
+<c:forEach items='${teacherDto.teacherSubjects}' var='teaSub'>
+<tr>
+	<td>${teaSub.subject.name}</td>
 </tr>
 </c:forEach>
 </tbody>
 </table>
+

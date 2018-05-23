@@ -7,29 +7,40 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import pl.ust.school.controller.RecordNotFoundException;
+import pl.ust.school.dto.SubjectDto;
 import pl.ust.school.dto.TeacherDto;
+import pl.ust.school.entity.Subject;
 import pl.ust.school.entity.Teacher;
+import pl.ust.school.entity.TeacherSubject;
 import pl.ust.school.mapper.TeacherMapper;
+import pl.ust.school.repository.SubjectRepository;
 import pl.ust.school.repository.TeacherRepository;
 
 @Service
 public class TeacherServiceImpl implements TeacherService{
 	
 	@Autowired
-	private TeacherRepository repo;
+	private TeacherRepository teacherRepo;
+	
+	@Autowired
+	private SubjectRepository subjectRepo;
 
 	@Autowired
 	private TeacherMapper mapper;
 
 	public long createTeacher(TeacherDto teacherDto) {
 		Teacher teacher = this.mapper.fromDTO(teacherDto);
-		teacher = this.repo.save(teacher);
+		System.err.println("---------------3.Teacher subjects after mapping to teacher: " + teacher.getTeacherSubjects().size());
+		
+		teacher = this.teacherRepo.save(teacher);
+		System.err.println("----------------7.Teacher subjects after saving the teacher: " + teacher.getTeacherSubjects().size());
 		return teacher.getId();
 	}
 
 	public Collection<TeacherDto> getAllTeachers() {
 
-		return this.repo.findAll()
+		return this.teacherRepo.findAll()
 				.stream()
 				.map(mapper::toDTO)
 				.collect(Collectors.toList());
@@ -37,16 +48,66 @@ public class TeacherServiceImpl implements TeacherService{
 
 	public Optional<TeacherDto> getTeacherById(Long id) {
 
-		return this.mapper.toDTO(repo.findById(id));
+		return this.mapper.toDTO(teacherRepo.findById(id));
 	}
 
 	public void deleteTeacher(Long id) {
 
-		Optional<Teacher> opt = this.repo.findById(id);
+		Optional<Teacher> opt = this.teacherRepo.findById(id);
 		opt.ifPresent(teacher -> {
 			teacher.remove();
-			this.repo.save(teacher);
+			this.teacherRepo.save(teacher);
 		});
 	}
+
+	@Override
+	public void removeTeacherSubject(long teacherId, long teacherSubjectId) {
+		Optional<Teacher> opt = this.teacherRepo.findById(teacherId);
+		opt.ifPresent(teacher -> {
+			teacher.removeTeacherSubject(teacherSubjectId);
+			this.teacherRepo.save(teacher);
+		});
+		
+	}
+	
+	@Override
+	public Collection<SubjectDto> getSubjectsNotTaughtByTeacher(TeacherDto teacherDto, Collection<SubjectDto> allSubjects) {
+		
+		for(TeacherSubject ts : teacherDto.getTeacherSubjects()) {
+			allSubjects.removeIf(subject -> subject.getName().equals(ts.getSubject().getName()));
+		}
+		
+		return allSubjects;
+		
+	}
+
+	@Override
+	public void addTeacherSubject(long teacherId, long subjectId) {
+		
+		TeacherSubject ts = new TeacherSubject();
+		Teacher teacher;
+		
+		Optional<Teacher> teacherOpt = this.teacherRepo.findById(teacherId);
+		if(teacherOpt.isPresent()) {
+			teacher = teacherOpt.get();
+			ts.setTeacher(teacher);
+		} else {
+			throw new RecordNotFoundException("No teacher with id " + teacherId + " has been found.");
+		}
+		
+		Optional<Subject> subjectOpt = this.subjectRepo.findById(subjectId);
+		if(subjectOpt.isPresent()) {
+			ts.setSubject(subjectOpt.get());
+		} else {
+			throw new RecordNotFoundException("No subject with id " + subjectId + " has been found.");
+		}
+		
+		System.err.println("******************Saving teacher........");
+		
+		teacher.addTeacherSubject(ts);
+		this.teacherRepo.save(teacher);
+		
+	}
+
 
 }

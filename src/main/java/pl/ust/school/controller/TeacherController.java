@@ -1,8 +1,6 @@
 package pl.ust.school.controller;
 
-import java.util.HashSet;
 import java.util.Optional;
-import java.util.Set;
 
 import javax.validation.Valid;
 
@@ -23,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import pl.ust.school.dto.TeacherDto;
-import pl.ust.school.entity.Teacher;
+import pl.ust.school.service.SubjectService;
 import pl.ust.school.service.TeacherService;
 
 @Controller
@@ -35,12 +33,16 @@ public class TeacherController {
 	private static final String DETAILS_VIEW = "detailsNLists/teacherDetails";
 	private static final String CONFIRM_DELETE_VIEW = "forms/confirmDelete";
 	
+	private static final String COLLECTION_OF_SUBJECTS_NAME = "subjectItems";
 	private static final String COLLECTION_OF_TEACHERS_NAME = "teacherItems";
 	private static final String ENTITY_NAME = "entityName";
 	private static final String ENTITY_NAME_VALUE = "teacher";
 
 	@Autowired
 	private TeacherService teacherService;
+	
+	@Autowired
+	private SubjectService subjectService;
 	
 	//////////////////////////////////////////////////////////
 	
@@ -90,9 +92,7 @@ public class TeacherController {
 		Optional<TeacherDto> opt = this.teacherService.getTeacherById(id);
 		
 		if (opt.isPresent()) {
-			Set<TeacherDto> teacherItems = new HashSet<>();
-			teacherItems.add(opt.get());
-			model.addAttribute(COLLECTION_OF_TEACHERS_NAME, teacherItems);
+			model.addAttribute("teacherDto", opt.get());
 		} else {
 			throw new RecordNotFoundException("No teacher with id " + id + " has been found.");
 		}
@@ -122,7 +122,16 @@ public class TeacherController {
 	public String showForm(@PathVariable long id, Model model) {
 		
 		Optional<TeacherDto> opt = this.teacherService.getTeacherById(id);
-		opt.ifPresent(model::addAttribute);
+		if (opt.isPresent()) {
+			TeacherDto teacherDto = opt.get();
+			model.addAttribute("teacherDto", teacherDto);
+			
+			model.addAttribute("remainingSubjects", 
+					this.teacherService.getSubjectsNotTaughtByTeacher(teacherDto, this.subjectService.getAllSubjects()));
+			
+		} else {
+			throw new RecordNotFoundException("No teacher with id " + id + " has been found.");
+		}
 		
 		return CREATE_OR_UPDATE_FORM_VIEW;
 	}
@@ -138,7 +147,25 @@ public class TeacherController {
 			return "redirect:/teacher/view/" + id;
 		}
 	}
+
+	////////////////////////// remove/add new subject to this teacher ////////////////////////// /////////////////////
 	
+
+	@GetMapping("/{teacherId}/subject/{teacherSubjectId}/remove")
+	private String removeSubjectFromTeacher(@PathVariable long teacherId, @PathVariable long teacherSubjectId,
+			Model model) {
+
+		this.teacherService.removeTeacherSubject(teacherId, teacherSubjectId);
+		return "redirect:/teacher/update/" + teacherId;
+	}
+
+	@GetMapping("/{teacherId}/subject/{subjectId}/add")
+	private String addSubjectToTeacher(@PathVariable long teacherId, @PathVariable long subjectId, Model model) {
+
+		this.teacherService.addTeacherSubject(teacherId, subjectId);
+		return "redirect:/teacher/update/" + teacherId;
+	}
+
 	//////////////////////exception handling ////////////////////////////////////
 	
 	@ExceptionHandler

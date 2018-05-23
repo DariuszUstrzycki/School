@@ -32,7 +32,7 @@ public class SubjectServiceImpl implements SubjectService {
 		return  this.repo.findAll()
 				.stream()
 				.map(mapper::toDTO)
-				.collect(Collectors.toList());
+				.collect(Collectors.toSet());
 		
 		 /*Collection<Subject> subjects = repo.findAll();
 		 Collection<SubjectDto> subjectDtos = new HashSet<>();
