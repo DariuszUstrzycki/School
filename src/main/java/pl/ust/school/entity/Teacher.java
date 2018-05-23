@@ -21,23 +21,25 @@ import lombok.ToString;
 @Table(name = "teachers")
 @Where(clause = "is_deleted=false")
 @Getter @Setter @NoArgsConstructor
-@ToString(callSuper=true, includeFieldNames = false, exclude= "teacherSubjects")
+@ToString(callSuper=true, includeFieldNames = false, exclude= "teacherSubjectSchforms")
 public class Teacher extends Person {
 
 	private static final long serialVersionUID = 1L;
 
 	@OneToMany(mappedBy = "teacher", cascade = { CascadeType.MERGE, CascadeType.PERSIST }, fetch=FetchType.EAGER)
-	private Set<TeacherSubject> teacherSubjects;
+	private Set<TeacherSubjectSchform> teacherSubjectSchforms;
 
 	/////////////// helper ///////////////////
 
-	public void addTeacherSubject(TeacherSubject teacherSubject) {
-		teacherSubjects.add(teacherSubject);
+	public void addTeacherSubjectSchform(TeacherSubjectSchform tss) {
+		teacherSubjectSchforms.add(tss);
 	}
 
-	public void removeTeacherSubject(long teacherSubjectId) {
-		for(TeacherSubject ts : this.getTeacherSubjects()) {
-			if(ts.getId() == teacherSubjectId) {
+	
+	// UWAGA: schoolform i subject tego nie mają:
+	public void removeTeacherSubjectSchform(long tssId) {
+		for(TeacherSubjectSchform ts : this.getTeacherSubjectSchforms()) {
+			if(ts.getId() == tssId) {
 				//ts.setTeacher(null);
 				ts.setDeleted(true);
 			}
@@ -46,26 +48,26 @@ public class Teacher extends Person {
 
 	/////////////// getters and setters ///////////////////
 
-	public Set<TeacherSubject> getTeacherSubjects() {
-		if (this.teacherSubjects == null) {
-			this.teacherSubjects = new HashSet<>();
+	public Set<TeacherSubjectSchform> getTeacherSubjectSchforms() {
+		if (this.teacherSubjectSchforms == null) {
+			this.teacherSubjectSchforms = new HashSet<>();
 		}
-		return this.teacherSubjects;
+		return this.teacherSubjectSchforms;
 	}
 	
 	/////////////// remove ///////////////////
 	
 	public void remove() {
 		this.setDeleted(true);
-		this.removeAllTeacherSubjects();
+		this.removeAllTeacherSubjectSchforms();
 	}
 	
-	private void removeAllTeacherSubjects() {
+	private void removeAllTeacherSubjectSchforms() {
 		
-		for(TeacherSubject ts : this.getTeacherSubjects()) {
+		for(TeacherSubjectSchform ts : this.getTeacherSubjectSchforms()) {
 			//ts.setTeacher(null);
 			ts.setDeleted(true);
 		}
-		this.teacherSubjects.clear();
+		this.teacherSubjectSchforms.clear();
 	}
 }

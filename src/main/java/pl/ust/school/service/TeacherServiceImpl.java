@@ -12,7 +12,7 @@ import pl.ust.school.dto.SubjectDto;
 import pl.ust.school.dto.TeacherDto;
 import pl.ust.school.entity.Subject;
 import pl.ust.school.entity.Teacher;
-import pl.ust.school.entity.TeacherSubject;
+import pl.ust.school.entity.TeacherSubjectSchform;
 import pl.ust.school.mapper.TeacherMapper;
 import pl.ust.school.repository.SubjectRepository;
 import pl.ust.school.repository.TeacherRepository;
@@ -31,10 +31,7 @@ public class TeacherServiceImpl implements TeacherService{
 
 	public long createTeacher(TeacherDto teacherDto) {
 		Teacher teacher = this.mapper.fromDTO(teacherDto);
-		System.err.println("---------------3.Teacher subjects after mapping to teacher: " + teacher.getTeacherSubjects().size());
-		
 		teacher = this.teacherRepo.save(teacher);
-		System.err.println("----------------7.Teacher subjects after saving the teacher: " + teacher.getTeacherSubjects().size());
 		return teacher.getId();
 	}
 
@@ -64,7 +61,7 @@ public class TeacherServiceImpl implements TeacherService{
 	public void removeTeacherSubject(long teacherId, long teacherSubjectId) {
 		Optional<Teacher> opt = this.teacherRepo.findById(teacherId);
 		opt.ifPresent(teacher -> {
-			teacher.removeTeacherSubject(teacherSubjectId);
+			teacher.removeTeacherSubjectSchform(teacherSubjectId);
 			this.teacherRepo.save(teacher);
 		});
 		
@@ -73,7 +70,7 @@ public class TeacherServiceImpl implements TeacherService{
 	@Override
 	public Collection<SubjectDto> getSubjectsNotTaughtByTeacher(TeacherDto teacherDto, Collection<SubjectDto> allSubjects) {
 		
-		for(TeacherSubject ts : teacherDto.getTeacherSubjects()) {
+		for(TeacherSubjectSchform ts : teacherDto.getTeacherSubjectSchforms()) {
 			allSubjects.removeIf(subject -> subject.getName().equals(ts.getSubject().getName()));
 		}
 		
@@ -84,7 +81,7 @@ public class TeacherServiceImpl implements TeacherService{
 	@Override
 	public void addTeacherSubject(long teacherId, long subjectId) {
 		
-		TeacherSubject ts = new TeacherSubject();
+		TeacherSubjectSchform ts = new TeacherSubjectSchform();
 		Teacher teacher;
 		
 		Optional<Teacher> teacherOpt = this.teacherRepo.findById(teacherId);
@@ -102,9 +99,7 @@ public class TeacherServiceImpl implements TeacherService{
 			throw new RecordNotFoundException("No subject with id " + subjectId + " has been found.");
 		}
 		
-		System.err.println("******************Saving teacher........");
-		
-		teacher.addTeacherSubject(ts);
+		teacher.addTeacherSubjectSchform(ts);
 		this.teacherRepo.save(teacher);
 		
 	}

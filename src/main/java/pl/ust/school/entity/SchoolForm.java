@@ -18,13 +18,16 @@ import lombok.ToString;
 @Entity
 @Table(name = "schoolForms")
 @Where(clause = "is_deleted=false")
-@Getter @Setter @NoArgsConstructor @ToString(callSuper=true, exclude= "students")
+@Getter @Setter @NoArgsConstructor @ToString(callSuper=true, exclude= { "students", "teacherSubjectSchforms" })
 public class SchoolForm extends NamedEntity {
 
 	private static final long serialVersionUID = 1L;
 
 	@OneToMany(mappedBy = "schoolForm", cascade = { CascadeType.MERGE, CascadeType.PERSIST })
 	private Set<Student> students; 
+	
+	@OneToMany(mappedBy = "schoolForm", cascade = { CascadeType.MERGE, CascadeType.PERSIST })
+	private Set<TeacherSubjectSchform> teacherSubjectSchforms;
 
 	/////////////// helper ///////////////////
 
@@ -35,7 +38,16 @@ public class SchoolForm extends NamedEntity {
 	public void removeStudent(Student student) {
 		student.setSchoolForm(null);
 	}
-
+	
+	public void addTeacherSubjectSchform(TeacherSubjectSchform tss) {
+		teacherSubjectSchforms.add(tss);
+	}
+	/*
+	public void removeTeacherSubjectSchform(TeacherSubjectSchform tss) {
+		// UWAGA: Teacher ma zupełnie inaczej!!!!
+		tss.setSchoolForm(null); 
+	}
+*/
 	/////////////// getters and setters ///////////////////
 
 	public Set<Student> getStudents() {
@@ -50,6 +62,7 @@ public class SchoolForm extends NamedEntity {
 	public void remove() {
 		this.setDeleted(true);
 		this.removeAllStudents();
+		this.removeAllTeacherSubjectSchforms();
 	}
 
 	private void removeAllStudents() {
@@ -59,5 +72,16 @@ public class SchoolForm extends NamedEntity {
 		}
 		this.students.clear();
 	}
-	
+
+	/////////////// remove tss ///////////////////
+
+	private void removeAllTeacherSubjectSchforms() {
+
+		for (TeacherSubjectSchform ts : this.getTeacherSubjectSchforms()) {
+			// ts.setSchoolForm(null);
+			ts.setDeleted(true);
+		}
+		this.teacherSubjectSchforms.clear();
+	}
+
 }

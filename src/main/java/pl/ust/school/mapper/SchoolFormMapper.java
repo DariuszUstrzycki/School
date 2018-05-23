@@ -18,6 +18,7 @@ public class SchoolFormMapper {
 					.isDeleted(schoolForm.isDeleted())
 					.name(schoolForm.getName())
 					.students(schoolForm.getStudents())
+					.teacherSubjectSchforms(schoolForm.getTeacherSubjectSchforms())
 					.build();
 	}
 	
@@ -29,14 +30,15 @@ public class SchoolFormMapper {
 		}
 	}
 
-	public SchoolForm fromDTO(SchoolFormDto dto) {
+	public SchoolForm fromDTO(SchoolFormDto schoolFormDto) {
 		
 		SchoolForm schoolForm = new SchoolForm();
-		schoolForm.setId(dto.getId());
+		schoolForm.setId(schoolFormDto.getId());
 		
-		schoolForm.setDeleted(dto.getIsDeleted());
-		schoolForm.setName(dto.getName());
-		schoolForm.setStudents(dto.getStudents());
+		schoolForm.setDeleted(schoolFormDto.getIsDeleted());
+		schoolForm.setName(schoolFormDto.getName());
+		schoolForm.setStudents(schoolFormDto.getStudents());
+		schoolForm.setTeacherSubjectSchforms(schoolFormDto.getTeacherSubjectSchforms());
 		return schoolForm;
 	}
 	
