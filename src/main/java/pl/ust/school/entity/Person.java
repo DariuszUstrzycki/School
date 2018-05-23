@@ -35,7 +35,8 @@ public class Person extends IdEntity {
     private String lastName;
     
     @Email
-    @Column(unique = true, nullable=false)
+    //TODO replace the line below with this: @Column(unique = true, nullable=false)
+    @Column(nullable=false)
     private String email;
     
     @NotEmpty
