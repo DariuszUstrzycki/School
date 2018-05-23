@@ -14,10 +14,10 @@
 </div>
 
 
-	<h1>Student information</h1>
+	<h1>Student details</h1>
 
 	<div id="content">
-		<%@ include file="../jspf/studentAddButton.jspf" %>
+		
 		
 		<c:if test="${empty notFound}">
 		<%@ include file="../jspf/studentDetailsFrag.jspf" %>

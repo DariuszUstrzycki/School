@@ -13,10 +13,10 @@
     <%@ include file="../jspf/header.jspf" %>
 </div>
 
-<h1>School form information</h1>
+<h1>School form details</h1>
 
 <div id="content">
-	<%@ include file="../jspf/schoolformAddButton.jspf" %>
+	
 	
 	<c:if test="${empty notFound}">
 	<h3>Students in ${schoolformName}:</h3>
@@ -29,7 +29,7 @@
 	
 </div>
 
-<div id="header">
+<div id="footer">
     <%@ include file="../jspf/footer.jspf" %>
 </div>
 </body>
