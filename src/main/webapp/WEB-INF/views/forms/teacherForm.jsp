@@ -22,7 +22,7 @@
 			<c:set var="actionType" scope="page" value="Update" />
 		</c:if>
 
-		<h1>${actionType}ateacher</h1>
+		<h1>${actionType} a teacher</h1>
 
 		<form:form action="#" method="POST" modelAttribute="teacherDto">
 

@@ -15,8 +15,8 @@
 	<td>${teacherDto.firstName}</td>
 	<td>${teacherDto.lastName}</td>
 	<td>${teacherDto.email}</td>
-	<td><a href='${pageContext.request.contextPath}/teacher/delete/${teacherDto.id}/confirm'>Delete</a>
-	<a href='${pageContext.request.contextPath}/teacher/update/${teacherDto.id}'>Update</a>
+	<td><a href='${pageContext.request.contextPath}/teacher/update/${teacherDto.id}'>Update</a></td>
+	<%-- <a href='${pageContext.request.contextPath}/teacher/delete/${teacherDto.id}/confirm'>Delete</a> --%>
 </tr>
 </tbody>
 </table><br><br>

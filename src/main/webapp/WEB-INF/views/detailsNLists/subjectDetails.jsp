@@ -19,7 +19,6 @@
 	
 	
 	<c:if test="${empty notFound}">
-	<h3>Schoolform|Teacher for  ${subjectName}: (nie bedzie dzialac)</h3>
 	<%@ include file="../jspf/subjectDetailsFrag.jspf" %>
 	</c:if>
 	

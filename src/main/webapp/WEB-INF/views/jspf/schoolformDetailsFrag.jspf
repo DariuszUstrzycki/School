@@ -19,8 +19,8 @@
 <tr>
 	<td>${form.id}</td>
 	<td>${form.name}</td>
-	<td><a href='${pageContext.request.contextPath}/schoolform/delete/${form.id}/confirm'>Delete</a>
-	<a href='${pageContext.request.contextPath}/schoolform/update/${form.id}'>Update</a>
+	 <td><a href='${pageContext.request.contextPath}/schoolform/update/${form.id}'>Update</a></td>
+	 	<%-- <a href='${pageContext.request.contextPath}/schoolform/delete/${form.id}/confirm'>Delete</a> --%>
 </tr>
 </c:forEach>
 </tbody>

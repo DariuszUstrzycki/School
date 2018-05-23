@@ -17,9 +17,9 @@
 	<td>${teacher.id}</td>
 	<td>${teacher.firstName}</td>
 	<td>${teacher.lastName}</td>
-	<td><a href='${pageContext.request.contextPath}/teacher/delete/${teacher.id}/confirm'>Delete</a>
 	<a href='${pageContext.request.contextPath}/teacher/update/${teacher.id}'>Update</a>
 	<a href='${pageContext.request.contextPath}/teacher/view/${teacher.id}'>View</a></td>
+	<%-- <a href='${pageContext.request.contextPath}/teacher/delete/${teacher.id}/confirm'>Delete</a> --%>
 </tr>
 </c:forEach>
 

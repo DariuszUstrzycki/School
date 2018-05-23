@@ -17,8 +17,8 @@
 	<td>${student.firstName}</td>
 	<td>${student.lastName}</td>
 	<td>${student.schoolForm.name}</td>
-	<td><a href='${pageContext.request.contextPath}/student/delete/${student.id}/confirm'>Delete</a>
-	<a href='${pageContext.request.contextPath}/student/update/${student.id}'>Update</a>
+	<td><a href='${pageContext.request.contextPath}/student/update/${student.id}'>Update</a>
+	<a href='${pageContext.request.contextPath}/student/delete/${student.id}/confirm'>Delete</a></td>
 </tr>
 </c:forEach>
 </tbody>

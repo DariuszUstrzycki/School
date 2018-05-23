@@ -14,7 +14,7 @@
 </div>
 <div>
 
-<h3>Do you really want to delete ${entityName} with id ${id}?</h3>
+<h3>Do you really want to delete <c:out value="${entityName}" default="item"/> with id ${id}?</h3>
 
 <form action='${pageContext.request.contextPath}/${entityName}/delete/${id}' method="GET">
 <input type="submit" value="Confirm">
