@@ -19,49 +19,48 @@ import lombok.ToString;
 @Table(name = "subjects")
 @Where(clause = "is_deleted=false")
 @Getter @Setter @NoArgsConstructor
-@ToString(callSuper=true, includeFieldNames = false, exclude= "teacherSubjects")
+@ToString(callSuper=true, includeFieldNames = false, exclude= "tSSs")
 public class Subject extends NamedEntity {
 
 	private static final long serialVersionUID = 1L;
 
 	@OneToMany(mappedBy = "subject", cascade = { CascadeType.MERGE, CascadeType.PERSIST })
-	private Set<TeacherSubject> teacherSubjects;
+	private Set<TSS> tSSs;
 
 	/////////////// helper ///////////////////
 
-	public void addTeacherSubject(TeacherSubject teacherSubject) {
-		teacherSubjects.add(teacherSubject);
+	public void addTSS(TSS tss) {
+		tSSs.add(tss);
 	}
 
-	public void removeTeacherSubject(TeacherSubject teacherSubject) {
-		System.err.println("\n---2.teacherSubject.setSubject(null) ");
+	public void removeTSS(TSS tss) {
 
-		teacherSubject.setSubject(null); // Subject methods are identical to Teacher's, with this exception
+		tss.setSubject(null); // Subject methods are identical to Teacher's, with this exception
 											// setTeacher(null)
 	}
 
 	/////////////// getters and setters ///////////////////
 
-	public Set<TeacherSubject> getTeacherSubjects() {
-		if (this.teacherSubjects == null) {
-			this.teacherSubjects = new HashSet<>();
+	public Set<TSS> getTSSs() {
+		if (this.tSSs == null) {
+			this.tSSs = new HashSet<>();
 		}
-		return this.teacherSubjects;
+		return this.tSSs;
 	}
 	
 	/////////////// remove ///////////////////
 	
 	public void remove() {
 		this.setDeleted(true);
-		this.removeAllTeacherSubjects();
+		this.removeAllTSSs();
 	}
 	
-	private void removeAllTeacherSubjects() {
+	private void removeAllTSSs() {
 		
-		for(TeacherSubject ts : this.getTeacherSubjects()) {
+		for(TSS ts : this.getTSSs()) {
 			ts.setSubject(null);
 		}
-		this.teacherSubjects.clear();
+		this.tSSs.clear();
 	}
 
 }

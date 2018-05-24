@@ -73,16 +73,16 @@ public class StudentJPATest {
 	}
 	
 	@Test
-	public void shouldRemoveStudentFromSchoolForm_WhenStudentIsDeleted() {
+	public void shouldRemoveStudentFromSchoolform_WhenStudentIsDeleted() {
 		
 		//assert
 		Student notDeleted = createStudent("NotDeleted");
-		SchoolForm form = new SchoolForm();
+		Schoolform form = new Schoolform();
 		form.setName("First Year");
-		notDeleted.setSchoolForm(form);
+		notDeleted.setSchoolform(form);
 		
 		Student deleted = createStudent("deleted");
-		deleted.setSchoolForm(form);
+		deleted.setSchoolform(form);
 		
 		assertThat(form.getStudents().size()).isEqualTo(2);
 		

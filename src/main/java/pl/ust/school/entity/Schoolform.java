@@ -16,24 +16,35 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Table(name = "schoolForms")
+@Table(name = "schoolforms") 
 @Where(clause = "is_deleted=false")
-@Getter @Setter @NoArgsConstructor @ToString(callSuper=true, exclude= "students")
-public class SchoolForm extends NamedEntity {
+@Getter @Setter @NoArgsConstructor @ToString(callSuper=true, exclude= { "students", "tSSs" })
+public class Schoolform extends NamedEntity {
 
 	private static final long serialVersionUID = 1L;
 
-	@OneToMany(mappedBy = "schoolForm", cascade = { CascadeType.MERGE, CascadeType.PERSIST })
+	@OneToMany(mappedBy = "schoolform", cascade = { CascadeType.MERGE, CascadeType.PERSIST })
 	private Set<Student> students; 
+	
+	@OneToMany(mappedBy = "schoolform", cascade = { CascadeType.MERGE, CascadeType.PERSIST })
+	private Set<TSS> tSSs; 
 
 	/////////////// helper ///////////////////
 
-	public void addStudent(Student student) {
-		students.add(student);
+	public void addStudent(Student s) {
+		students.add(s);
 	}
 
-	public void removeStudent(Student student) {
-		student.setSchoolForm(null);
+	public void removeStudent(Student s) {
+		s.setSchoolform(null);
+	}
+	
+	public void addTSS(TSS ts) {
+		tSSs.add(ts);
+	}
+
+	public void removeTSS(TSS tss) {
+		tss.setSchoolform(null);
 	}
 
 	/////////////// getters and setters ///////////////////
@@ -44,20 +55,36 @@ public class SchoolForm extends NamedEntity {
 		}
 		return this.students;
 	}
+	
+	public Set<TSS> getTSSs() {
+		if (this.tSSs == null) {
+			this.tSSs = new HashSet<>();
+		}
+		return this.tSSs;
+	}
 
 	/////////////// remove ///////////////////
 
 	public void remove() {
 		this.setDeleted(true);
 		this.removeAllStudents();
+		this.removeAllTSSs();
 	}
 
 	private void removeAllStudents() {
 		
 		for (Student s : this.getStudents()) {
-			s.setSchoolForm(null);
+			s.setSchoolform(null);
 		}
 		this.students.clear();
+	}
+	
+	private void removeAllTSSs() {
+		
+		for (TSS s : this.getTSSs()) {
+			s.setSchoolform(null);
+		}
+		this.tSSs.clear();
 	}
 	
 }

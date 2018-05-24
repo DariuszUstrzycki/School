@@ -14,7 +14,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import pl.ust.school.entity.SchoolForm;
+import pl.ust.school.entity.Schoolform;
 
 @Builder
 @Getter
@@ -42,7 +42,7 @@ public class StudentDto {
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@Past
 	private LocalDate birthDate;
-	private SchoolForm schoolForm;
+	private Schoolform schoolform;
 	
 	public boolean isNew() {
         return this.id < 1;

@@ -7,18 +7,21 @@
 <table border='1px'>
 <thead>
 <tr>
-    <th>Id</th><th>School form</th><th>Action</th>
+    <th>Id</th><th>Subject</th><th>Teacher</th><th>School form</th><th>Action</th>
 </tr>
 </thead>
 <tbody>
 
-<c:forEach items='${schoolformItems}' var='form'>
+<c:forEach items='${tssItems}' var='tss'>
 <tr>
-	<td>${form.id}</td>
-	<td>${form.name}</td>
+	<td>${tss.id}</td>
+	<td>${tss.subject.name}</td>
+	<td>${tss.teacher.firstName} ${tss.teacher.lastName}</td>
+	<td>${tss.schoolform.name}</td>
+	
 	<td>
-	<a href='${pageContext.request.contextPath}/schoolform/update/${form.id}'>Update</a>
-	<a href='${pageContext.request.contextPath}/schoolform/view/${form.id}'>View</a></td>
+	<a href='${pageContext.request.contextPath}/schoolform/update/${tss.id}'>Update</a>
+	<a href='${pageContext.request.contextPath}/schoolform/view/${tss.id}'>View</a></td>
 	<%-- <a href='${pageContext.request.contextPath}/schoolform/delete/${form.id}/confirm'>Delete</a> --%>
 </tr>
 </c:forEach>

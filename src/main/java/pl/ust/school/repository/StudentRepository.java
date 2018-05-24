@@ -23,8 +23,8 @@ public interface StudentRepository extends AppBaseRepository<Student, Long> {
 	Collection<Student> findTop10By(Sort sort);
 	Slice<Student> findByLastNameOrderByEmailAsc(String lastName, Pageable of);
 	
-	@Query("select s from Student s where s.schoolForm.id =	?1")
-	Collection<Student> findBySchoolForm_Id(long id); // 1. _ nie jest tu konieczny. 2.Search by field SchoolForm in
+	@Query("select s from Student s where s.schoolform.id =	?1")
+	Collection<Student> findBySchoolform_Id(long id); // 1. _ nie jest tu konieczny. 2.Search by field Schoolform in
 														// Student
 
 	
@@ -57,14 +57,14 @@ public interface StudentRepository extends AppBaseRepository<Student, Long> {
 	Collection<Student> findByFirstNameAndLastNameAllIgnoreCaseOrderByLastNameAsc(@Param("first") String firstName, 
 																					@Param("second") String lastName);
 	
-	Collection<Student> findBySchoolFormIsNull(); // isNull
-	Collection<Student> findBySchoolFormNameIgnoreCase(String schoolformName); 
+	Collection<Student> findBySchoolformIsNull(); // isNull
+	Collection<Student> findBySchoolformNameIgnoreCase(String schoolformName); 
 	Collection<Student> findByLastNameIgnoreCaseOrderByLastNameAsc(String lastName); // findBy...IgnoreCaseOrderBy...Asc
 	Collection<Student> findByBirthDate(LocalDate birthDate);
 	Collection<Student> findByBirthDateBefore(LocalDate date); // Before After
 	
-	long countBySchoolFormName(String firstName);
-	long countBySchoolFormId(String firstName);
+	long countBySchoolformName(String firstName);
+	long countBySchoolformId(String firstName);
 	
 	*/
 	

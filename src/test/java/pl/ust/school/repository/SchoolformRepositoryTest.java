@@ -14,80 +14,80 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import pl.ust.school.entity.SchoolForm;
+import pl.ust.school.entity.Schoolform;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
-public class SchoolFormRepositoryTest {
+public class SchoolformRepositoryTest {
 
 	@Autowired
-	SchoolFormRepository schoolFormRepo;
+	SchoolformRepository schoolformRepo;
 
-	private SchoolForm schoolForm;
+	private Schoolform schoolform;
 
 	@Before
 	public void setUp() {
 
-		schoolForm = new SchoolForm();
-		schoolForm.setName("First Year");
+		schoolform = new Schoolform();
+		schoolform.setName("First Year");
 	}
 
 	@Test
-	public void shouldFindSchoolFormById() {
+	public void shouldFindSchoolformById() {
 
 		// given
-		schoolFormRepo.save(this.schoolForm);
+		schoolformRepo.save(this.schoolform);
 
 		// when
-		Optional<SchoolForm> opt = schoolFormRepo.findById(this.schoolForm.getId());
-		SchoolForm found = opt.get();
+		Optional<Schoolform> opt = schoolformRepo.findById(this.schoolform.getId());
+		Schoolform found = opt.get();
 
 		// then
-		assertThat(this.schoolForm.getId()).isEqualTo(found.getId());
+		assertThat(this.schoolform.getId()).isEqualTo(found.getId());
 	}
 
 	@Test
-	public void shouldFindSchoolFormByName() {
+	public void shouldFindSchoolformByName() {
 
 		// given
-		schoolFormRepo.save(this.schoolForm);
+		schoolformRepo.save(this.schoolform);
 
 		// when
-		Collection<SchoolForm> retrieved = schoolFormRepo.findByName((this.schoolForm.getName()));
+		Collection<Schoolform> retrieved = schoolformRepo.findByName((this.schoolform.getName()));
 
 		// then
 		assertThat(retrieved).hasSize(1);
-		assertThat(retrieved).first().isEqualTo(this.schoolForm);
+		assertThat(retrieved).first().isEqualTo(this.schoolform);
 	}
 	
 	@Test
-	public void shouldThrowExceptionWhenSavingSchoolFormWithNonUniqueEmail() {
+	public void shouldThrowExceptionWhenSavingSchoolformWithNonUniqueEmail() {
 		
 			assertThatCode(() -> {
 				//when
-				schoolFormRepo.save(this.schoolForm);
+				schoolformRepo.save(this.schoolform);
 	    		//then
 	    	}).doesNotThrowAnyException();
 			
 			
 			//given
-			SchoolForm differentSchoolForm = new SchoolForm();
-			differentSchoolForm.setName("Unique name");
+			Schoolform differentSchoolform = new Schoolform();
+			differentSchoolform.setName("Unique name");
 			
 			assertThatCode(() -> {
 				//when
-				schoolFormRepo.save(differentSchoolForm);
+				schoolformRepo.save(differentSchoolform);
 	    		//then
 	    	}).doesNotThrowAnyException();
 			
 			
 			//given
-			SchoolForm sameName = new SchoolForm();
-			sameName.setName(this.schoolForm.getName());
+			Schoolform sameName = new Schoolform();
+			sameName.setName(this.schoolform.getName());
     		    	
 			//when
     		Throwable thrown = catchThrowable(() -> { 
-    			schoolFormRepo.save(sameName); 
+    			schoolformRepo.save(sameName); 
     		});
     		
     		// then
@@ -95,18 +95,18 @@ public class SchoolFormRepositoryTest {
     }
 	
 	@Test
-	public void shouldNotReturnSchoolForm_WhenIsDeletedIsTrue() {
+	public void shouldNotReturnSchoolform_WhenIsDeletedIsTrue() {
 		
 		// given
-		schoolFormRepo.save(this.schoolForm);
+		schoolformRepo.save(this.schoolform);
 		
-		SchoolForm deleted = new SchoolForm();
+		Schoolform deleted = new Schoolform();
 		deleted.setName("Third year");
 		deleted.setDeleted(true);
-		schoolFormRepo.save(deleted);
+		schoolformRepo.save(deleted);
 		
 		//then 
-		Iterable<SchoolForm> list = schoolFormRepo.findAll();
+		Iterable<Schoolform> list = schoolformRepo.findAll();
 		assertThat(list).size().isEqualTo(1);
 		
 		

@@ -22,13 +22,13 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
-import pl.ust.school.dto.SchoolFormDto;
-import pl.ust.school.service.SchoolFormService;
+import pl.ust.school.dto.SchoolformDto;
+import pl.ust.school.service.SchoolformService;
 import pl.ust.school.service.StudentService;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(SchoolFormController.class)
-public class SchoolFormControllerTest {
+@WebMvcTest(SchoolformController.class)
+public class SchoolformControllerTest {
 
 	private static final String CREATE_OR_UPDATE_FORM_VIEW = "forms/schoolformForm";
 	private static final String LIST_VIEW = "detailsNLists/schoolformList";
@@ -45,30 +45,30 @@ public class SchoolFormControllerTest {
 	private MockMvc mockMvc;
 
 	@MockBean
-	private SchoolFormService schoolFormService;
+	private SchoolformService schoolformService;
 
 	@MockBean
 	private StudentService studentService;
 
-	private SchoolFormDto schoolform1A;
+	private SchoolformDto schoolform1A;
 
 	@Before
 	public void setup() {
-		schoolform1A = new SchoolFormDto();
+		schoolform1A = new SchoolformDto();
 		schoolform1A.setId(TEST_SCHOOLFORM_ID);
 		schoolform1A.setName("1A");
 
-		given(this.schoolFormService.getSchoolFormById(TEST_SCHOOLFORM_ID)).willReturn(Optional.of(this.schoolform1A));
+		given(this.schoolformService.getSchoolformById(TEST_SCHOOLFORM_ID)).willReturn(Optional.of(this.schoolform1A));
 
 		System.err.println("----------@Before setup()-----------------"); // useful when debugging as it's easy to see
 																			// when each test starts/ends
 	}
 
 	@Test
-	public void shouldShowSchoolFormWhenGetRequest() throws Exception {
+	public void shouldShowSchoolformWhenGetRequest() throws Exception {
 		mockMvc.perform(get("/schoolform/save")).andDo(print()).andExpect(status().isOk())
-				.andExpect(model().attributeExists("schoolFormDto"))
-				// // .andExpect(model().attribute("teacher", SchoolFormDTO.class))
+				.andExpect(model().attributeExists("schoolformDto"))
+				// // .andExpect(model().attribute("teacher", SchoolformDTO.class))
 				.andExpect(view().name(CREATE_OR_UPDATE_FORM_VIEW));
 	}
 
@@ -82,16 +82,16 @@ public class SchoolFormControllerTest {
 	public void shouldFindErrorWhenNameIsEmptyString() throws Exception {
 
 		mockMvc.perform(post("/schoolform/save").param("name", "")).andDo(print()).andExpect(status().isOk())
-				.andExpect(model().attributeHasErrors("schoolFormDto"))
-				.andExpect(model().attributeHasFieldErrors("schoolFormDto", "name"))
+				.andExpect(model().attributeHasErrors("schoolformDto"))
+				.andExpect(model().attributeHasFieldErrors("schoolformDto", "name"))
 				.andExpect(view().name(CREATE_OR_UPDATE_FORM_VIEW));
 	}
 
 	@Test
 	public void shouldRetrieveListOfSchooForms() throws Exception {
 
-		given(this.schoolFormService.getAllSchoolForms())
-				.willReturn(Lists.newArrayList(schoolform1A, new SchoolFormDto()));
+		given(this.schoolformService.getAllSchoolforms())
+				.willReturn(Lists.newArrayList(schoolform1A, new SchoolformDto()));
 		mockMvc.perform(get("/schoolform/list")).andDo(print()).andExpect(status().isOk())
 				.andExpect(model().attributeExists(COLLECTION_OF_SCHOOLFORMS_NAME)).andExpect(view().name(LIST_VIEW));
 	}
@@ -106,7 +106,7 @@ public class SchoolFormControllerTest {
 
 	@Test
 	public void shouldReturn404HttpWhenNotFound() throws Exception {
-		given(this.schoolFormService.getSchoolFormById(-1L)).willReturn((Optional.empty()));
+		given(this.schoolformService.getSchoolformById(-1L)).willReturn((Optional.empty()));
 		mockMvc.perform(get("/schoolform/view/{id}", -1)).andDo(print()).andExpect(status().isNotFound())
 				.andExpect(model().attributeExists("notFound")).andExpect(view().name(DETAILS_VIEW));
 	}
@@ -115,7 +115,7 @@ public class SchoolFormControllerTest {
 	public void shouldShowUpdateForm() throws Exception {
 
 		mockMvc.perform(get("/schoolform/update/{id}", TEST_SCHOOLFORM_ID)).andDo(print()).andExpect(status().isOk())
-				.andExpect(model().attributeExists("schoolFormDto")).andExpect(view().name(CREATE_OR_UPDATE_FORM_VIEW));
+				.andExpect(model().attributeExists("schoolformDto")).andExpect(view().name(CREATE_OR_UPDATE_FORM_VIEW));
 	}
 
 	@Test
@@ -135,8 +135,8 @@ public class SchoolFormControllerTest {
 		mockMvc.perform(post("/schoolform/update/{id}", TEST_SCHOOLFORM_ID).contentType(MediaType.TEXT_HTML)
 
 				.param("name", "")).andDo(print()).andExpect(status().isOk())
-				.andExpect(model().attributeHasErrors("schoolFormDto"))
-				.andExpect(model().attributeHasFieldErrors("schoolFormDto", "name")).andExpect(model().errorCount(1))
+				.andExpect(model().attributeHasErrors("schoolformDto"))
+				.andExpect(model().attributeHasFieldErrors("schoolformDto", "name")).andExpect(model().errorCount(1))
 				.andExpect(view().name(CREATE_OR_UPDATE_FORM_VIEW));
 	}
 

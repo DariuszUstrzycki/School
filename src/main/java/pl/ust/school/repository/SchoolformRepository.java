@@ -4,12 +4,12 @@ import java.util.Collection;
 
 import org.springframework.transaction.annotation.Transactional;
 
-import pl.ust.school.entity.SchoolForm;
+import pl.ust.school.entity.Schoolform;
 
-public interface SchoolFormRepository extends AppBaseRepository<SchoolForm, Long> {
+public interface SchoolformRepository extends AppBaseRepository<Schoolform, Long> {
 	
 	@Transactional(readOnly = true)  
-	Collection<SchoolForm> findByName(String name);
+	Collection<Schoolform> findByName(String name);
 	
 	
 }

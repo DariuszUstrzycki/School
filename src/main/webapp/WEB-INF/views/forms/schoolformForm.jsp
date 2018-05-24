@@ -15,16 +15,16 @@
 
 <div>
 
-<c:if test="${schoolFormDto['new']}">
+<c:if test="${schoolformDto['new']}">
 	<c:set var = "actionType" scope = "page" value = "Add"/>
 </c:if>
-<c:if test="${ not schoolFormDto['new']}">
+<c:if test="${ not schoolformDto['new']}">
 	<c:set var = "actionType" scope = "page" value = "Update"/>
 </c:if>	
 
 <h1>${actionType} a school form</h1>
 
-<form:form action="#" method="POST" modelAttribute="schoolFormDto">
+<form:form action="#" method="POST" modelAttribute="schoolformDto">
 
 <form:hidden path="isDeleted"/>
 

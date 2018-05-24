@@ -21,23 +21,23 @@ import lombok.ToString;
 @Table(name = "teachers")
 @Where(clause = "is_deleted=false")
 @Getter @Setter @NoArgsConstructor
-@ToString(callSuper=true, includeFieldNames = false, exclude= "teacherSubjects")
+@ToString(callSuper=true, includeFieldNames = false, exclude= "tSSs")
 public class Teacher extends Person {
 
 	private static final long serialVersionUID = 1L;
 
 	@OneToMany(mappedBy = "teacher", cascade = { CascadeType.MERGE, CascadeType.PERSIST }, fetch=FetchType.EAGER)
-	private Set<TeacherSubject> teacherSubjects;
+	private Set<TSS> tSSs;
 
 	/////////////// helper ///////////////////
 
-	public void addTeacherSubject(TeacherSubject teacherSubject) {
-		teacherSubjects.add(teacherSubject);
+	public void addTSS(TSS tss) {
+		tSSs.add(tss);
 	}
 
-	public void removeTeacherSubject(long teacherSubjectId) {
-		for(TeacherSubject ts : this.getTeacherSubjects()) {
-			if(ts.getId() == teacherSubjectId) {
+	public void removeTSS(long tssId) {
+		for(TSS ts : this.getTSSs()) {
+			if(ts.getId() == tssId) {
 				//ts.setTeacher(null);
 				ts.setDeleted(true);
 			}
@@ -46,26 +46,26 @@ public class Teacher extends Person {
 
 	/////////////// getters and setters ///////////////////
 
-	public Set<TeacherSubject> getTeacherSubjects() {
-		if (this.teacherSubjects == null) {
-			this.teacherSubjects = new HashSet<>();
+	public Set<TSS> getTSSs() {
+		if (this.tSSs == null) {
+			this.tSSs = new HashSet<>();
 		}
-		return this.teacherSubjects;
+		return this.tSSs;
 	}
 	
 	/////////////// remove ///////////////////
 	
 	public void remove() {
 		this.setDeleted(true);
-		this.removeAllTeacherSubjects();
+		this.removeAllTSSs();
 	}
 	
-	private void removeAllTeacherSubjects() {
+	private void removeAllTSSs() {
 		
-		for(TeacherSubject ts : this.getTeacherSubjects()) {
+		for(TSS ts : this.getTSSs()) {
 			//ts.setTeacher(null);
 			ts.setDeleted(true);
 		}
-		this.teacherSubjects.clear();
+		this.tSSs.clear();
 	}
 }

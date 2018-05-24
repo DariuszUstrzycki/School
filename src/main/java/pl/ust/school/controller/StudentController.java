@@ -24,9 +24,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import pl.ust.school.dto.SchoolFormDto;
+import pl.ust.school.dto.SchoolformDto;
 import pl.ust.school.dto.StudentDto;
-import pl.ust.school.service.SchoolFormService;
+import pl.ust.school.service.SchoolformService;
 import pl.ust.school.service.StudentService;
 
 @Controller
@@ -47,13 +47,13 @@ public class StudentController {
 	private StudentService studentService;
 	
 	@Autowired
-	private SchoolFormService schoolFormService;
+	private SchoolformService schoolformService;
 	
 	////////////////////////////////////////////////////////// 
 	
 	@ModelAttribute(COLLECTION_OF_SCHOOLFORMS_NAME)
-    public Collection<SchoolFormDto> populateSchoolFormItems() {
-        return this.schoolFormService.getAllSchoolForms();
+    public Collection<SchoolformDto> populateSchoolformItems() {
+        return this.schoolformService.getAllSchoolforms();
     }
 		
 	//////////////////////////////////////////////////////////

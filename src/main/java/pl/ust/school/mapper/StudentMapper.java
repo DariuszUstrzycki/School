@@ -23,7 +23,7 @@ public class StudentMapper {
 					.email(student.getEmail())
 					.password(student.getPassword())
 					.telephone(student.getTelephone())
-					.schoolForm(student.getSchoolForm()) 
+					.schoolform(student.getSchoolform()) 
 					.build();
 	}
 	
@@ -46,7 +46,7 @@ public class StudentMapper {
 		student.setEmail(dto.getEmail());
 		student.setPassword(dto.getPassword());
 		student.setTelephone(dto.getTelephone());
-		student.setSchoolForm(dto.getSchoolForm());
+		student.setSchoolform(dto.getSchoolform());
 		return student;
 	}
 

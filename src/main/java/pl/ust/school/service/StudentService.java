@@ -11,6 +11,6 @@ public interface StudentService {
 	Collection<StudentDto> getAllStudents();
 	Optional<StudentDto> getStudentById(Long id);
 	void deleteStudent(Long id);
-	Collection<StudentDto> getStudentBySchoolForm_Id(long id);
+	Collection<StudentDto> getStudentBySchoolform_Id(long id);
 
 }

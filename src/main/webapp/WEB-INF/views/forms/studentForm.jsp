@@ -50,11 +50,11 @@
 <form:input placeholder="" path="birthDate" />
 <form:errors path="birthDate" cssClass='error'></form:errors><br><br>
 
-<form:select	path="schoolForm.id">
+<form:select	path="schoolform.id">
 				<!-- <form:option	label="undefined" value="100"/> -->
 				<form:options	items="${schoolformItems}" itemLabel="name" itemValue="id"/>
 </form:select>
-<form:errors path='schoolForm.id' cssClass='error'></form:errors><br><br>
+<form:errors path='schoolform.id' cssClass='error'></form:errors><br><br>
 
 <input type="submit" value="${actionType}" />
 <input type="reset" value="Reset" />

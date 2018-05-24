@@ -23,9 +23,9 @@ import pl.ust.school.controller.HomeController;
  
 
 // wszystkie controllers są tworzone, jeśli tu nie zawęzimy ich 
- // np. @WebMvcTest(SchoolFormController.class) W konsekwencji wymagane sa również collaborators/dependencies
+ // np. @WebMvcTest(SchoolformController.class) W konsekwencji wymagane sa również collaborators/dependencies
 // tych wszystkich kontrolerów. Jesli ich nie dodamy przez  @MockBean, to application will fail to start, eg
-// No qualifying bean of type 'pl.ust.school.repository.SchoolFormRepository' available
+// No qualifying bean of type 'pl.ust.school.repository.SchoolformRepository' available
 
 // with @WebMvcTest Spring Boot is only instantiating the web layer, not the whole context. In an application with multiple controllers 
 //you can even ask for just one to be instantiated, using, for example @WebMvcTest(HomeController.class)

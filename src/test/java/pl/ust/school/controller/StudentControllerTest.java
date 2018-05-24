@@ -23,8 +23,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import pl.ust.school.dto.StudentDto;
-import pl.ust.school.entity.SchoolForm;
-import pl.ust.school.service.SchoolFormService;
+import pl.ust.school.entity.Schoolform;
+import pl.ust.school.service.SchoolformService;
 import pl.ust.school.service.StudentService;
 
 
@@ -53,7 +53,7 @@ public class StudentControllerTest {
 	private StudentService studentService;
 
 	@MockBean
-	private SchoolFormService schoolFormService;
+	private SchoolformService schoolformService;
 
 	private StudentDto john;
 
@@ -67,7 +67,7 @@ public class StudentControllerTest {
 		john.setFirstName("John");
 		john.setLastName("Brown");
 		john.setPassword("123");
-		john.setSchoolForm(new SchoolForm());
+		john.setSchoolform(new Schoolform());
 		john.setTelephone("1234567");
 		
 		given(this.studentService.getStudentById(TEST_STUDENT_ID)).willReturn( Optional.of(this.john));

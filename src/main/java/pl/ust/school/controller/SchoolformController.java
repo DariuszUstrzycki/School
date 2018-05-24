@@ -22,13 +22,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import pl.ust.school.dto.SchoolFormDto;
-import pl.ust.school.service.SchoolFormService;
+import pl.ust.school.dto.SchoolformDto;
+import pl.ust.school.service.SchoolformService;
 import pl.ust.school.service.StudentService;
 
 @Controller
 @RequestMapping("schoolform") 
-public class SchoolFormController {
+public class SchoolformController {
 	
 	private static final String CREATE_OR_UPDATE_FORM_VIEW = "forms/schoolformForm";
 	private static final String LIST_VIEW = "detailsNLists/schoolformList";
@@ -41,7 +41,7 @@ public class SchoolFormController {
 	private static final String ENTITY_NAME_VALUE = "schoolform";
 	
 	@Autowired
-	private SchoolFormService schoolFormService;
+	private SchoolformService schoolformService;
 	
 	@Autowired
 	private StudentService studentService;
@@ -54,13 +54,13 @@ public class SchoolFormController {
 	////////////////////////////SAVE ////////////////////////////
 	
 	@GetMapping("/save")
-	public String showForm(SchoolFormDto schoolFormDto, Model model) {
+	public String showForm(SchoolformDto schoolformDto, Model model) {
 		model.addAttribute(ENTITY_NAME, ENTITY_NAME_VALUE); // endpoint should be read some config file
 		return CREATE_OR_UPDATE_FORM_VIEW;
 	}
 	
 	@PostMapping("/save")
-	public String saveSchoolForm(@Valid SchoolFormDto schoolFormDto, BindingResult result, Model model) {
+	public String saveSchoolform(@Valid SchoolformDto schoolformDto, BindingResult result, Model model) {
 		
 		model.addAttribute(ENTITY_NAME, ENTITY_NAME_VALUE); // endpoint should be read some config file
 		
@@ -71,15 +71,15 @@ public class SchoolFormController {
 			return CREATE_OR_UPDATE_FORM_VIEW; 
 		}
 		
-		long id = this.schoolFormService.createSchoolForm(schoolFormDto);	
+		long id = this.schoolformService.createSchoolform(schoolformDto);	
 		return "redirect:/schoolform/view/" + id; 
 	}
 		
 	////////////////////////////LIST ////////////////////////////
 	
 	@RequestMapping("/list")
-	public String listSchoolForms(@RequestParam(defaultValue = "0", required = false) int min, Model model) {
-		model.addAttribute(COLLECTION_OF_SCHOOLFORMS_NAME, this.schoolFormService.getAllSchoolForms());
+	public String listSchoolforms(@RequestParam(defaultValue = "0", required = false) int min, Model model) {
+		model.addAttribute(COLLECTION_OF_SCHOOLFORMS_NAME, this.schoolformService.getAllSchoolforms());
 		model.addAttribute(ENTITY_NAME, ENTITY_NAME_VALUE);
 		return LIST_VIEW;
 	}
@@ -87,18 +87,18 @@ public class SchoolFormController {
 	//////////////////////////// VIEW ONE ////////////////////////////
 
 	@RequestMapping("view/{id}")
-	public String viewSchoolForm(@PathVariable long id, Model model) {
+	public String viewSchoolform(@PathVariable long id, Model model) {
 
 		
-		Optional<SchoolFormDto> opt =  this.schoolFormService.getSchoolFormById(id);
+		Optional<SchoolformDto> opt =  this.schoolformService.getSchoolformById(id);
 		
 		if(opt.isPresent()) {
-			Set<SchoolFormDto> schoolformItems = new HashSet<>();
-			SchoolFormDto schoolFormDto = opt.get();
-			schoolformItems.add(schoolFormDto);
-			model.addAttribute("schoolformName", schoolFormDto.getName());
+			Set<SchoolformDto> schoolformItems = new HashSet<>();
+			SchoolformDto schoolformDto = opt.get();
+			schoolformItems.add(schoolformDto);
+			model.addAttribute("schoolformName", schoolformDto.getName());
 			model.addAttribute(COLLECTION_OF_SCHOOLFORMS_NAME, schoolformItems);
-			model.addAttribute(COLLECTION_OF_STUDENTS_NAME, this.studentService.getStudentBySchoolForm_Id(id));
+			model.addAttribute(COLLECTION_OF_STUDENTS_NAME, this.studentService.getStudentBySchoolform_Id(id));
 			// 
 		} else {
 			throw new RecordNotFoundException("No school form with id " + id + " has been found.");
@@ -116,9 +116,9 @@ public class SchoolFormController {
 	}
 
 	@RequestMapping(value = "/delete/{id}")
-	public String deleteSchoolForm(@PathVariable long id) {
+	public String deleteSchoolform(@PathVariable long id) {
 		
-		 this.schoolFormService.deleteSchoolForm(id);
+		 this.schoolformService.deleteSchoolform(id);
 		
 		
 		return "redirect:/schoolform/list";
@@ -128,7 +128,7 @@ public class SchoolFormController {
 	//////////////////////////// UPDATE ////////////////////////////
 	@GetMapping("/update/{id}")
 	public String showForm(@PathVariable long id, Model model) {
-		Optional<SchoolFormDto> subjectDto = this.schoolFormService.getSchoolFormById(id);
+		Optional<SchoolformDto> subjectDto = this.schoolformService.getSchoolformById(id);
 		
 		if(subjectDto.isPresent()) {
 			model.addAttribute(subjectDto.get());
@@ -139,13 +139,13 @@ public class SchoolFormController {
 	
 
 	@PostMapping("/update/{id}")
-	public String updateSchoolForm(@Valid SchoolFormDto schoolFormDto, BindingResult result, @PathVariable long id, Model model) {
+	public String updateSchoolform(@Valid SchoolformDto schoolformDto, BindingResult result, @PathVariable long id, Model model) {
 		
 		if (result.hasErrors()) {
 	         return CREATE_OR_UPDATE_FORM_VIEW;
 	     } else {
-	    	 schoolFormDto.setId(id);
-	         this.schoolFormService.createSchoolForm(schoolFormDto);
+	    	 schoolformDto.setId(id);
+	         this.schoolformService.createSchoolform(schoolformDto);
 	         return "redirect:/schoolform/view/" + id;
 	     }
 		

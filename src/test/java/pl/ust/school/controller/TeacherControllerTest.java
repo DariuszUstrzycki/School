@@ -10,6 +10,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Optional;
 
 import org.assertj.core.util.Lists;
@@ -22,7 +24,11 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import pl.ust.school.dto.SubjectDto;
 import pl.ust.school.dto.TeacherDto;
+import pl.ust.school.entity.Subject;
+import pl.ust.school.entity.TSS;
+import pl.ust.school.service.SubjectService;
 import pl.ust.school.service.TeacherService;
 
 @RunWith(SpringRunner.class)
@@ -44,6 +50,9 @@ public class TeacherControllerTest {
 
 	@MockBean
 	private TeacherService teacherService;
+	
+	@MockBean
+	private SubjectService subjectService;
 
 	private TeacherDto john;
 	
@@ -70,7 +79,7 @@ public class TeacherControllerTest {
 		mockMvc.perform(get("/teacher/save"))
 		.andDo(print())
 		.andExpect(status().isOk())
-        .andExpect(model().attributeExists("teacher")) 
+        .andExpect(model().attributeExists("teacherDto")) 
         // .andExpect(model().attribute("teacher",  TeacherDTO.class))
 		.andExpect(view().name(CREATE_OR_UPDATE_FORM_VIEW));
 	}
@@ -126,7 +135,6 @@ public class TeacherControllerTest {
 		mockMvc.perform(get("/teacher/view/{id}", TEST_TEACHER_ID))
 				.andDo(print())
 				.andExpect(status().isOk())
-				.andExpect(model().attributeExists(COLLECTION_OF_TEACHERS_NAME))
 				.andExpect(view().name(DETAILS_VIEW));
 	}
 
@@ -142,6 +150,9 @@ public class TeacherControllerTest {
 
 	@Test
 	public void shouldShowUpdateForm() throws Exception {
+		
+		given(this.teacherService.getSubjectsNotTaughtByTeacher( new TeacherDto(), new ArrayList<SubjectDto>()))
+													.willReturn(Lists.newArrayList( new SubjectDto()));
 
 		mockMvc.perform(get("/teacher/update/{id}", TEST_TEACHER_ID))
 				.andDo(print())
