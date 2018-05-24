@@ -31,17 +31,18 @@ public class TSSDto {
 		return this.isDeleted;
 	}
 	
-	public boolean setIsDeleted(boolean isDeleted) {
-		return this.isDeleted = isDeleted;
+	public void setIsDeleted(boolean isDeleted) {
+		 this.isDeleted = isDeleted;
 	}
 	
 	@Override
 	public String toString() {
+		String unassigned = "unassigned";
 		return "TS:" + this.getId() + ". " 
-				+ ((subject == null) ? "unassigned" : subject.getName())+ "-" 
+				+ ((subject == null) ? unassigned : subject.getName())+ "-" 
 				+ ((teacher == null) ? "" : teacher.getFirstName()) + " " 
-				+ ((teacher == null) ? "unassigned" : teacher.getLastName())	+ "-" 
-				+ ((schoolform == null) ? "unassigned" : schoolform.getName()) + "<br>";
+				+ ((teacher == null) ? unassigned : teacher.getLastName())	+ "-" 
+				+ ((schoolform == null) ? unassigned : schoolform.getName()) + "<br>";
 	}
 }
 

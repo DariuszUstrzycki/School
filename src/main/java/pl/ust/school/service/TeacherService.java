@@ -12,8 +12,8 @@ public interface TeacherService {
 	Collection<TeacherDto> getAllTeachers();
 	Optional<TeacherDto> getTeacherById(Long id);
 	void deleteTeacher(Long id);
-	void removeTeacherSubject(long teacherId, long teacherSubjectId);
-	void addTeacherSubject(long teacherId, long subjectId);
+	void removeTSS(long teacherId, long tssId);
+	void addTSS(long teacherId, long subjectId);
 	Collection<SubjectDto> getSubjectsNotTaughtByTeacher(TeacherDto teacherDto, Collection<SubjectDto> allSubjects);
 
 }

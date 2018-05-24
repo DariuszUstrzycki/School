@@ -30,8 +30,8 @@ public class SubjectDto {
 		return this.isDeleted;
 	}
 	
-	public boolean setIsDeleted(boolean isDeleted) {
-		return this.isDeleted = isDeleted;
+	public void setIsDeleted(boolean isDeleted) {
+		 this.isDeleted = isDeleted;
 	}
 	
 	

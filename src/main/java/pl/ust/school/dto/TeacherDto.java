@@ -15,8 +15,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import pl.ust.school.dto.StudentDto.StudentDtoBuilder;
-import pl.ust.school.entity.Schoolform;
 import pl.ust.school.entity.TSS;
 
 @Builder
@@ -55,8 +53,8 @@ public class TeacherDto {
 		return this.isDeleted;
 	}
 	
-	public boolean setIsDeleted(boolean isDeleted) {
-		return this.isDeleted = isDeleted;
+	public void setIsDeleted(boolean isDeleted) {
+		 this.isDeleted = isDeleted;
 	}
 	
 	
@@ -85,8 +83,8 @@ In the class containing the target: A builder() method, which creates a new inst
 			return this;
 		}
 		
-		public Builder withTeacherSubjects(Set<TeacherSubject> teacherSubjects) {
-			teacherDto.teacherSubjects = teacherSubjects;
+		public Builder withTSSs(Set<TSS> tsss) {
+			teacherDto.tsss = tsss;
 			return this;
 		}
 

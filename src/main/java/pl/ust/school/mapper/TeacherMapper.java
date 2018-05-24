@@ -5,8 +5,6 @@ import java.util.Optional;
 import org.springframework.stereotype.Component;
 
 import pl.ust.school.dto.TeacherDto;
-import pl.ust.school.dto.TeacherDto;
-import pl.ust.school.entity.Teacher;
 import pl.ust.school.entity.Teacher;
 
 @Component

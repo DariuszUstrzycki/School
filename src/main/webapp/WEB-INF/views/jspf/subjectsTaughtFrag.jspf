@@ -13,7 +13,7 @@
 		</tr>
 	</thead>
 	<tbody>
-		<c:forEach items='${teacherDto.teacherSubjects}' var='teaSub'>
+		<c:forEach items='${teacherDto.tsss}' var='teaSub'>
 			<tr>
 				<td>${teaSub.subject.name}</td>
 				<td>${teaSub.id}</td>

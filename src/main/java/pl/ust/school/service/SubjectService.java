@@ -3,8 +3,6 @@ package pl.ust.school.service;
 import java.util.Collection;
 import java.util.Optional;
 
-import org.springframework.stereotype.Controller;
-
 import pl.ust.school.dto.SubjectDto;
 
 public interface SubjectService {

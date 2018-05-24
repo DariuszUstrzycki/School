@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import pl.ust.school.service.TSSService;
 
 @Controller
-@RequestMapping("/teachersubject")
+@RequestMapping("/tss") 
 public class TSSController {
 
 	private static final String CREATE_OR_UPDATE_FORM_VIEW = "forms/tssForm";

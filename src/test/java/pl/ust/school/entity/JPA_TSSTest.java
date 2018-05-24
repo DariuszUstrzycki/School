@@ -14,7 +14,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class) 
 @DataJpaTest
-public class JPATeacherSubjectTest {
+public class JPA_TSSTest {
 	
 	@Autowired 
 	 private TestEntityManager tem;
@@ -29,7 +29,7 @@ public class JPATeacherSubjectTest {
     // the test doesnt use  studentRepository - will fail if brak @Entity, or @Id @GeneratedValue
 	
 	 @Ignore @Test //TODO
-	public void shouldRemoveTeachersAndSubjects_When_TeacherSubject_IsDeleted() {
+	public void shouldRemoveTeachersAndSubjects_When_TSS_IsDeleted() {
 		//arrange
 				Subject subject1 = new Subject();
 				subject1.setName("Maths");

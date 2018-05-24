@@ -5,9 +5,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Component;
 
 import pl.ust.school.dto.StudentDto;
-import pl.ust.school.dto.SubjectDto;
 import pl.ust.school.entity.Student;
-import pl.ust.school.entity.Subject;
 
 @Component
 public class StudentMapper {

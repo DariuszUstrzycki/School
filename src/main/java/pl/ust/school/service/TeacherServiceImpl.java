@@ -61,10 +61,10 @@ public class TeacherServiceImpl implements TeacherService{
 	}
 
 	@Override
-	public void removeTeacherSubject(long teacherId, long teacherSubjectId) {
+	public void removeTSS(long teacherId, long tssId) {
 		Optional<Teacher> opt = this.teacherRepo.findById(teacherId);
 		opt.ifPresent(teacher -> {
-			teacher.removeTSS(teacherSubjectId);
+			teacher.removeTSS(tssId);
 			this.teacherRepo.save(teacher);
 		});
 		
@@ -82,7 +82,7 @@ public class TeacherServiceImpl implements TeacherService{
 	}
 
 	@Override
-	public void addTeacherSubject(long teacherId, long subjectId) {
+	public void addTSS(long teacherId, long subjectId) {
 		
 		TSS ts = new TSS();
 		Teacher teacher;

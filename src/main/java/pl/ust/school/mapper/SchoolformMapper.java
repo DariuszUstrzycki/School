@@ -5,9 +5,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Component;
 
 import pl.ust.school.dto.SchoolformDto;
-import pl.ust.school.dto.SubjectDto;
 import pl.ust.school.entity.Schoolform;
-import pl.ust.school.entity.Subject;
 
 @Component
 public class SchoolformMapper {

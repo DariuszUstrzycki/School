@@ -122,11 +122,12 @@ public class TSS extends IdEntity {
 
 	@Override
 	public String toString() {
+		String unassigned = "unassigned";
 		return "TS:" + this.getId() + ". " 
-				+ ((subject == null) ? "unassigned" : subject.getName())+ "-" 
+				+ ((subject == null) ? unassigned : subject.getName())+ "-" 
 				+ ((teacher == null) ? "" : teacher.getFirstName()) + " " 
-				+ ((teacher == null) ? "unassigned" : teacher.getLastName())	+ "-" 
-				+ ((schoolform == null) ? "unassigned" : schoolform.getName()) + "<br>";
+				+ ((teacher == null) ? unassigned : teacher.getLastName())	+ "-" 
+				+ ((schoolform == null) ? unassigned : schoolform.getName()) + "<br>";
 	}
 	
 	///////////////// to string ///////////
