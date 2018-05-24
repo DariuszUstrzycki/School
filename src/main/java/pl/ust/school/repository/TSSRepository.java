@@ -6,8 +6,10 @@ import pl.ust.school.entity.TSS;
 
 public interface TSSRepository extends AppBaseRepository<TSS, Long> {
 	
-	Collection<TSS> findTSSBySchoolformId(long id);
-	Collection<TSS> findTSSByTeacherId(long id);
-	Collection<TSS> findTSSBySubjectId(long id);
+	Collection<TSS> findByOrderBySchoolformAsc();
+	
+	Collection<TSS> findTSSBySchoolformIdOrderBySubjectAsc(long id);
+	Collection<TSS> findTSSByTeacherIdOrderBySubjectAsc(long id);
+	Collection<TSS> findTSSBySubjectIdOrderByTeacherAsc(long id);
 
 }

@@ -13,14 +13,22 @@
     <%@ include file="../jspf/header.jspf" %>
 </div>
 
-<h1>Teacher/Subject/School form</h1>
+<h1>TSS details</h1>
 
 <div id="content">
-	<%@ include file="../jspf/tssAddButton.jspf" %>
-	<%@ include file="../jspf/tssListFrag.jspf" %>
+	
+	
+	<c:if test="${empty notFound}">
+	<%@ include file="../jspf/tssDetailsFrag.jspf" %>
+	</c:if>
+	
+	<c:if test="${not empty notFound}">
+		<p class='error'>${notFound}</p>
+	</c:if>
+
 </div>
 
-<div id="header">
+<div id="footer">
     <%@ include file="../jspf/footer.jspf" %>
 </div>
 </body>

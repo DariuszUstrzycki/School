@@ -4,6 +4,10 @@
 <%@	taglib	uri="http://www.springframework.org/tags/form"	prefix="form" %>
 
 
+<form method="GET" action='${pageContext.request.contextPath}/tss/save'>
+<input type="submit" value="Add new TSS">
+</form><br>
+
 <table border='1px'>
 <thead>
 <tr>
@@ -11,21 +15,16 @@
 </tr>
 </thead>
 <tbody>
-
 <c:forEach items='${tssItems}' var='tss'>
 <tr>
 	<td>${tss.id}</td>
 	<td>${tss.schoolform.name}</td>
 	<td>${tss.subject.name}</td>
 	<td>${tss.teacher.firstName} ${tss.teacher.lastName}</td>
-	
-	
-	<td>
-	<a href='${pageContext.request.contextPath}/tss/update/${tss.id}'>Update</a>
-	<a href='${pageContext.request.contextPath}/tss/view/${tss.id}'>View</a></td>
-	<%-- <a href='${pageContext.request.contextPath}/tss/delete/${tss.id}/confirm'>Delete</a> --%>
-</tr>
+	<td><a href='${pageContext.request.contextPath}/tss/update/${tss.id}'>Update</a></td>
+<%-- 	<a href='${pageContext.request.contextPath}/tss/delete/${tss.id}/confirm'>Delete</a> --%>
+ </tr>
 </c:forEach>
-
 </tbody>
-</table>
+</table><br><br>
+

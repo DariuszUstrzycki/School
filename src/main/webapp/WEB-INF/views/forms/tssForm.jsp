@@ -15,10 +15,10 @@
 
 <div>
 
-<c:if test="${studentDto['new']}">
+<c:if test="${tssDto['new']}">
 	<c:set var = "actionType" scope = "page" value = "Add"/>
 </c:if>
-<c:if test="${ not studentDto['new']}">
+<c:if test="${ not tssDto['new']}">
 	<c:set var = "actionType" scope = "page" value = "Update"/>
 </c:if>	
 

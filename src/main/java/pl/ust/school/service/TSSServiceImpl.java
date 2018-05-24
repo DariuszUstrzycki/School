@@ -27,42 +27,42 @@ public class TSSServiceImpl implements TSSService {
 	@Override
 	public Collection<TSSDto> getAllTSSs() {
 		
-		return  this.tsRepo.findAll()
+		return  this.tsRepo.findByOrderBySchoolformAsc()
 				.stream()
 				.map(mapper::toDTO)
-				.collect(Collectors.toSet());
+				.collect(Collectors.toList());
 	}
 	
 	
 	@Override
 	public Collection<TSSDto> getTSSsBySchoolformId(long id) {
-		return this.tsRepo.findTSSBySchoolformId(id)
+		return this.tsRepo.findTSSBySchoolformIdOrderBySubjectAsc(id)
 				.stream()
 				.map(mapper::toDTO)
-				.collect(Collectors.toSet());
+				.collect(Collectors.toList());
 	}
 	
 	@Override
 	public Collection<TSSDto> getTSSsByTeacherId(long id) {
-		return this.tsRepo.findTSSByTeacherId(id)
+		return this.tsRepo.findTSSByTeacherIdOrderBySubjectAsc(id)
 				.stream()
 				.map(mapper::toDTO)
-				.collect(Collectors.toSet());
+				.collect(Collectors.toList());
 	}
 	
 	@Override
 	public Collection<TSSDto> getTSSsBySubjectId(long id) {
-		return this.tsRepo.findTSSBySubjectId(id)
+		return this.tsRepo.findTSSBySubjectIdOrderByTeacherAsc(id)
 				.stream()
 				.map(mapper::toDTO)
-				.collect(Collectors.toSet());
+				.collect(Collectors.toList());
 	}
 
 	@Override
-	public long createTSS(TSSDto tsDto) {
-		TSS tss = this.mapper.fromDTO(tsDto);
-		tss = this.tsRepo.save(tss);
-		return tss.getId();
+	public long createTSS(TSSDto tSSDto) {
+		TSS tSS = this.mapper.fromDTO(tSSDto);
+		tSS = this.tsRepo.save(tSS);
+		return tSS.getId();
 	}
 
 	@Override
@@ -73,9 +73,9 @@ public class TSSServiceImpl implements TSSService {
 	@Override
 	public void deleteTSS(long id) {
 		Optional<TSS> opt = this.tsRepo.findById(id);
-		opt.ifPresent(tss -> {
-			tss.remove();
-			this.tsRepo.save(tss);
+		opt.ifPresent(tSS -> {
+			tSS.remove();
+			this.tsRepo.save(tSS);
 		});
 	}
 
