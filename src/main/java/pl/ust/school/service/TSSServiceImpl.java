@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import pl.ust.school.dto.TSSDto;
+import pl.ust.school.entity.Student;
+import pl.ust.school.entity.TSS;
 import pl.ust.school.mapper.TSSMapper;
 import pl.ust.school.repository.TSSRepository;
 
@@ -56,25 +58,25 @@ public class TSSServiceImpl implements TSSService {
 				.collect(Collectors.toSet());
 	}
 
-
 	@Override
 	public long createTSS(TSSDto tsDto) {
-		// TODO Auto-generated method stub
-		return 0;
+		TSS tss = this.mapper.fromDTO(tsDto);
+		tss = this.tsRepo.save(tss);
+		return tss.getId();
 	}
-
 
 	@Override
 	public Optional<TSSDto> getTSSById(long id) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.mapper.toDTO(this.tsRepo.findById(id));
 	}
-
 
 	@Override
 	public void deleteTSS(long id) {
-		// TODO Auto-generated method stub
-		
+		Optional<TSS> opt = this.tsRepo.findById(id);
+		opt.ifPresent(tss -> {
+			tss.remove();
+			this.tsRepo.save(tss);
+		});
 	}
 
 

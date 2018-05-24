@@ -37,7 +37,7 @@ public class StudentServiceImpl implements StudentService {
 
 	public Optional<StudentDto> getStudentById(Long id) {
 
-		return this.mapper.toDTO(repo.findById(id));
+		return this.mapper.toDTO(this.repo.findById(id));
 	}
 
 	public void deleteStudent(Long id) {
