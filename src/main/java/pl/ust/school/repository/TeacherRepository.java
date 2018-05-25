@@ -9,6 +9,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.Query;
 
 import pl.ust.school.entity.Teacher;
+import pl.ust.school.entity.TeacherSubject;
 
 public interface TeacherRepository extends AppBaseRepository<Teacher, Long>{
 	
@@ -22,5 +23,6 @@ public interface TeacherRepository extends AppBaseRepository<Teacher, Long>{
 	Collection<Teacher> findByLastNameOrderByLastNameAsc(String lastName); 
 	Collection<Teacher> findTop10By(Sort sort);
 	Slice<Teacher> findByLastNameOrderByEmailAsc(String lastName, Pageable of);
+	
 
 }

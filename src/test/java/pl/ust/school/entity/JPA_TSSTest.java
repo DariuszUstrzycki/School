@@ -11,15 +11,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit4.SpringRunner;
-
+/*
 @RunWith(SpringRunner.class) 
-@DataJpaTest
+@DataJpaTest*/
 public class JPA_TSSTest {
-	
+	/*
 	@Autowired 
-	 private TestEntityManager tem;
+	 private TestEntityManager tem;*/
 	 
-	 private TSS ts;
+	 //private TSS ts;
 	 
 	/*@Before
 	public void setUp() {
@@ -28,6 +28,8 @@ public class JPA_TSSTest {
 	}*/
     // the test doesnt use  studentRepository - will fail if brak @Entity, or @Id @GeneratedValue
 	
+	
+	/*
 	 @Ignore @Test //TODO
 	public void shouldRemoveTeachersAndSubjects_When_TSS_IsDeleted() {
 		//arrange
@@ -44,13 +46,13 @@ public class JPA_TSSTest {
 				ts2.setTeacher(teacher1);
 				ts2.setSubject(subject2);
 				
-				assertThat(teacher1.getTSSs().size()).isEqualTo(2);
+				assertThat(teacher1.getTeacherSubjects().size()).isEqualTo(2);
 				
 				//act
 				ts1.remove();
 				
 				//assert
-				assertThat(teacher1.getTSSs().size()).isEqualTo(1);
+				assertThat(teacher1.getTeacherSubjects().size()).isEqualTo(1);
 		
 	}
 
@@ -68,5 +70,5 @@ public class JPA_TSSTest {
 
 		return teacher;
 	}
-
+*/
 }

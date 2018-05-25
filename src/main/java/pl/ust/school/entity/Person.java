@@ -2,6 +2,7 @@
 package pl.ust.school.entity;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
@@ -56,6 +57,30 @@ public class Person extends IdEntity {
     @Past
     @Column(name = "birth_date")
     private LocalDate birthDate;
+    
+    @Override
+	public int hashCode() {
+		return Objects.hash( firstName, lastName, email, password, address, telephone,  birthDate);
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if ( this == o ) {
+            return true;
+        }
+        if ( o == null || getClass() != o.getClass() ) {
+            return false;
+        }
+        Person person = (Person) o;
+        return  Objects.equals( this.firstName, person.firstName ) &&
+        		Objects.equals( this.lastName, person.lastName ) &&
+        		Objects.equals( this.email, person.email ) &&
+        		Objects.equals( this.password, person.password ) &&
+        		Objects.equals( this.address, person.address ) &&
+        		Objects.equals( this.telephone, person.telephone ) &&
+        		Objects.equals( this.birthDate, person.birthDate );
+	}
+    
     
 
 }

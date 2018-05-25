@@ -81,10 +81,10 @@ public class SchoolformJPATest {
 		assertThat(this.schoolform.getStudents().size()).isEqualTo(2);
 		assertThat(student1.getSchoolform()).isNotNull();
 		assertThat(student2.getSchoolform()).isNotNull();
-		
+		/*
 		//act
 		this.schoolform.remove();
-		
+		*/
 		//assert
 		assertThat(this.schoolform.getStudents().size()).isEqualTo(0);
 		assertThat(student1.getSchoolform()).isNull();

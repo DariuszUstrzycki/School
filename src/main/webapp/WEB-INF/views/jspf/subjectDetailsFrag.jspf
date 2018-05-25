@@ -20,7 +20,6 @@
 	<td>${subject.id}</td>
 	<td>${subject.name}</td>
 	<td><a href='${pageContext.request.contextPath}/subject/update/${subject.id}'>Update</a></td>
-<%-- 	<a href='${pageContext.request.contextPath}/subject/delete/${subject.id}/confirm'>Delete</a> --%>
  </tr>
 </c:forEach>
 </tbody>

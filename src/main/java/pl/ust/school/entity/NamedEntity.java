@@ -1,6 +1,8 @@
 
 package pl.ust.school.entity;
 
+import java.util.Objects;
+
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.validation.constraints.NotEmpty;
@@ -24,5 +26,22 @@ public class NamedEntity extends IdEntity {
     // https://prasanthnath.wordpress.com/2013/04/24/natural-ids-in-hibernate/
 	@Column(unique = true, nullable = true) 
     private String name;
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash( name );
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if ( this == o ) {
+            return true;
+        }
+        if ( o == null || getClass() != o.getClass() ) {
+            return false;
+        }
+        NamedEntity namedEntity = (NamedEntity) o;
+        return Objects.equals( this.name, namedEntity.name );
+	}
 
 }

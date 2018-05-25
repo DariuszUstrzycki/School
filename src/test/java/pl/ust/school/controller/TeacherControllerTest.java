@@ -11,7 +11,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Optional;
 
 import org.assertj.core.util.Lists;
@@ -26,8 +25,6 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import pl.ust.school.dto.SubjectDto;
 import pl.ust.school.dto.TeacherDto;
-import pl.ust.school.entity.Subject;
-import pl.ust.school.entity.TSS;
 import pl.ust.school.service.SubjectService;
 import pl.ust.school.service.TeacherService;
 
@@ -68,7 +65,7 @@ public class TeacherControllerTest {
 		john.setPassword("123");
 		john.setTelephone("1234567");
 		
-		given(this.teacherService.getTeacherById(TEST_TEACHER_ID)).willReturn(Optional.of(this.john));
+		given(this.teacherService.getTeacherDtoById(TEST_TEACHER_ID)).willReturn(Optional.of(this.john));
 
 		System.err.println("----------@Before setup()-----------------"); // useful when debugging as it's easy to see
 																			// when each test starts/ends
@@ -121,7 +118,7 @@ public class TeacherControllerTest {
 	@Test
 	public void shouldRetrieveListOfTeachers() throws Exception {
 
-		given(this.teacherService.getAllTeachers()).willReturn(Lists.newArrayList(john, new TeacherDto()));
+		given(this.teacherService.getAllTeacherDtos()).willReturn(Lists.newArrayList(john, new TeacherDto()));
 		mockMvc.perform(get("/teacher/list"))
 				.andDo(print())
 				.andExpect(status().isOk())
@@ -140,7 +137,7 @@ public class TeacherControllerTest {
 
 	@Test
 	public void shouldReturn404HttpWhenNotFound() throws Exception {
-		given(this.teacherService.getTeacherById(-1L)).willReturn((Optional.empty()));
+		given(this.teacherService.getTeacherDtoById(-1L)).willReturn((Optional.empty()));
 		
 		mockMvc.perform(get("/teacher/view/{id}", -1))
 				.andDo(print())
@@ -151,7 +148,7 @@ public class TeacherControllerTest {
 	@Test
 	public void shouldShowUpdateForm() throws Exception {
 		
-		given(this.teacherService.getSubjectsNotTaughtByTeacher( new TeacherDto(), new ArrayList<SubjectDto>()))
+		given(this.teacherService.getSubjectDtosNotTaughtByTeacher( new TeacherDto(), new ArrayList<SubjectDto>()))
 													.willReturn(Lists.newArrayList( new SubjectDto()));
 
 		mockMvc.perform(get("/teacher/update/{id}", TEST_TEACHER_ID))

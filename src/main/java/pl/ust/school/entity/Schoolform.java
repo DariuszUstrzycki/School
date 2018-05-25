@@ -25,10 +25,10 @@ public class Schoolform extends NamedEntity {
 
 	@OneToMany(mappedBy = "schoolform", cascade = { CascadeType.MERGE, CascadeType.PERSIST })
 	private Set<Student> students; 
-	
+	/*
 	@OneToMany(mappedBy = "schoolform", cascade = { CascadeType.MERGE, CascadeType.PERSIST })
 	private Set<TSS> tSSs; 
-
+*/
 	/////////////// helper ///////////////////
 
 	public void addStudent(Student s) {
@@ -38,15 +38,15 @@ public class Schoolform extends NamedEntity {
 	public void removeStudent(Student s) {
 		s.setSchoolform(null);
 	}
-	
-	public void addTSS(TSS ts) {
+	/*
+	public void addTeacherSubject(TSS ts) {
 		tSSs.add(ts);
 	}
 
 	public void removeTSS(TSS tss) {
 		tss.setSchoolform(null);
 	}
-
+*/
 	/////////////// getters and setters ///////////////////
 
 	public Set<Student> getStudents() {
@@ -55,21 +55,21 @@ public class Schoolform extends NamedEntity {
 		}
 		return this.students;
 	}
-	
+	/*
 	public Set<TSS> getTSSs() {
 		if (this.tSSs == null) {
 			this.tSSs = new HashSet<>();
 		}
 		return this.tSSs;
-	}
+	}*/
 
 	/////////////// remove ///////////////////
-
+/*
 	public void remove() {
 		this.setDeleted(true);
 		this.removeAllStudents();
 		this.removeAllTSSs();
-	}
+	}*/
 
 	private void removeAllStudents() {
 		
@@ -78,13 +78,13 @@ public class Schoolform extends NamedEntity {
 		}
 		this.students.clear();
 	}
-	
+	/*
 	private void removeAllTSSs() {
 		
 		for (TSS s : this.getTSSs()) {
 			s.setSchoolform(null);
 		}
 		this.tSSs.clear();
-	}
+	}*/
 	
 }

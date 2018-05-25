@@ -41,13 +41,13 @@ public class SchoolformServiceImpl implements SchoolformService{
 	}
 
 	public void deleteSchoolform(Long id) {
-
+/*
 		Optional<Schoolform> opt = this.repo.findById(id);
 		opt.ifPresent(schoolform -> {
 			schoolform.remove();
 			this.repo.save(schoolform);
 		});
-
+*/
 	}
 
 }

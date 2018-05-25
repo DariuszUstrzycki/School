@@ -1,15 +1,17 @@
 package pl.ust.school.entity;
 
-import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Where;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,49 +20,33 @@ import lombok.ToString;
 @Entity
 @Table(name = "subjects")
 @Where(clause = "is_deleted=false")
-@Getter @Setter @NoArgsConstructor
-@ToString(callSuper=true, includeFieldNames = false, exclude= "tSSs")
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor
+@ToString(callSuper=true, includeFieldNames = false, exclude= "teachers")
 public class Subject extends NamedEntity {
 
 	private static final long serialVersionUID = 1L;
 
-	@OneToMany(mappedBy = "subject", cascade = { CascadeType.MERGE, CascadeType.PERSIST })
-	private Set<TSS> tSSs;
-
+	@OneToMany(mappedBy = "subject", fetch = FetchType.EAGER)
+	private Set<TeacherSubject> teachers;
+	
 	/////////////// helper ///////////////////
 
-	public void addTSS(TSS tss) {
-		tSSs.add(tss);
+	public void addTeacherSubject(TeacherSubject teacherSubject) {
+		teachers.add(teacherSubject);
 	}
 
-	public void removeTSS(TSS tss) {
+	public void removeTeacherSubject(TeacherSubject teacherSubject) {
 
-		tss.setSubject(null); // Subject methods are identical to Teacher's, with this exception
-											// setTeacher(null)
+		teacherSubject.setSubject(null); 
 	}
 
 	/////////////// getters and setters ///////////////////
 
-	public Set<TSS> getTSSs() {
-		if (this.tSSs == null) {
-			this.tSSs = new HashSet<>();
+	public Set<TeacherSubject> getTeachers() {
+		if (this.teachers == null) {
+			this.teachers = new TreeSet<>();
 		}
-		return this.tSSs;
+		return this.teachers;
 	}
 	
-	/////////////// remove ///////////////////
-	
-	public void remove() {
-		this.setDeleted(true);
-		this.removeAllTSSs();
-	}
-	
-	private void removeAllTSSs() {
-		
-		for(TSS ts : this.getTSSs()) {
-			ts.setSubject(null);
-		}
-		this.tSSs.clear();
-	}
-
 }

@@ -12,45 +12,44 @@ import pl.ust.school.dto.SubjectDto;
 import pl.ust.school.dto.TeacherDto;
 import pl.ust.school.entity.Subject;
 import pl.ust.school.entity.Teacher;
-import pl.ust.school.entity.TSS;
+import pl.ust.school.entity.TeacherSubject;
 import pl.ust.school.mapper.TeacherMapper;
-import pl.ust.school.repository.SubjectRepository;
 import pl.ust.school.repository.TeacherRepository;
 
 @Service
-public class TeacherServiceImpl implements TeacherService{
-	
+public class TeacherServiceImpl implements TeacherService {
+
 	@Autowired
 	private TeacherRepository teacherRepo;
-	
+
 	@Autowired
-	private SubjectRepository subjectRepo;
+	private SubjectService subjectService;
+
+	@Autowired
+	private TeacherSubjectService teacherSubjectService;
 
 	@Autowired
 	private TeacherMapper mapper;
 
+	@Override
 	public long createTeacher(TeacherDto teacherDto) {
 		Teacher teacher = this.mapper.fromDTO(teacherDto);
-		System.err.println("---------------3.Teacher subjects after mapping to teacher: " + teacher.getTSSs().size());
-		
 		teacher = this.teacherRepo.save(teacher);
-		System.err.println("----------------7.Teacher subjects after saving the teacher: " + teacher.getTSSs().size());
 		return teacher.getId();
 	}
 
-	public Collection<TeacherDto> getAllTeachers() {
+	@Override
+	public Collection<TeacherDto> getAllTeacherDtos() {
 
-		return this.teacherRepo.findAll()
-				.stream()
-				.map(mapper::toDTO)
-				.collect(Collectors.toList());
+		return this.teacherRepo.findAll().stream().map(mapper::toDTO).collect(Collectors.toList());
 	}
 
-	public Optional<TeacherDto> getTeacherById(Long id) {
-
+	@Override
+	public Optional<TeacherDto> getTeacherDtoById(Long id) {
 		return this.mapper.toDTO(teacherRepo.findById(id));
 	}
 
+	@Override
 	public void deleteTeacher(Long id) {
 
 		Optional<Teacher> opt = this.teacherRepo.findById(id);
@@ -61,53 +60,61 @@ public class TeacherServiceImpl implements TeacherService{
 	}
 
 	@Override
-	public void removeTSS(long teacherId, long tssId) {
-		Optional<Teacher> opt = this.teacherRepo.findById(teacherId);
-		opt.ifPresent(teacher -> {
-			teacher.removeTSS(tssId);
-			this.teacherRepo.save(teacher);
-		});
-		
-	}
-	
-	@Override
-	public Collection<SubjectDto> getSubjectsNotTaughtByTeacher(TeacherDto teacherDto, Collection<SubjectDto> allSubjects) {
-		
-		for(TSS ts : teacherDto.getTSSs()) {
-			allSubjects.removeIf(subject -> subject.getName().equals(ts.getSubject().getName()));
+	public Collection<SubjectDto> getSubjectDtosNotTaughtByTeacher(TeacherDto teacherDto,
+			Collection<SubjectDto> allSubjects) {
+
+		for (TeacherSubject teacherSubject : teacherDto.getSubjects()) {
+			allSubjects.removeIf(subject -> subject.getName().equals(teacherSubject.getSubject().getName()));
 		}
-		
+
 		return allSubjects;
-		
+
 	}
 
 	@Override
-	public void addTSS(long teacherId, long subjectId) {
-		
-		TSS ts = new TSS();
-		Teacher teacher;
-		
+	public void removeTeacherSubject(long teacherId, long subjectId) {
 		Optional<Teacher> teacherOpt = this.teacherRepo.findById(teacherId);
-		if(teacherOpt.isPresent()) {
+		Optional<Subject> subjectOpt = this.subjectService.getSubjectById(subjectId);
+
+		if (teacherOpt.isPresent() && subjectOpt.isPresent()) {
+			Teacher teacher = teacherOpt.get();
+			teacher.removeSubject(subjectOpt.get());
+			this.teacherRepo.save(teacher);
+		}
+	}
+
+	@Override
+	public void addTeacherSubject(long teacherId, long subjectId) {
+
+		if (!isUniqueTeacherSubject(teacherId, subjectId)) {
+			return;
+		}
+
+		Teacher teacher;
+
+		Optional<Teacher> teacherOpt = this.teacherRepo.findById(teacherId);
+		if (teacherOpt.isPresent()) {
 			teacher = teacherOpt.get();
-			ts.setTeacher(teacher);
 		} else {
 			throw new RecordNotFoundException("No teacher with id " + teacherId + " has been found.");
 		}
-		
-		Optional<Subject> subjectOpt = this.subjectRepo.findById(subjectId);
-		if(subjectOpt.isPresent()) {
-			ts.setSubject(subjectOpt.get());
+
+		Optional<Subject> subjectOpt = this.subjectService.getSubjectById(subjectId);
+		if (subjectOpt.isPresent()) {
+			Subject subject = subjectOpt.get();
+			teacher.addSubject(subject);
 		} else {
 			throw new RecordNotFoundException("No subject with id " + subjectId + " has been found.");
 		}
-		
-		System.err.println("******************Saving teacher........");
-		
-		teacher.addTSS(ts);
+
 		this.teacherRepo.save(teacher);
-		
 	}
 
+	private boolean isUniqueTeacherSubject(long teacherId, long subjectId) {
+
+		Optional<TeacherSubject> opt = this.teacherSubjectService.getTeacherSubject(teacherId, subjectId);
+		return opt.isPresent() ? false : true;
+
+	}
 
 }

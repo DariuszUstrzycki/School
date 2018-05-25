@@ -19,7 +19,6 @@
 	<td>
 	<a href='${pageContext.request.contextPath}/subject/update/${form.id}'>Update</a>
 	<a href='${pageContext.request.contextPath}/subject/view/${form.id}'>View</a></td>
-	<%-- <a href='${pageContext.request.contextPath}/subject/delete/${form.id}/confirm'>Delete</a> --%>
 </tr>
 </c:forEach>
 

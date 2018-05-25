@@ -2,6 +2,7 @@
 package pl.ust.school.entity;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
@@ -9,8 +10,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.validation.constraints.NotNull;
-
-import org.hibernate.annotations.Where;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,5 +33,24 @@ public class IdEntity implements Serializable {
     public boolean isNew() {
         return this.id < 1;
     }
+
+	@Override
+	public int hashCode() {
+		return Objects.hash( id );
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if ( this == o ) {
+            return true;
+        }
+        if ( o == null || getClass() != o.getClass() ) {
+            return false;
+        }
+        IdEntity idEntity = (IdEntity) o;
+        return Objects.equals( this.id, idEntity.id );
+	}
+    
+    
 
 }

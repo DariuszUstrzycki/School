@@ -74,7 +74,7 @@ public class SubjectController {
 
 	@RequestMapping("/list")
 	public String listSubjects(@RequestParam(defaultValue = "0", required = false) int min, Model model) {
-		model.addAttribute(COLLECTION_OF_SUBJECTS_NAME, this.subjectService.getAllSubjects());
+		model.addAttribute(COLLECTION_OF_SUBJECTS_NAME, this.subjectService.getAllSubjectDtos());
 		model.addAttribute(ENTITY_NAME, ENTITY_NAME_VALUE);
 		return LIST_VIEW;
 	}
@@ -83,7 +83,7 @@ public class SubjectController {
 	@RequestMapping("view/{id}")
 	public String viewSubject(@PathVariable long id, Model model) {
 		
-		Optional<SubjectDto> opt = this.subjectService.getSubjectById(id);
+		Optional<SubjectDto> opt = this.subjectService.getSubjectDtoById(id);
 		
 		if(opt.isPresent()) {
 			Set<SubjectDto> subjectItems = new HashSet<>();
@@ -106,20 +106,13 @@ public class SubjectController {
 		return CONFIRM_DELETE_VIEW;
 	}
 
-	@RequestMapping(value = "/delete/{id}")
-	public String deleteSubject(@PathVariable long id) {
-		
-		this.subjectService.deleteSubject(id);
-			
-		return "redirect:/subject/list";
-	}
 
 	//////////////////////////// UPDATE ////////////////////////////
 	
 	@GetMapping("/update/{id}")
 	public String showForm(@PathVariable long id, Model model) {
 
-		Optional<SubjectDto> subjectDto = this.subjectService.getSubjectById(id);
+		Optional<SubjectDto> subjectDto = this.subjectService.getSubjectDtoById(id);
 		
 		if(subjectDto.isPresent()) {
 			model.addAttribute(subjectDto.get());

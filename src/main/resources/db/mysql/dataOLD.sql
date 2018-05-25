@@ -47,6 +47,19 @@ INSERT IGNORE INTO persons VALUES (5, 'Iggy', '2000-11-30', 3, 4);
 INSERT IGNORE INTO persons VALUES (6, 'George', '2000-01-20', 4, 5);
 INSERT IGNORE INTO persons VALUES (7, 'Samantha', '1995-09-04', 1, 6);
 INSERT IGNORE INTO persons VALUES (8, 'Max', '1995-09-04', 1, 6);
+
+
+/* 
+INSERT IGNORE INTO teachers_subjects_schoolforms (id, teacher_id, subject_id, schoolform_id) VALUES (1, 1, 1, 3);
+INSERT IGNORE INTO teachers_subjects_schoolforms (id, teacher_id, subject_id, schoolform_id) VALUES (2, 1, 6, 4);
+INSERT IGNORE INTO teachers_subjects_schoolforms (id, teacher_id, subject_id, schoolform_id) VALUES (3, 2, 2, 1);
+INSERT IGNORE INTO teachers_subjects_schoolforms (id, teacher_id, subject_id, schoolform_id) VALUES (4, 2, 3, 2);
+INSERT IGNORE INTO teachers_subjects_schoolforms (id, teacher_id, subject_id, schoolform_id) VALUES (5, 2, 4, 3);
+INSERT IGNORE INTO teachers_subjects_schoolforms (id, teacher_id, subject_id, schoolform_id) VALUES (6, 3, 6, 3);
+INSERT IGNORE INTO teachers_subjects_schoolforms (id, teacher_id, subject_id, schoolform_id) VALUES (7, 4, 5, 4);
+INSERT IGNORE INTO teachers_subjects_schoolforms (id, teacher_id, subject_id, schoolform_id) VALUES (8, 5, 4, 5);
+INSERT IGNORE INTO teachers_subjects_schoolforms (id, teacher_id, subject_id) VALUES (9, 6, 2);
+*/
 INSERT IGNORE INTO persons VALUES (9, 'Lucky', '1999-08-06', 5, 7);
 INSERT IGNORE INTO persons VALUES (10, 'Mulligan', '1997-02-24', 2, 8);
 INSERT IGNORE INTO persons VALUES (11, 'Freddy', '2000-03-09', 5, 9);

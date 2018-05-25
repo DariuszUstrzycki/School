@@ -27,7 +27,7 @@ public class SubjectServiceImpl implements SubjectService {
 		return subject.getId();
 	}
 
-	public Collection<SubjectDto> getAllSubjects() {
+	public Collection<SubjectDto> getAllSubjectDtos() {
 		
 		return  this.repo.findAll()
 				.stream()
@@ -42,19 +42,13 @@ public class SubjectServiceImpl implements SubjectService {
 		 }*/
 	}
 
-	public Optional<SubjectDto> getSubjectById(Long id) {
-
+	public Optional<SubjectDto> getSubjectDtoById(Long id) {
 		return this.mapper.toDTO(repo.findById(id));
 	}
-
-	public void deleteSubject(Long id) {
-
-		Optional<Subject> opt = this.repo.findById(id);
-		opt.ifPresent(subject -> {
-			subject.remove();
-			this.repo.save(subject);
-		});
-
+	
+	public Optional<Subject> getSubjectById(Long id) {
+		return this.repo.findById(id);
 	}
+
 
 }

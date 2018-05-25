@@ -28,13 +28,12 @@ INSERT IGNORE INTO teachers (id, is_deleted, address, birth_date, email, first_n
 INSERT IGNORE INTO teachers (id, is_deleted, address, birth_date, email, first_name, last_name, password, telephone) VALUES ('6', 0, 'fffffffff', '2000-04-01', 'f@wp.pl', 'Finn', 'FTeacher', 'fff', '111111');
 INSERT IGNORE INTO teachers (id, is_deleted, address, birth_date, email, first_name, last_name, password, telephone) VALUES ('7', 0, 'ggggggggg', '2000-04-01', 'g@wp.pl', 'Greg', 'GTeacher', 'ggg', '111111');
 
-INSERT IGNORE INTO teachers_subjects_schoolforms (id, teacher_id, subject_id, schoolform_id) VALUES (1, 1, 1, 3);
-INSERT IGNORE INTO teachers_subjects_schoolforms (id, teacher_id, subject_id, schoolform_id) VALUES (2, 1, 6, 4);
-INSERT IGNORE INTO teachers_subjects_schoolforms (id, teacher_id, subject_id, schoolform_id) VALUES (3, 2, 2, 1);
-INSERT IGNORE INTO teachers_subjects_schoolforms (id, teacher_id, subject_id, schoolform_id) VALUES (4, 2, 3, 2);
-INSERT IGNORE INTO teachers_subjects_schoolforms (id, teacher_id, subject_id, schoolform_id) VALUES (5, 2, 4, 3);
-INSERT IGNORE INTO teachers_subjects_schoolforms (id, teacher_id, subject_id, schoolform_id) VALUES (6, 3, 6, 3);
-INSERT IGNORE INTO teachers_subjects_schoolforms (id, teacher_id, subject_id, schoolform_id) VALUES (7, 4, 5, 4);
-INSERT IGNORE INTO teachers_subjects_schoolforms (id, teacher_id, subject_id, schoolform_id) VALUES (8, 5, 4, 5);
-INSERT IGNORE INTO teachers_subjects_schoolforms (id, teacher_id, subject_id) VALUES (9, 6, 2);
-
+INSERT IGNORE INTO teachers_subjects (id, teacher_id, subject_id) VALUES (1, 1, 1);
+INSERT IGNORE INTO teachers_subjects (id, teacher_id, subject_id) VALUES (2, 1, 6);
+INSERT IGNORE INTO teachers_subjects (id, teacher_id, subject_id) VALUES (3, 2, 2);
+INSERT IGNORE INTO teachers_subjects (id, teacher_id, subject_id) VALUES (4, 2, 3);
+INSERT IGNORE INTO teachers_subjects (id, teacher_id, subject_id) VALUES (5, 2, 4);
+INSERT IGNORE INTO teachers_subjects (id, teacher_id, subject_id) VALUES (6, 3, 6);
+INSERT IGNORE INTO teachers_subjects (id, teacher_id, subject_id) VALUES (7, 4, 5);
+INSERT IGNORE INTO teachers_subjects (id, teacher_id, subject_id) VALUES (8, 5, 4);
+INSERT IGNORE INTO teachers_subjects (id, teacher_id, subject_id) VALUES (9, 6, 2);
