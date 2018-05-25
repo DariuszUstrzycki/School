@@ -8,18 +8,18 @@
 	<thead>
 		<tr>
 			<th>Subject</th>
-			<th>TS Id</th>
+			<th>TSS Id</th>
 			<th>Action</th>
 		</tr>
 	</thead>
 	<tbody>
-		<c:forEach items='${teacherDto.tsss}' var='teaSub'>
+		<c:forEach items='${teacherDto.TSSs}' var='tss'>
 			<tr>
-				<td>${teaSub.subject.name}</td>
-				<td>${teaSub.id}</td>
+				<td>${tss.subject.name}</td>
+				<td>${tss.id}</td>
 				<td>
 					<form
-						action='${pageContext.request.contextPath}/teacher/${teacherDto.id}/subject/${teaSub.id}/remove'
+						action='${pageContext.request.contextPath}/teacher/${teacherDto.id}/subject/${tss.id}/remove'
 						method="GET">
 						<input type="submit" value="Remove" />
 					</form>

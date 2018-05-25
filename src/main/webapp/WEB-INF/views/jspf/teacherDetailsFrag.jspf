@@ -29,7 +29,7 @@
 </tr>
 </thead>
 <tbody>
-<c:forEach items='${teacherDto.tsss}' var='teaSub'>
+<c:forEach items='${teacherDto.TSSs}' var='teaSub'>
 <tr>
 	<td>${teaSub.subject.name}</td>
 </tr>

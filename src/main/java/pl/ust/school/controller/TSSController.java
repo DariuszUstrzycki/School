@@ -1,5 +1,6 @@
 package pl.ust.school.controller;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -22,8 +23,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import pl.ust.school.dto.SchoolformDto;
 import pl.ust.school.dto.TSSDto;
+import pl.ust.school.service.SchoolformService;
+import pl.ust.school.service.SubjectService;
 import pl.ust.school.service.TSSService;
+import pl.ust.school.service.TeacherService;
 
 @Controller
 @RequestMapping("/tss") 
@@ -34,18 +39,31 @@ public class TSSController {
 	private static final String DETAILS_VIEW = "detailsNLists/tssDetails";
 	private static final String CONFIRM_DELETE_VIEW = "forms/confirmDelete";
 
+	private static final String COLLECTION_OF_SCHOOLFORMS_NAME = "schoolformItems";
+	private static final String COLLECTION_OF_SUBJECTS_NAME = "subjectItems";
+	private static final String COLLECTION_OF_TEACHERS_NAME = "teacherItems";
 	private static final String COLLECTION_OF_TSS_NAME = "tssItems";
 	private static final String ENTITY_NAME = "entityName";
 	private static final String ENTITY_NAME_VALUE = "Teacher/Subject/Schoolform";
 
 	@Autowired
 	private TSSService tssService;
+	
+	@Autowired
+	private SchoolformService schoolformService;
+	
+	@Autowired
+	private SubjectService subjectService;
+	
+	@Autowired
+	private TeacherService teacherService;
 
 	@InitBinder
 	public void setAllowedFields(WebDataBinder dataBinder) {
 		dataBinder.setDisallowedFields("id");
 	}
 	
+		
 	//////////////////////////// before each ////////////////////////////
 	
 	@ModelAttribute
@@ -57,18 +75,23 @@ public class TSSController {
 ////////////////////////////SAVE ////////////////////////////
 
 	@GetMapping("/save")
-	public String showForm(TSSDto tssDto, Model model) {
+	public String showForm(TSSDto tSSDto, Model model) {
+		model.addAttribute(COLLECTION_OF_SCHOOLFORMS_NAME, this.schoolformService.getAllSchoolforms());
+		model.addAttribute(COLLECTION_OF_SUBJECTS_NAME, this.subjectService.getAllSubjects());
+		model.addAttribute(COLLECTION_OF_TEACHERS_NAME, this.teacherService.getAllTeachers());
 		return CREATE_OR_UPDATE_FORM_VIEW;
 	}
 
 	@PostMapping("/save")
-	public String saveTSS(@Valid TSSDto tssDto, BindingResult result, Model model) {
+	public String saveTSS(@Valid TSSDto tSSDto, BindingResult result, Model model) {
 
 		if (result.hasErrors()) {
 			return CREATE_OR_UPDATE_FORM_VIEW;
 		}
+		
+		// check if such TSS exists here firsat!!!
 
-		long id = this.tssService.createTSS(tssDto);
+		long id = this.tssService.createTSS(tSSDto);
 		return "redirect:/tss/view/" + id;
 	}
 
@@ -146,6 +169,10 @@ public class TSSController {
 
 		Optional<TSSDto> opt = this.tssService.getTSSById(id);
 		opt.ifPresent(model::addAttribute);
+		
+		model.addAttribute(COLLECTION_OF_SCHOOLFORMS_NAME, this.schoolformService.getAllSchoolforms());
+		model.addAttribute(COLLECTION_OF_SUBJECTS_NAME, this.subjectService.getAllSubjects());
+		model.addAttribute(COLLECTION_OF_TEACHERS_NAME, this.teacherService.getAllTeachers());
 
 		return CREATE_OR_UPDATE_FORM_VIEW;
 	}

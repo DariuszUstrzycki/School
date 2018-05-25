@@ -13,7 +13,6 @@
     <%@ include file="../jspf/header.jspf" %>
 </div>
 
-<div>
 
 <c:if test="${subjectDto['new']}">
 	<c:set var = "actionType" scope = "page" value = "Add"/>
@@ -24,6 +23,7 @@
 
 <h1>${actionType} a subject</h1>
 
+<div>
 <form:form action="#" method="POST" modelAttribute="subjectDto">
 
 <form:hidden path="isDeleted"/>

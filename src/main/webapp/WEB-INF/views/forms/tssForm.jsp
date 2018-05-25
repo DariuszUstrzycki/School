@@ -13,35 +13,46 @@
     <%@ include file="../jspf/header.jspf" %>
 </div>
 
-<div>
 
-<c:if test="${tssDto['new']}">
+
+<c:if test="${TSSDto['new']}">
 	<c:set var = "actionType" scope = "page" value = "Add"/>
 </c:if>
-<c:if test="${ not tssDto['new']}">
+<c:if test="${ not TSSDto['new']}">
 	<c:set var = "actionType" scope = "page" value = "Update"/>
 </c:if>	
 
 <h1>${actionType} a TSS</h1>
 
-<form:form action="#" method="POST" modelAttribute="tssDto">
-
+<div>
+<form:form action="#" method="POST" modelAttribute="TSSDto">
 <form:hidden path="isDeleted"/>
 
-<label for="birthDate">Date of birth:</label>
-<form:input placeholder="" path="birthDate" />
-<form:errors path="birthDate" cssClass='error'></form:errors><br><br>
-
-<form:select	path="schoolform.id">
+<table border='1px'>
+<thead>
+<tr><th>School forms</th><th>Subjects</th><th>Teachers</th><th>Action</th></tr>
+</thead>
+<tbody>
+<tr><td><form:select	path="schoolform.id">
 				<!-- <form:option	label="undefined" value="100"/> -->
 				<form:options	items="${schoolformItems}" itemLabel="name" itemValue="id"/>
-</form:select>
-<form:errors path='schoolform.id' cssClass='error'></form:errors><br><br>
+		</form:select></td>
+	<td><form:select	path="schoolform.id">
+				<!-- <form:option	label="undefined" value="100"/> -->
+				<form:options	items="${subjectItems}" itemLabel="name" itemValue="id"/>
+	</form:select></td>
+<td><form:select	path="schoolform.id">
+				<!-- <form:option	label="undefined" value="100"/> -->
+				<form:options	items="${teacherItems}" itemLabel="lastName" itemValue="id"/>
+	</form:select></td>
+<td>
+	<input type="submit" value="${actionType}" />
+</td>
+</tr>
+</tbody>
+</table>
 
-<input type="submit" value="${actionType}" />
-<input type="reset" value="Reset" />
 </form:form>
-
 </div>
 
 <div id="header">

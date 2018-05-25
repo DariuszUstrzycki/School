@@ -49,7 +49,12 @@ public class StudentController {
 	@Autowired
 	private SchoolformService schoolformService;
 	
-	////////////////////////////////////////////////////////// 
+	//////////////////////////// before each ////////////////////////////
+
+	@ModelAttribute
+	public void addEntityName(Model model) {
+		model.addAttribute(ENTITY_NAME, ENTITY_NAME_VALUE);
+	}
 	
 	@ModelAttribute(COLLECTION_OF_SCHOOLFORMS_NAME)
     public Collection<SchoolformDto> populateSchoolformItems() {
@@ -67,14 +72,11 @@ public class StudentController {
 	
 	@GetMapping("/save")
 	public String showForm(StudentDto studentDto, Model model) {
-		model.addAttribute(ENTITY_NAME, ENTITY_NAME_VALUE); 
 		return CREATE_OR_UPDATE_FORM_VIEW;
 	}
 	
 	@PostMapping("/save")
 	public String saveStudent(@Valid StudentDto studentDto, BindingResult result, Model model) {
-		
-		model.addAttribute(ENTITY_NAME, ENTITY_NAME_VALUE); 
 		
 		if(result.hasErrors()) {
 			for (ObjectError error : result.getAllErrors()) {
@@ -92,7 +94,6 @@ public class StudentController {
 	@RequestMapping("/list")
 	public String listStudents(@RequestParam(defaultValue = "0", required = false) int min, Model model) {
 		model.addAttribute(COLLECTION_OF_STUDENTS_NAME, this.studentService.getAllStudents());
-		model.addAttribute(ENTITY_NAME, ENTITY_NAME_VALUE);
 		return LIST_VIEW;
 	}
 
@@ -118,7 +119,6 @@ public class StudentController {
 
 	@GetMapping("/delete/{id}/confirm")
 	public String showConfirmationPage(@PathVariable long id, Model model) {
-		model.addAttribute(ENTITY_NAME, ENTITY_NAME_VALUE);
 		return CONFIRM_DELETE_VIEW;
 	}
 
@@ -126,7 +126,6 @@ public class StudentController {
 	public String deleteStudent(@PathVariable long id) {
 
 		this.studentService.deleteStudent(id);
-
 		return "redirect:/student/list";
 	}
 

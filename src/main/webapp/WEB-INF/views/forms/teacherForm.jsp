@@ -13,8 +13,6 @@
 		<%@ include file="../jspf/header.jspf"%>
 	</div>
 
-	<div>
-
 		<c:if test="${teacherDto['new']}">
 			<c:set var="actionType" scope="page" value="Add" />
 		</c:if>
@@ -23,7 +21,8 @@
 		</c:if>
 
 		<h1>${actionType} a teacher</h1>
-
+		
+	<div>
 		<form:form action="#" method="POST" modelAttribute="teacherDto">
 
 			<form:hidden path="isDeleted" />
