@@ -36,9 +36,9 @@ import pl.ust.school.service.StudentService;
 @WebMvcTest(StudentController.class)
 public class StudentControllerTest {
 
-	private static final String CREATE_OR_UPDATE_FORM_VIEW = "forms/studentForm";
-	private static final String LIST_VIEW = "detailsNLists/studentList";
-	private static final String DETAILS_VIEW = "detailsNLists/studentDetails";
+	private static final String CREATE_OR_UPDATE_FORM_VIEW = "student/studentForm";
+	private static final String LIST_VIEW = "student/studentList";
+	private static final String DETAILS_VIEW = "student/studentDetails";
 	@SuppressWarnings("unused")
 	private static final String CONFIRM_DELETE_VIEW = "forms/confirmDelete";
 

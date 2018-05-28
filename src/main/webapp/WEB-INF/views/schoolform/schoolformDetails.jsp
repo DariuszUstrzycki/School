@@ -13,22 +13,19 @@
     <%@ include file="../jspf/header.jspf" %>
 </div>
 
+<h1>School form details</h1>
 
-	<h1>Student details</h1>
+<div id="content">
 
-	<div id="content">
-		
-		
-		<c:if test="${empty notFound}">
-		<%@ include file="../jspf/studentDetailsFrag.jspf" %>
-		</c:if>
-		
-		<c:if test="${not empty notFound}">
+	<c:if test="${empty notFound}">
+	<%@ include file="../schoolform/jspf/details.jspf" %>
+	</c:if>
+	
+	<c:if test="${not empty notFound}">
 		<p class='error'>${notFound}</p>
-		</c:if>
-		
-	</div>
-
+	</c:if>
+	
+</div>
 
 <div id="footer">
     <%@ include file="../jspf/footer.jspf" %>

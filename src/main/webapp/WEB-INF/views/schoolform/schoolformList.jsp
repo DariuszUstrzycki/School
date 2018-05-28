@@ -16,8 +16,8 @@
 <h1>School forms</h1>
 
 <div id="content">
-	<%@ include file="../jspf/schoolformAddButton.jspf" %>
-	<%@ include file="../jspf/schoolformListFrag.jspf" %>
+	<%@ include file="../schoolform/jspf/addButton.jspf" %>
+	<%@ include file="../schoolform/jspf/list.jspf" %>
 </div>
 
 <div id="header">

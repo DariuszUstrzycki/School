@@ -27,9 +27,9 @@ import pl.ust.school.service.SubjectService;
 @RequestMapping("subject")
 public class SubjectController {
 
-	private static final String CREATE_OR_UPDATE_FORM_VIEW = "forms/subjectForm";
-	private static final String LIST_VIEW = "detailsNLists/subjectList";
-	private static final String DETAILS_VIEW = "detailsNLists/subjectDetails";
+	private static final String CREATE_OR_UPDATE_FORM_VIEW = "subject/subjectForm";
+	private static final String LIST_VIEW = "subject/subjectList";
+	private static final String DETAILS_VIEW = "subject/subjectDetails";
 	private static final String CONFIRM_DELETE_VIEW = "forms/confirmDelete";
 
 	private static final String COLLECTION_OF_SUBJECTS_NAME = "subjectItems";

@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@	taglib	uri="http://www.springframework.org/tags/form"	prefix="form" %>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -13,24 +14,16 @@
     <%@ include file="../jspf/header.jspf" %>
 </div>
 
-<h1>School form details</h1>
+<h1>Students</h1>
 
 <div id="content">
-	
-	
-	<c:if test="${empty notFound}">
-	<h3>Students in ${schoolformName}:</h3>
-	<%@ include file="../jspf/schoolformStudentsFrag.jspf" %>
-	</c:if>
-	
-	<c:if test="${not empty notFound}">
-		<p class='error'>${notFound}</p>
-	</c:if>
-	
+	<%@ include file="../student/jspf/addButton.jspf" %>
+	<%@ include file="../student/jspf/list.jspf" %>
 </div>
 
-<div id="footer">
+<div id="header">
     <%@ include file="../jspf/footer.jspf" %>
 </div>
 </body>
 </html>
+

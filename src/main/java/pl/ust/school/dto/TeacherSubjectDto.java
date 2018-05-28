@@ -1,27 +1,26 @@
 package pl.ust.school.dto;
 
-import java.util.Set;
-
-import javax.validation.constraints.NotEmpty;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import pl.ust.school.entity.Student;
-import pl.ust.school.entity.TeacherSubject;
+import pl.ust.school.entity.Schoolform;
+import pl.ust.school.entity.Subject;
+import pl.ust.school.entity.Teacher;
 
-@Builder 
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor
-public class SchoolformDto {      
-
+@Builder
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class TeacherSubjectDto {
+	
 	private long id;
 	private boolean isDeleted;
-	@NotEmpty
-	private String name;
-	private Set<Student> students; 
-	private Set<TeacherSubject> teacherSubjects; 
+	private Teacher teacher;
+	private Subject subject;
+	private Schoolform schoolform;
 	
 	public boolean isNew() {
         return this.id < 1;
@@ -34,4 +33,5 @@ public class SchoolformDto {
 	public void setIsDeleted(boolean isDeleted) {
 		 this.isDeleted = isDeleted;
 	}
+
 }

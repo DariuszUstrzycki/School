@@ -9,8 +9,12 @@ import org.springframework.stereotype.Service;
 
 import pl.ust.school.controller.RecordNotFoundException;
 import pl.ust.school.dto.SchoolformDto;
+import pl.ust.school.dto.SubjectDto;
+import pl.ust.school.dto.TeacherSubjectDto;
 import pl.ust.school.entity.Schoolform;
+import pl.ust.school.entity.TeacherSubject;
 import pl.ust.school.mapper.SchoolformMapper;
+import pl.ust.school.mapper.TeacherSubjectMapper;
 import pl.ust.school.repository.SchoolformRepository;
 
 @Service
@@ -20,17 +24,15 @@ public class SchoolformServiceImpl implements SchoolformService {
 	private SchoolformRepository schoolformRepo;
 
 	@Autowired
-	private SchoolformMapper mapper;
+	private SchoolformMapper schoolformMapper;
+	
+	@Autowired
+	private TeacherSubjectMapper teacherSubjectMapper;
 
 	public long createSchoolform(SchoolformDto schoolformDto) {
-		Schoolform schoolform = this.mapper.fromDTO(schoolformDto);
+		Schoolform schoolform = this.schoolformMapper.fromDTO(schoolformDto);
 		schoolform = this.schoolformRepo.save(schoolform);
 		return schoolform.getId();
-	}
-
-	public Collection<SchoolformDto> getAllSchoolformDtos() {
-
-		return this.schoolformRepo.findAll().stream().map(mapper::toDTO).collect(Collectors.toList());
 	}
 
 	public Optional<SchoolformDto> getSchoolformDtoById(long id) {
@@ -38,7 +40,7 @@ public class SchoolformServiceImpl implements SchoolformService {
 		Optional<Schoolform> opt = this.schoolformRepo.findById(id);
 
 		if (opt.isPresent()) {
-			return this.mapper.toDTO(opt);
+			return this.schoolformMapper.toDTO(opt);
 		} else {
 			throw new RecordNotFoundException("No schoolform with id " + id + " has been found.");
 		}
@@ -68,7 +70,31 @@ public class SchoolformServiceImpl implements SchoolformService {
 		} else {
 			throw new RecordNotFoundException("No schoolform with id " + id + " has been found.");
 		}
+	}
+	
+	///////////////////////////////////////////
 
+	@Override
+	public Collection<TeacherSubjectDto> getTeacherSubjectsNotTaughtInSchoolform(SchoolformDto schoolformDto, Collection<TeacherSubjectDto> teacherSubjects) {
+
+		System.err.println("-----------------------Size of TSs: " + teacherSubjects.size());
+		
+		for (TeacherSubject ts : schoolformDto.getTeacherSubjects()) {
+			teacherSubjects.removeIf(teacherSubject -> 
+				ts.getSchoolform().getId() != teacherSubject.getSchoolform().getId());
+		}
+		
+		System.err.println("-----------------------EXIT Size of TSs: " + teacherSubjects.size());
+		
+		return teacherSubjects;
+	}
+	
+	public Collection<SchoolformDto> getAllSchoolformDtos() {
+
+		return this.schoolformRepo.findAll()
+				.stream()
+				.map(schoolformMapper::toDTO)
+				.collect(Collectors.toList());
 	}
 
 }

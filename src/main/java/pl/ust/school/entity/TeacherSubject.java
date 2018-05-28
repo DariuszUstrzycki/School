@@ -30,10 +30,15 @@ public class TeacherSubject extends IdEntity {
 	@ManyToOne
 	@JoinColumn(name = "subject_id")
 	private Subject subject;
+	
+	@ManyToOne
+	@JoinColumn(name = "schoolform_id")
+	private Schoolform schoolform;
+	
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(this.subject, this.teacher);
+		return Objects.hash(this.subject, this.teacher, this.schoolform);
 	}
 
 	@Override
@@ -45,7 +50,9 @@ public class TeacherSubject extends IdEntity {
 			return false;
 		}
 		TeacherSubject that = (TeacherSubject) o;
-		return Objects.equals(this.subject, that.subject) && Objects.equals(this.teacher, that.teacher);
+		return Objects.equals(this.subject, that.subject) && 
+				Objects.equals(this.teacher, that.teacher) &&
+				Objects.equals(this.schoolform, that.schoolform);
 	}
 
 }

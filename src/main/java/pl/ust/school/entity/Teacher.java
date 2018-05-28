@@ -32,13 +32,13 @@ public class Teacher extends Person {
 	/////////////// helper ///////////////////
 
 	public void addSubject(Subject subject) {
-		TeacherSubject teacherSubject = new TeacherSubject(this, subject);
+		TeacherSubject teacherSubject = new TeacherSubject(this, subject, null);
 		this.subjects.add(teacherSubject);
 		subject.getTeachers().add(teacherSubject);
 	}
 	
 	public void removeSubject(Subject subject) {
-		TeacherSubject teacherSubject = new TeacherSubject(this, subject);
+		TeacherSubject teacherSubject = new TeacherSubject(this, subject, null);
 		subject.getTeachers().remove(teacherSubject);
 		this.subjects.remove(teacherSubject);
 		teacherSubject.setTeacher(null);

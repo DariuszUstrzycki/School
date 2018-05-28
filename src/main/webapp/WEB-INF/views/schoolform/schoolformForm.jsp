@@ -14,7 +14,6 @@
 </div>
 
 <div>
-
 <c:if test="${schoolformDto['new']}">
 	<c:set var = "actionType" scope = "page" value = "Add"/>
 </c:if>
@@ -27,18 +26,32 @@
 <form:form action="#" method="POST" modelAttribute="schoolformDto">
 
 <form:hidden path="isDeleted"/>
+<form:hidden path="students" />
+<form:hidden path="teacherSubjects" />
 
-<label for="name">Name of the form:</label>
+<label for="name">Name:</label>
 <form:input placeholder="eg 1B, 2C, 4D, etc." path="name" />
 <form:errors path="name" cssClass='error'></form:errors>
 <br><br>
 <input type="submit" value="${actionType}" />
 <input type="reset" value="Reset" />
 </form:form>
+</div><br><br>
 
+
+<div>
+	<c:if test="${empty notFound}">
+		<%@ include file="../schoolform/jspf/withTeacherSubjects.jspf" %>
+	</c:if>
 </div>
 
-<div id="header">
+<div>
+	<c:if test="${empty notFound}">
+		<%@ include file="../schoolform/jspf/withStudents.jspf" %>
+	</c:if>
+</div>
+
+<div id="footer">
     <%@ include file="../jspf/footer.jspf" %>
 </div>
 </body>

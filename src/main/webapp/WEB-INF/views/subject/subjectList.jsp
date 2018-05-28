@@ -16,8 +16,8 @@
 <h1>Subjects</h1>
 
 <div id="content">
-	<%@ include file="../jspf/subjectAddButton.jspf" %>
-	<%@ include file="../jspf/subjectListFrag.jspf" %>
+	<%@ include file="../subject/jspf/addButton.jspf" %>
+	<%@ include file="../subject/jspf/list.jspf" %>
 </div>
 
 <div id="header">

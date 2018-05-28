@@ -16,6 +16,7 @@ public class SchoolformMapper {
 					.isDeleted(schoolform.isDeleted())
 					.name(schoolform.getName())
 					.students(schoolform.getStudents())
+					.teacherSubjects(schoolform.getTeacherSubjects())
 					.build();
 	}
 	
@@ -34,6 +35,7 @@ public class SchoolformMapper {
 		schoolform.setDeleted(dto.getIsDeleted());
 		schoolform.setName(dto.getName());
 		schoolform.setStudents(dto.getStudents());
+		schoolform.setTeacherSubjects(dto.getTeacherSubjects());
 		return schoolform;
 	}
 	

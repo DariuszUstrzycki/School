@@ -34,7 +34,10 @@ public class SubjectServiceImpl implements SubjectService {
 
 	public Collection<SubjectDto> getAllSubjectDtos() {
 
-		return this.subjectRepo.findAll().stream().map(mapper::toDTO).collect(Collectors.toSet());
+		return this.subjectRepo.findAll()
+				.stream()
+				.map(mapper::toDTO)
+				.collect(Collectors.toSet());
 	}
 
 	public Optional<SubjectDto> getSubjectDtoById(long id) {

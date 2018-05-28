@@ -33,9 +33,9 @@ import pl.ust.school.service.TeacherService;
 @WebMvcTest(TeacherController.class)
 public class TeacherControllerTest {
 	
-	private static final String CREATE_OR_UPDATE_FORM_VIEW = "forms/teacherForm";
-	private static final String LIST_VIEW = "detailsNLists/teacherList";
-	private static final String DETAILS_VIEW = "detailsNLists/teacherDetails";
+	private static final String CREATE_OR_UPDATE_FORM_VIEW = "teacher/teacherForm";
+	private static final String LIST_VIEW = "teacher/teacherList";
+	private static final String DETAILS_VIEW = "teacher/teacherDetails";
 	@SuppressWarnings("unused")
 	private static final String CONFIRM_DELETE_VIEW = "forms/confirmDelete";
 	

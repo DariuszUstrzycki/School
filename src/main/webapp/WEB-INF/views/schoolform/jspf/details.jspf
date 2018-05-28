@@ -1,0 +1,43 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@	taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+
+<br>
+
+<table border='1px'>
+	<thead>
+		<tr>
+			<th>Id</th>
+			<th>School form</th>
+			<th>Action</th>
+		</tr>
+	</thead>
+	<tbody>
+			<tr>
+				<td>${schoolformDto.id}</td>
+				<td>${schoolformDto.name}</td>
+				<td><a href='${pageContext.request.contextPath}/schoolform/update/${schoolformDto.id}'>Update</a>
+				<a href='${pageContext.request.contextPath}/schoolform/delete/${schoolformDto.id}/confirm'>Delete</a></td>
+			</tr>
+	</tbody>
+</table>
+<br>
+<br>
+
+<table border='1px'> 
+<thead>
+<tr>
+    <th>Subject</th> <th>Teacher</th>
+</tr>
+</thead>
+<tbody>
+<c:forEach items='${schoolformDto.teacherSubjects}' var='teacherSubject'>
+<tr>
+	<td>${teacherSubject.subject.name}</td>
+	<td>${teacherSubject.teacher.firstName} ${teacherSubject.teacher.lastName}</td>
+</tr>
+</c:forEach>
+</tbody>
+</table>
+
