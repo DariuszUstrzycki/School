@@ -23,8 +23,7 @@ public interface AppBaseRepository<T, Long> extends Repository<T, Long> {
 	@Transactional
 	void deleteById(long id);
 	
-	@Transactional(readOnly = true) 
-	Optional<T> findById(long id);
+	Optional<T>	findById(Long id);
 	
 	//from PagingAndSortingRepository 
 	@Transactional(readOnly = true)  

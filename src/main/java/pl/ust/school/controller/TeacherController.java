@@ -1,5 +1,6 @@
 package pl.ust.school.controller;
 
+import java.util.List;
 import java.util.Optional;
 
 import javax.validation.Valid;
@@ -9,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -133,9 +135,11 @@ public class TeacherController {
 	}
 
 	@PostMapping("/update/{id}")
-	public String updateTeacher(@Valid TeacherDto teacherDto, BindingResult result, @PathVariable long id) {
+	public String updateTeacher(@Valid TeacherDto teacherDto, BindingResult result, @PathVariable long id, Model model) {
 
 		if (result.hasErrors()) {
+		    model.addAttribute("remainingSubjects", this.teacherService.getSubjectsNotTaughtByTeacher(teacherDto,
+					this.subjectService.getAllSubjectDtos()));
 			return CREATE_OR_UPDATE_FORM_VIEW;
 		} else {
 			teacherDto.setId(id);

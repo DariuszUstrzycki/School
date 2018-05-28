@@ -128,9 +128,7 @@ public class SchoolformController {
 	public String showForm(@PathVariable long id, Model model) {
 
 		Optional<SchoolformDto> opt = this.schoolformService.getSchoolformDtoById(id);
-		if (opt.isPresent()) {
-			model.addAttribute(opt.get());
-		}
+		opt.ifPresent(model::addAttribute);
 
 		return CREATE_OR_UPDATE_FORM_VIEW;
 	}

@@ -115,11 +115,8 @@ public class SubjectController {
 	@GetMapping("/update/{id}")
 	public String showForm(@PathVariable long id, Model model) {
 
-		Optional<SubjectDto> subjectDto = this.subjectService.getSubjectDtoById(id);
-
-		if (subjectDto.isPresent()) {
-			model.addAttribute(subjectDto.get());
-		}
+		Optional<SubjectDto> opt = this.subjectService.getSubjectDtoById(id);
+		opt.ifPresent(model::addAttribute);
 
 		return CREATE_OR_UPDATE_FORM_VIEW;
 	}
