@@ -3,7 +3,6 @@ package pl.ust.school.entity;
 import java.util.Set;
 import java.util.TreeSet;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
@@ -21,14 +20,14 @@ import lombok.ToString;
 @Table(name = "subjects")
 @Where(clause = "is_deleted=false")
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor
-@ToString(callSuper=true, includeFieldNames = false, exclude= "teachers")
+@ToString(callSuper = true, includeFieldNames = false, exclude = "teachers")
 public class Subject extends NamedEntity {
 
 	private static final long serialVersionUID = 1L;
 
-	@OneToMany(mappedBy = "subject", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "subject", fetch = FetchType.EAGER) // 
 	private Set<TeacherSubject> teachers;
-	
+
 	/////////////// helper ///////////////////
 
 	public void addTeacherSubject(TeacherSubject teacherSubject) {
@@ -36,8 +35,7 @@ public class Subject extends NamedEntity {
 	}
 
 	public void removeTeacherSubject(TeacherSubject teacherSubject) {
-
-		teacherSubject.setSubject(null); 
+		teacherSubject.setSubject(null);
 	}
 
 	/////////////// getters and setters ///////////////////
@@ -48,5 +46,5 @@ public class Subject extends NamedEntity {
 		}
 		return this.teachers;
 	}
-	
+
 }

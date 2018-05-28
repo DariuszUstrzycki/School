@@ -4,12 +4,14 @@ import java.util.Collection;
 import java.util.Optional;
 
 import pl.ust.school.dto.SchoolformDto;
+import pl.ust.school.entity.Schoolform;
 
 public interface SchoolformService {
 	
 	long createSchoolform(SchoolformDto subjectDto);
-	Collection<SchoolformDto> getAllSchoolforms();
-	Optional<SchoolformDto> getSchoolformById(Long id);
+	Collection<SchoolformDto> getAllSchoolformDtos();
+	Optional<SchoolformDto> getSchoolformDtoById(long id);
+	Optional<Schoolform> getSchoolformById(long id);
 	void deleteSchoolform(Long id);
 
 }

@@ -31,7 +31,6 @@ public class SchoolformMapper {
 		
 		Schoolform schoolform = new Schoolform();
 		schoolform.setId(dto.getId());
-		
 		schoolform.setDeleted(dto.getIsDeleted());
 		schoolform.setName(dto.getName());
 		schoolform.setStudents(dto.getStudents());

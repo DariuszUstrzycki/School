@@ -238,8 +238,8 @@ public class StudentRepositoryTest {
 			}
 			
 			//when
-			List<Student> firstFormStudents = (List<Student>) studentRepo.findBySchoolform_Id(firstForm.getId());
-			List<Student> secondFormStudents = (List<Student>) studentRepo.findBySchoolform_Id(secondForm.getId());
+			List<Student> firstFormStudents = (List<Student>) studentRepo.findBySchoolformId(firstForm.getId());
+			List<Student> secondFormStudents = (List<Student>) studentRepo.findBySchoolformId(secondForm.getId());
 			
 			//
 			assertThat(firstFormStudents).hasSize(expecteNoOfStudentInFirstForm);

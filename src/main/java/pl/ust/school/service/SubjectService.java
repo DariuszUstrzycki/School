@@ -10,8 +10,9 @@ public interface SubjectService {
 	
 	long createSubject(SubjectDto subjectDto);
 	Collection<SubjectDto> getAllSubjectDtos();
-	Optional<SubjectDto> getSubjectDtoById(Long id);
-	public Optional<Subject> getSubjectById(Long id);
+	Optional<SubjectDto> getSubjectDtoById(long id);
+	public Optional<Subject> getSubjectById(long id);
+	void deleteSubject(long id);
 	
 	
 }

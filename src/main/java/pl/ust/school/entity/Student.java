@@ -30,13 +30,13 @@ public class Student extends Person {
 
 	public void setSchoolform(Schoolform newSchoolform) {
 
-		if (newSchoolform != null) {
+		/*if (newSchoolform != null) {
 			newSchoolform.getStudents().add(this);
 		} 
 		
 		if (this.schoolform != null && newSchoolform != null) { // Schoolform class takes care of removal when argument schoolform is null
 			this.schoolform.getStudents().remove(this);
-		}
+		}*/
 
 		this.schoolform = newSchoolform;
 	}
@@ -44,7 +44,7 @@ public class Student extends Person {
 	///////////////// removal ///////////////////////////////
 	
 	public void remove() {
-		this.getSchoolform().getStudents().remove(this); // @WhereJoinTable ?!
+		//this.getSchoolform().getStudents().remove(this); // @WhereJoinTable ?!
 		this.setDeleted(true);
 	}
 	

@@ -9,8 +9,9 @@ public interface StudentService {
 	 
 	long createStudent(StudentDto studentDto);
 	Collection<StudentDto> getAllStudents();
-	Optional<StudentDto> getStudentById(Long id);
-	void deleteStudent(Long id);
-	Collection<StudentDto> getStudentBySchoolform_Id(long id);
+	Optional<StudentDto> getStudentDtoById(long id);
+	void deleteStudent(long id);
+	Collection<StudentDto> getStudentBySchoolformId(long id);
+	public void removeStudentFromSchoolform(long studentId);
 
 }

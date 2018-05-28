@@ -12,7 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,63 +29,60 @@ import pl.ust.school.service.SchoolformService;
 import pl.ust.school.service.StudentService;
 
 @Controller
-@RequestMapping("student") 
+@RequestMapping("student")
 public class StudentController {
-	
+
 	private static final String CREATE_OR_UPDATE_FORM_VIEW = "forms/studentForm";
 	private static final String LIST_VIEW = "detailsNLists/studentList";
 	private static final String DETAILS_VIEW = "detailsNLists/studentDetails";
 	private static final String CONFIRM_DELETE_VIEW = "forms/confirmDelete";
-	
+
 	private static final String COLLECTION_OF_STUDENTS_NAME = "studentItems";
 	private static final String COLLECTION_OF_SCHOOLFORMS_NAME = "schoolformItems";
 	private static final String ENTITY_NAME = "entityName";
 	private static final String ENTITY_NAME_VALUE = "student";
-	
+
 	@Autowired
 	private StudentService studentService;
-	
+
 	@Autowired
 	private SchoolformService schoolformService;
-	
+
 	//////////////////////////// before each ////////////////////////////
 
 	@ModelAttribute
 	public void addEntityName(Model model) {
 		model.addAttribute(ENTITY_NAME, ENTITY_NAME_VALUE);
 	}
-	
+
 	@ModelAttribute(COLLECTION_OF_SCHOOLFORMS_NAME)
-    public Collection<SchoolformDto> populateSchoolformItems() {
-        return this.schoolformService.getAllSchoolforms();
-    }
-		
+	public Collection<SchoolformDto> populateSchoolformItems() {
+		return this.schoolformService.getAllSchoolformDtos();
+	}
+
 	//////////////////////////////////////////////////////////
-	
+
 	@InitBinder
-    public void setAllowedFields(WebDataBinder dataBinder) {
-        dataBinder.setDisallowedFields("id");
-    }
-	
-	////////////////////////////SAVE ////////////////////////////
-	
+	public void setAllowedFields(WebDataBinder dataBinder) {
+		dataBinder.setDisallowedFields("id");
+	}
+
+	//////////////////////////// SAVE ////////////////////////////
+
 	@GetMapping("/save")
-	public String showForm(StudentDto studentDto, Model model) {
+	public String showForm(StudentDto studentDto) {
 		return CREATE_OR_UPDATE_FORM_VIEW;
 	}
-	
+
 	@PostMapping("/save")
-	public String saveStudent(@Valid StudentDto studentDto, BindingResult result, Model model) {
-		
-		if(result.hasErrors()) {
-			for (ObjectError error : result.getAllErrors()) {
-				System.err.println(error);
-			}
-			return CREATE_OR_UPDATE_FORM_VIEW; 
+	public String saveStudent(@Valid StudentDto studentDto, BindingResult result) {
+
+		if (result.hasErrors()) {
+			return CREATE_OR_UPDATE_FORM_VIEW;
 		}
-		
-		long id = this.studentService.createStudent(studentDto);	
-		return "redirect:/student/view/" + id; 
+
+		long id = this.studentService.createStudent(studentDto);
+		return "redirect:/student/view/" + id;
 	}
 
 	//////////////////////////// LIST ////////////////////////////
@@ -101,9 +97,8 @@ public class StudentController {
 	@RequestMapping("view/{id}")
 	public String viewStudent(@PathVariable long id, Model model) {
 
-		
-		Optional<StudentDto> opt = this.studentService.getStudentById(id);
-		
+		Optional<StudentDto> opt = this.studentService.getStudentDtoById(id);
+
 		if (opt.isPresent()) {
 			Set<StudentDto> studentItems = new HashSet<>();
 			studentItems.add(opt.get());
@@ -111,14 +106,14 @@ public class StudentController {
 		} else {
 			throw new RecordNotFoundException("No student with id " + id + " has been found.");
 		}
-		
+
 		return DETAILS_VIEW;
 	}
 
 	//////////////////////////// DELETE ////////////////////////////
 
 	@GetMapping("/delete/{id}/confirm")
-	public String showConfirmationPage(@PathVariable long id, Model model) {
+	public String showConfirmationPage(@PathVariable long id) {
 		return CONFIRM_DELETE_VIEW;
 	}
 
@@ -130,18 +125,18 @@ public class StudentController {
 	}
 
 	//////////////////////////// UPDATE ////////////////////////////
-	// Neither BindingResult nor plain target object for bean name 'student' available as request attribute
+
 	@GetMapping("/update/{id}")
 	public String showForm(@PathVariable long id, Model model) {
-		
-		Optional<StudentDto> opt = studentService.getStudentById(id);
+
+		Optional<StudentDto> opt = studentService.getStudentDtoById(id);
 		opt.ifPresent(model::addAttribute);
-		
+
 		return CREATE_OR_UPDATE_FORM_VIEW;
 	}
 
 	@PostMapping("/update/{id}")
-	public String updateStudent(@Valid StudentDto studentDto, BindingResult result, @PathVariable long id, Model model) {
+	public String updateStudent(@Valid StudentDto studentDto, BindingResult result, @PathVariable long id) {
 
 		if (result.hasErrors()) {
 			return CREATE_OR_UPDATE_FORM_VIEW;
@@ -150,7 +145,14 @@ public class StudentController {
 			this.studentService.createStudent(studentDto);
 			return "redirect:/student/view/" + id;
 		}
-		
+
+	}
+
+	@GetMapping("/{studentId}/removeFrom/{schoolformId}")
+	public String removeStudentFromSchoolform(@PathVariable long studentId, @PathVariable long schoolformId) {
+
+		this.studentService.removeStudentFromSchoolform(studentId);
+		return "redirect:/schoolform/view/" + schoolformId;
 	}
 
 	////////////////////// exception handling ////////////////////////////////////

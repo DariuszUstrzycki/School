@@ -1,14 +1,19 @@
 package pl.ust.school.service;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import pl.ust.school.controller.RecordNotFoundException;
 import pl.ust.school.dto.SubjectDto;
 import pl.ust.school.entity.Subject;
+import pl.ust.school.entity.Teacher;
+import pl.ust.school.entity.TeacherSubject;
 import pl.ust.school.mapper.SubjectMapper;
 import pl.ust.school.repository.SubjectRepository;
 
@@ -16,39 +21,65 @@ import pl.ust.school.repository.SubjectRepository;
 public class SubjectServiceImpl implements SubjectService {
 
 	@Autowired
-	private SubjectRepository repo;
+	private SubjectRepository subjectRepo;
 
 	@Autowired
 	private SubjectMapper mapper;
 
 	public long createSubject(SubjectDto subjectDto) {
 		Subject subject = this.mapper.fromDTO(subjectDto);
-		subject = this.repo.save(subject);
+		subject = this.subjectRepo.save(subject);
 		return subject.getId();
 	}
 
 	public Collection<SubjectDto> getAllSubjectDtos() {
-		
-		return  this.repo.findAll()
-				.stream()
-				.map(mapper::toDTO)
-				.collect(Collectors.toSet());
-		
-		 /*Collection<Subject> subjects = repo.findAll();
-		 Collection<SubjectDto> subjectDtos = new HashSet<>();
-		
-		 for (Subject s : subjects) {
-		 subjectDtos.add(this.mapper.toDTO(s));
-		 }*/
+
+		return this.subjectRepo.findAll().stream().map(mapper::toDTO).collect(Collectors.toSet());
 	}
 
-	public Optional<SubjectDto> getSubjectDtoById(Long id) {
-		return this.mapper.toDTO(repo.findById(id));
-	}
-	
-	public Optional<Subject> getSubjectById(Long id) {
-		return this.repo.findById(id);
+	public Optional<SubjectDto> getSubjectDtoById(long id) {
+
+		Optional<Subject> opt = this.subjectRepo.findById(id);
+
+		if (opt.isPresent()) {
+			return this.mapper.toDTO(opt);
+		} else {
+			throw new RecordNotFoundException("No subject with id " + id + " has been found.");
+		}
 	}
 
+	public Optional<Subject> getSubjectById(long id) {
 
+		Optional<Subject> opt = this.subjectRepo.findById(id);
+
+		if (opt.isPresent()) {
+			return opt;
+		} else {
+			throw new RecordNotFoundException("No subject with id " + id + " has been found.");
+		}
+	}
+
+	@Override
+	public void deleteSubject(long subjectId) {
+
+		Optional<Subject> opt = this.subjectRepo.findById(subjectId);
+
+		if (opt.isPresent()) {
+			Subject subject = opt.get();
+			Set<Teacher> teachers = new HashSet<>();
+			for (TeacherSubject ts : subject.getTeachers()) {
+				teachers.add(ts.getTeacher());
+			}
+
+			for (Teacher t : teachers) {
+				t.removeSubject(subject);
+			}
+
+			this.subjectRepo.delete(subject);
+
+		} else {
+			throw new RecordNotFoundException("No subject with id " + subjectId + " has been found.");
+		}
+
+	}
 }

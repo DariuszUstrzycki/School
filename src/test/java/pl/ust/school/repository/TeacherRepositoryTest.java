@@ -22,6 +22,7 @@ import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import pl.ust.school.entity.Subject;
 import pl.ust.school.entity.Teacher;
 
 @RunWith(SpringRunner.class)
@@ -34,10 +35,22 @@ public class TeacherRepositoryTest {
 	 
 	@Before
 	public void setUp() {
-
 		teacher = createTeacher("Alex");
-
 	}
+	
+	private Teacher createTeacher(String name) {
+		Teacher teacher = new Teacher();
+		teacher = new Teacher();
+		teacher.setFirstName(name);
+		teacher.setLastName("Motgmomery");
+		teacher.setEmail(name + "@gamil.com");
+		teacher.setPassword("567");
+		teacher.setTelephone("1234567");
+		teacher.setBirthDate(LocalDate.of(2000, 1, 1));
+		teacher.setAddress("Manchester, England");
+		return teacher;
+	}
+	
 
 	    @Test
 	    public void shouldFindTeacherById()  {
@@ -248,24 +261,10 @@ public class TeacherRepositoryTest {
 			//then 
 			Iterable<Teacher> list = teacherRepo.findAll();
 			assertThat(list).size().isEqualTo(1);
-			
-			
 		}
 		
-		private Teacher createTeacher(String name) {
-			
-			Teacher teacher = new Teacher();
-			teacher = new Teacher();
-			teacher.setFirstName(name);
-			teacher.setLastName("Motgmomery");
-			teacher.setEmail(name + "@gamil.com");
-			teacher.setPassword("567");
-			teacher.setTelephone("1234567");
-			teacher.setBirthDate(LocalDate.of(2000, 1, 1));
-			teacher.setAddress("Manchester, England");
-			
-			return teacher;
-		}
+		
+		
 		
 		
 }

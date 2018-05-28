@@ -10,11 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,13 +31,20 @@ public class SubjectController {
 	private static final String LIST_VIEW = "detailsNLists/subjectList";
 	private static final String DETAILS_VIEW = "detailsNLists/subjectDetails";
 	private static final String CONFIRM_DELETE_VIEW = "forms/confirmDelete";
-	
+
 	private static final String COLLECTION_OF_SUBJECTS_NAME = "subjectItems";
 	private static final String ENTITY_NAME = "entityName";
 	private static final String ENTITY_NAME_VALUE = "subject";
 
 	@Autowired
 	private SubjectService subjectService;
+
+	//////////////////////////// before each ////////////////////////////
+
+	@ModelAttribute
+	public void addEntityName(Model model) {
+		model.addAttribute(ENTITY_NAME, ENTITY_NAME_VALUE);
+	}
 
 	//////////////////////////////////////////////////////////
 
@@ -50,19 +57,13 @@ public class SubjectController {
 
 	@GetMapping("/save")
 	public String showForm(SubjectDto subjectDto, Model model) {
-		model.addAttribute(ENTITY_NAME, ENTITY_NAME_VALUE);
 		return CREATE_OR_UPDATE_FORM_VIEW;
 	}
 
 	@PostMapping("/save")
-	public String saveSubject(@Valid SubjectDto subjectDto, BindingResult result, Model model) {
-
-		model.addAttribute(ENTITY_NAME, ENTITY_NAME_VALUE);
+	public String saveSubject(@Valid SubjectDto subjectDto, BindingResult result) {
 
 		if (result.hasErrors()) {
-			for (ObjectError error : result.getAllErrors()) {
-				System.err.println(error);
-			}
 			return CREATE_OR_UPDATE_FORM_VIEW;
 		}
 
@@ -75,49 +76,51 @@ public class SubjectController {
 	@RequestMapping("/list")
 	public String listSubjects(@RequestParam(defaultValue = "0", required = false) int min, Model model) {
 		model.addAttribute(COLLECTION_OF_SUBJECTS_NAME, this.subjectService.getAllSubjectDtos());
-		model.addAttribute(ENTITY_NAME, ENTITY_NAME_VALUE);
 		return LIST_VIEW;
 	}
 
 	//////////////////////////// VIEW ONE ////////////////////////////
+
 	@RequestMapping("view/{id}")
 	public String viewSubject(@PathVariable long id, Model model) {
-		
+
 		Optional<SubjectDto> opt = this.subjectService.getSubjectDtoById(id);
-		
-		if(opt.isPresent()) {
+
+		if (opt.isPresent()) {
 			Set<SubjectDto> subjectItems = new HashSet<>();
 			subjectItems.add(opt.get());
 			model.addAttribute(COLLECTION_OF_SUBJECTS_NAME, subjectItems);
 		} else {
 			throw new RecordNotFoundException("No subject with id " + id + " has been found.");
 		}
-		
-		
+
 		return DETAILS_VIEW;
 	}
-	
 
 	//////////////////////////// DELETE ////////////////////////////
 
 	@GetMapping("/delete/{id}/confirm")
-	public String showConfirmationPage(@PathVariable long id, Model model) {
-		model.addAttribute(ENTITY_NAME, ENTITY_NAME_VALUE);
+	public String showConfirmationPage(@PathVariable long id) {
 		return CONFIRM_DELETE_VIEW;
 	}
 
+	@RequestMapping(value = "/delete/{id}")
+	public String deleteSubject(@PathVariable long id) {
+		this.subjectService.deleteSubject(id);
+		return "redirect:/subject/list";
+	}
 
 	//////////////////////////// UPDATE ////////////////////////////
-	
+
 	@GetMapping("/update/{id}")
 	public String showForm(@PathVariable long id, Model model) {
 
 		Optional<SubjectDto> subjectDto = this.subjectService.getSubjectDtoById(id);
-		
-		if(subjectDto.isPresent()) {
+
+		if (subjectDto.isPresent()) {
 			model.addAttribute(subjectDto.get());
 		}
-		
+
 		return CREATE_OR_UPDATE_FORM_VIEW;
 	}
 
@@ -133,13 +136,13 @@ public class SubjectController {
 		}
 
 	}
-	
+
 	////////////////////// exception handling ////////////////////////////////////
-	
+
 	@ExceptionHandler
-    private String recordNotFoundHandler(RecordNotFoundException ex, Model model) {
+	private String recordNotFoundHandler(RecordNotFoundException ex, Model model) {
 		model.addAttribute("notFound", ex.getMessage());
 		return DETAILS_VIEW;
-    }
+	}
 
 }

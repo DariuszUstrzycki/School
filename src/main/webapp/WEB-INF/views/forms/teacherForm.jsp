@@ -28,6 +28,7 @@
 			<form:hidden path="isDeleted" />
 			<form:hidden path="password" />
 			<form:hidden path="email" />
+			<form:hidden path="subjects" />
 
 			<label for="firstName">First name:</label>
 			<form:input placeholder="" path="firstName" />

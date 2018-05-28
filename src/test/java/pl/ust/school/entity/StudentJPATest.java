@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,7 +73,7 @@ public class StudentJPATest {
 	    assertThat(students.size()).isEqualTo(noOfNotDeletedStudents);
 	}
 	
-	@Test
+	@Ignore @Test
 	public void shouldRemoveStudentFromSchoolform_WhenStudentIsDeleted() {
 		
 		//assert

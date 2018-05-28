@@ -31,6 +31,8 @@ public class TeacherServiceImpl implements TeacherService {
 	@Autowired
 	private TeacherMapper mapper;
 
+	///////////////////////////////////////////////////
+
 	@Override
 	public long createTeacher(TeacherDto teacherDto) {
 		Teacher teacher = this.mapper.fromDTO(teacherDto);
@@ -45,22 +47,33 @@ public class TeacherServiceImpl implements TeacherService {
 	}
 
 	@Override
-	public Optional<TeacherDto> getTeacherDtoById(Long id) {
-		return this.mapper.toDTO(teacherRepo.findById(id));
-	}
-
-	@Override
-	public void deleteTeacher(Long id) {
+	public Optional<TeacherDto> getTeacherDtoById(long id) {
 
 		Optional<Teacher> opt = this.teacherRepo.findById(id);
-		opt.ifPresent(teacher -> {
-			teacher.remove();
-			this.teacherRepo.save(teacher);
-		});
+
+		if (opt.isPresent()) {
+			return this.mapper.toDTO(opt);
+		} else {
+			throw new RecordNotFoundException("No teacher with id " + id + " has been found.");
+		}
 	}
 
 	@Override
-	public Collection<SubjectDto> getSubjectDtosNotTaughtByTeacher(TeacherDto teacherDto,
+	public void deleteTeacher(long id) {
+
+		Optional<Teacher> opt = this.teacherRepo.findById(id);
+		if (opt.isPresent()) {
+			Teacher teacher = opt.get();
+			teacher.removeFromAllTeacherSubjects();
+			teacher.setDeleted(true);
+			this.teacherRepo.save(teacher);
+		} else {
+			throw new RecordNotFoundException("No teacher with id " + id + " has been found.");
+		}
+	}
+
+	@Override
+	public Collection<SubjectDto> getSubjectsNotTaughtByTeacher(TeacherDto teacherDto,
 			Collection<SubjectDto> allSubjects) {
 
 		for (TeacherSubject teacherSubject : teacherDto.getSubjects()) {
@@ -73,13 +86,16 @@ public class TeacherServiceImpl implements TeacherService {
 
 	@Override
 	public void removeTeacherSubject(long teacherId, long subjectId) {
-		Optional<Teacher> teacherOpt = this.teacherRepo.findById(teacherId);
-		Optional<Subject> subjectOpt = this.subjectService.getSubjectById(subjectId);
 
-		if (teacherOpt.isPresent() && subjectOpt.isPresent()) {
+		Optional<Subject> subjectOpt = this.subjectService.getSubjectById(subjectId);
+		Optional<Teacher> teacherOpt = this.teacherRepo.findById(teacherId);
+
+		if (teacherOpt.isPresent()) {
 			Teacher teacher = teacherOpt.get();
 			teacher.removeSubject(subjectOpt.get());
 			this.teacherRepo.save(teacher);
+		} else {
+			throw new RecordNotFoundException("No teacher with id " + teacherId + " has been found.");
 		}
 	}
 
@@ -90,24 +106,31 @@ public class TeacherServiceImpl implements TeacherService {
 			return;
 		}
 
-		Teacher teacher;
+		Optional<Subject> subjectOpt = this.subjectService.getSubjectById(subjectId);
+		Subject subject = subjectOpt.get();
 
 		Optional<Teacher> teacherOpt = this.teacherRepo.findById(teacherId);
 		if (teacherOpt.isPresent()) {
-			teacher = teacherOpt.get();
+			Teacher teacher = teacherOpt.get();
+			teacher.addSubject(subject);
+			this.teacherRepo.save(teacher);
 		} else {
 			throw new RecordNotFoundException("No teacher with id " + teacherId + " has been found.");
 		}
 
-		Optional<Subject> subjectOpt = this.subjectService.getSubjectById(subjectId);
-		if (subjectOpt.isPresent()) {
-			Subject subject = subjectOpt.get();
-			teacher.addSubject(subject);
+	}
+
+	@Override
+	public Optional<Teacher> getTeacherById(long id) {
+
+		Optional<Teacher> opt = this.teacherRepo.findById(id);
+
+		if (opt.isPresent()) {
+			return opt;
 		} else {
-			throw new RecordNotFoundException("No subject with id " + subjectId + " has been found.");
+			throw new RecordNotFoundException("No teacher with id " + id + " has been found.");
 		}
 
-		this.teacherRepo.save(teacher);
 	}
 
 	private boolean isUniqueTeacherSubject(long teacherId, long subjectId) {

@@ -16,10 +16,12 @@ public class TeacherSubjectServiceImpl implements TeacherSubjectService{
 
 	@Override
 	public Optional<TeacherSubject> getTeacherSubject(long teacherId, long subjectId) {
-		
 		return this.teacherSubjectRepo.findByTeacherIdAndSubjectId(teacherId, subjectId);
 	}
-	
-	
+
+	@Override
+	public void delete(long teacherSubjectId) {
+		this.teacherSubjectRepo.deleteById(teacherSubjectId);
+	}
 
 }

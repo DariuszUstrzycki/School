@@ -30,9 +30,9 @@ public class StudentDto {
 	private String firstName;
 	@NotEmpty
 	private String lastName;
-	@Email
+	//TODO @Email
 	private String email;
-	@NotEmpty
+	//TODO @NotEmpty
 	private String password;
 	@NotEmpty
 	private String address;

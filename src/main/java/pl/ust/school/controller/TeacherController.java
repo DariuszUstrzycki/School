@@ -13,6 +13,7 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,6 +43,13 @@ public class TeacherController {
 	@Autowired
 	private SubjectService subjectService;
 
+	//////////////////////////// before each ////////////////////////////
+
+	@ModelAttribute
+	public void addEntityName(Model model) {
+		model.addAttribute(ENTITY_NAME, ENTITY_NAME_VALUE);
+	}
+
 	//////////////////////////////////////////////////////////
 
 	@InitBinder
@@ -52,15 +60,12 @@ public class TeacherController {
 	//////////////////////////// SAVE ////////////////////////////
 
 	@GetMapping("/save")
-	public String showForm(TeacherDto teacherDto, Model model) {
-		model.addAttribute(ENTITY_NAME, ENTITY_NAME_VALUE);
+	public String showForm(TeacherDto teacherDto) {
 		return CREATE_OR_UPDATE_FORM_VIEW;
 	}
 
 	@PostMapping("/save")
-	public String saveTeacher(@Valid TeacherDto teacherDto, BindingResult result, Model model) {
-
-		model.addAttribute(ENTITY_NAME, ENTITY_NAME_VALUE);
+	public String saveTeacher(@Valid TeacherDto teacherDto, BindingResult result) {
 
 		if (result.hasErrors()) {
 			return CREATE_OR_UPDATE_FORM_VIEW;
@@ -75,7 +80,6 @@ public class TeacherController {
 	@RequestMapping("/list")
 	public String listTeachers(@RequestParam(defaultValue = "0", required = false) int min, Model model) {
 		model.addAttribute(COLLECTION_OF_TEACHERS_NAME, this.teacherService.getAllTeacherDtos());
-		model.addAttribute(ENTITY_NAME, ENTITY_NAME_VALUE);
 		return LIST_VIEW;
 	}
 
@@ -98,16 +102,13 @@ public class TeacherController {
 	//////////////////////////// DELETE ////////////////////////////
 
 	@GetMapping("/delete/{id}/confirm")
-	public String showConfirmationPage(@PathVariable long id, Model model) {
-		model.addAttribute(ENTITY_NAME, ENTITY_NAME_VALUE);
+	public String showConfirmationPage(@PathVariable long id) {
 		return CONFIRM_DELETE_VIEW;
 	}
 
 	@RequestMapping(value = "/delete/{id}")
 	public String deleteTeacher(@PathVariable long id) {
-
 		this.teacherService.deleteTeacher(id);
-
 		return "redirect:/teacher/list";
 	}
 
@@ -121,7 +122,7 @@ public class TeacherController {
 			TeacherDto teacherDto = opt.get();
 			model.addAttribute("teacherDto", teacherDto);
 
-			model.addAttribute("remainingSubjects", this.teacherService.getSubjectDtosNotTaughtByTeacher(teacherDto,
+			model.addAttribute("remainingSubjects", this.teacherService.getSubjectsNotTaughtByTeacher(teacherDto,
 					this.subjectService.getAllSubjectDtos()));
 
 		} else {
@@ -132,8 +133,7 @@ public class TeacherController {
 	}
 
 	@PostMapping("/update/{id}")
-	public String updateTeacher(@Valid TeacherDto teacherDto, BindingResult result, @PathVariable long id,
-			Model model) {
+	public String updateTeacher(@Valid TeacherDto teacherDto, BindingResult result, @PathVariable long id) {
 
 		if (result.hasErrors()) {
 			return CREATE_OR_UPDATE_FORM_VIEW;
@@ -144,18 +144,17 @@ public class TeacherController {
 		}
 	}
 
-	////////////////////////// remove/add new subject to this teacher
-	////////////////////////// ////////////////////////// /////////////////////
+	////////////////////////// remove/add new subject to this teacher //////////
 
 	@GetMapping("/{teacherId}/subject/{subjectId}/remove")
-	private String removeSubjectFromTeacher(@PathVariable long teacherId, @PathVariable long subjectId, Model model) {
+	private String removeSubjectFromTeacher(@PathVariable long teacherId, @PathVariable long subjectId) {
 
 		this.teacherService.removeTeacherSubject(teacherId, subjectId);
 		return "redirect:/teacher/update/" + teacherId;
 	}
 
 	@GetMapping("/{teacherId}/subject/{subjectId}/add")
-	private String addSubjectToTeacher(@PathVariable long teacherId, @PathVariable long subjectId, Model model) {
+	private String addSubjectToTeacher(@PathVariable long teacherId, @PathVariable long subjectId) {
 
 		this.teacherService.addTeacherSubject(teacherId, subjectId);
 		return "redirect:/teacher/update/" + teacherId;
@@ -169,18 +168,5 @@ public class TeacherController {
 		model.addAttribute("notFound", ex.getMessage());
 		return DETAILS_VIEW;
 	}
-	/*
-	 * TODO
-	 * 
-	 * @ExceptionHandler
-	 * 
-	 * @ResponseStatus(HttpStatus.BAD_REQUEST) private String
-	 * integrityConstraintViolationHandler(
-	 * MySQLIntegrityConstraintViolationException ex, Model model) {
-	 * model.addAttribute("notFound", "Problem while saving to the database. " +
-	 * ex.getErrorCode() + ", " + ex.getMessage()); System.err.println(
-	 * "----------------MySQLIntegrityConstraintViolationException"); return
-	 * CREATE_OR_UPDATE_FORM_VIEW; }
-	 */
 
 }

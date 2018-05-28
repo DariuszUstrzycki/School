@@ -11,6 +11,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Past;
 
+import org.hibernate.annotations.NaturalId;
 import org.hibernate.annotations.Where;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -35,13 +36,14 @@ public class Person extends IdEntity {
     @Column(name = "last_name", nullable=false)
     private String lastName;
     
-    @Email
+  //TODO@NaturalId(mutable=true)
+    //TODO @Email
     //TODO replace the line below with this: @Column(unique = true, nullable=false)
-    @Column(nullable=false)
+    @Column //TODO(nullable=false)
     private String email;
     
-    @NotEmpty
-    @Column(nullable=false)
+    //TODO @NotEmpty
+    @Column//TODO(nullable=false)
     private String password;
     
     @NotEmpty // not null or empty

@@ -37,16 +37,19 @@ public class Teacher extends Person {
 		subject.getTeachers().add(teacherSubject);
 	}
 	
-	// person1.removeSubject( subject ); >> DELETE  FROM TeacherSubject
-	//                               WHERE   teacher_id = 1 AND subject_id = 3
-	
 	public void removeSubject(Subject subject) {
 		TeacherSubject teacherSubject = new TeacherSubject(this, subject);
 		subject.getTeachers().remove(teacherSubject);
 		this.subjects.remove(teacherSubject);
 		teacherSubject.setTeacher(null);
 		teacherSubject.setSubject(null);
-		//teacherSubject.setDeleted(true);
+	}
+	
+	public void removeFromAllTeacherSubjects() {
+		
+		for(TeacherSubject teacherSubject : this.getSubjects()) {
+			teacherSubject.setTeacher(null);
+		}
 	}
 
 	/////////////// getters and setters ///////////////////
@@ -57,25 +60,5 @@ public class Teacher extends Person {
 		}
 		return this.subjects;
 	}
-	
-	/////////////// remove ///////////////////
-	
-	public void remove() {
-		this.setDeleted(true);
-		//this.removeAllSubjects();
-	}
-	/*
-	private void removeAllSubjects() {
-		
-		for(TeacherSubject teacherSubject : this.getSubjects()) {
-			//teacherSubjectId.setTeacher(null);
-			teacherSubject.setDeleted(true);
-		}
-		this.subjects.clear();
-		
-	}*/
-	
-	///////////////////////////
-	
 	
 }

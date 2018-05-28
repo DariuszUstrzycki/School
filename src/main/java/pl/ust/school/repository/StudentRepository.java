@@ -7,25 +7,38 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.transaction.annotation.Transactional;
 
 import pl.ust.school.entity.Student;
 
 public interface StudentRepository extends AppBaseRepository<Student, Long> {
 	
+	@Transactional(readOnly = true)
 	@Query("select s from Student s where s.email = ?1")
 	Optional<Student> findByEmail(String email); 
-		
+	
+	@Transactional(readOnly = true)
 	@Query("select s from Student s where s.lastName LIKE %?1%")
 	Collection<Student> findByLastNameContains(String string); // Contains
 	
+	@Transactional(readOnly = true)
 	Collection<Student> findByFirstNameAndLastName(String firstName, String lastName); 
+	
+	@Transactional(readOnly = true)
 	Collection<Student> findByLastNameOrderByLastNameAsc(String lastName); 
+	
+	@Transactional(readOnly = true)
 	Collection<Student> findTop10By(Sort sort);
+	
+	@Transactional(readOnly = true)
 	Slice<Student> findByLastNameOrderByEmailAsc(String lastName, Pageable of);
 	
+	@Transactional(readOnly = true)
 	@Query("select s from Student s where s.schoolform.id =	?1")
-	Collection<Student> findBySchoolform_Id(long id); // 1. _ nie jest tu konieczny. 2.Search by field Schoolform in
+	Collection<Student> findBySchoolformId(long id); // 1. _ nie jest tu konieczny. 2.Search by field Schoolform in
 														// Student
+	@Transactional(readOnly = true)
+	Collection<Student> saveAll(Collection<Student> students);
 
 	
 	

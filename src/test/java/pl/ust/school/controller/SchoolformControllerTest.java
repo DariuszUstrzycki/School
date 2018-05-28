@@ -58,7 +58,7 @@ public class SchoolformControllerTest {
 		schoolform1A.setId(TEST_SCHOOLFORM_ID);
 		schoolform1A.setName("1A");
 
-		given(this.schoolformService.getSchoolformById(TEST_SCHOOLFORM_ID)).willReturn(Optional.of(this.schoolform1A));
+		given(this.schoolformService.getSchoolformDtoById(TEST_SCHOOLFORM_ID)).willReturn(Optional.of(this.schoolform1A));
 
 		System.err.println("----------@Before setup()-----------------"); // useful when debugging as it's easy to see
 																			// when each test starts/ends
@@ -90,7 +90,7 @@ public class SchoolformControllerTest {
 	@Test
 	public void shouldRetrieveListOfSchooForms() throws Exception {
 
-		given(this.schoolformService.getAllSchoolforms())
+		given(this.schoolformService.getAllSchoolformDtos())
 				.willReturn(Lists.newArrayList(schoolform1A, new SchoolformDto()));
 		mockMvc.perform(get("/schoolform/list")).andDo(print()).andExpect(status().isOk())
 				.andExpect(model().attributeExists(COLLECTION_OF_SCHOOLFORMS_NAME)).andExpect(view().name(LIST_VIEW));
@@ -106,7 +106,7 @@ public class SchoolformControllerTest {
 
 	@Test
 	public void shouldReturn404HttpWhenNotFound() throws Exception {
-		given(this.schoolformService.getSchoolformById(-1L)).willReturn((Optional.empty()));
+		given(this.schoolformService.getSchoolformDtoById(-1L)).willReturn((Optional.empty()));
 		mockMvc.perform(get("/schoolform/view/{id}", -1)).andDo(print()).andExpect(status().isNotFound())
 				.andExpect(model().attributeExists("notFound")).andExpect(view().name(DETAILS_VIEW));
 	}
@@ -127,7 +127,7 @@ public class SchoolformControllerTest {
 				// redirect: "redirect:....".
 				// You could use it only for a view not being a redirect.
 				.andDo(print()).andExpect(model().hasNoErrors()).andExpect(status().is3xxRedirection())
-				.andExpect(redirectedUrl("/schoolform/view/" + TEST_SCHOOLFORM_ID));
+				.andExpect(redirectedUrl("/schoolform/list"));
 	}
 
 	@Test
