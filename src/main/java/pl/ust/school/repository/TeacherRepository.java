@@ -34,7 +34,7 @@ public interface TeacherRepository extends AppBaseRepository<Teacher, Long>{
 	Slice<Teacher> findByLastNameOrderByEmailAsc(String lastName, Pageable of);
 	
 	@Transactional(readOnly = true)
-	Collection<Teacher> saveAll(Collection<Teacher> seachers);
+	Iterable<Teacher> saveAll(Iterable<Teacher> teachers);
 	
 
 }

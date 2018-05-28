@@ -38,7 +38,7 @@ public interface StudentRepository extends AppBaseRepository<Student, Long> {
 	Collection<Student> findBySchoolformId(long id); // 1. _ nie jest tu konieczny. 2.Search by field Schoolform in
 														// Student
 	@Transactional(readOnly = true)
-	Collection<Student> saveAll(Collection<Student> students);
+	Iterable<Student> saveAll(Iterable<Student> students);
 
 	
 	
