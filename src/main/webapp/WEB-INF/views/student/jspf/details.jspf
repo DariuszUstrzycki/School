@@ -3,6 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@	taglib	uri="http://www.springframework.org/tags/form"	prefix="form" %>
 
+<h3>${studentDto.firstName} ${studentDto.lastName}</h3>
 <table border='1px'>
 <thead>
 <tr>
@@ -11,15 +12,15 @@
 </thead>
 <tbody>
 
-<c:forEach items='${studentItems}' var='student'>
+
 <tr>
-	<td>${student.id}</td>
-	<td>${student.firstName}</td>
-	<td>${student.lastName}</td>
-	<td>${student.schoolform.name}</td>
-	<td><a href='${pageContext.request.contextPath}/student/update/${student.id}'>Update</a>
-	<a href='${pageContext.request.contextPath}/student/delete/${student.id}/confirm'>Delete</a></td>
+	<td>${studentDto.id}</td>
+	<td>${studentDto.firstName}</td>
+	<td>${studentDto.lastName}</td>
+	<td>${studentDto.schoolform.name}</td>
+	<td><a href='${pageContext.request.contextPath}/student/update/${studentDto.id}'>Update</a>
+	<a href='${pageContext.request.contextPath}/student/delete/${studentDto.id}/confirm'>Delete</a></td>
 </tr>
-</c:forEach>
+
 </tbody>
 </table>

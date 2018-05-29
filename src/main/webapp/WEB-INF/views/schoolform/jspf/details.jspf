@@ -3,8 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@	taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 
-<br>
-
+<h3>${schoolformDto.name}</h3>
 <table border='1px'>
 	<thead>
 		<tr>
@@ -25,6 +24,8 @@
 <br>
 <br>
 
+
+<h3>IM IN DETAILS Subjects and teachers:</h3>
 <table border='1px'> 
 <thead>
 <tr>
@@ -36,6 +37,28 @@
 <tr>
 	<td>${teacherSubject.subject.name}</td>
 	<td>${teacherSubject.teacher.firstName} ${teacherSubject.teacher.lastName}</td>
+</tr>
+</c:forEach>
+</tbody>
+</table>
+<br>
+<br>
+
+
+<h3>Students:</h3>
+<table border='1px'>
+<thead>
+<tr>
+    <th>Id</th><th>Student</th><th>School form</th>
+</tr>
+</thead>
+<tbody>
+
+<c:forEach items='${schoolformDto.students}' var='student'>
+<tr>
+	<td>${student.id}</td>
+	<td>${student.firstName} ${student.lastName}</td>
+	<td>${student.schoolform.name}</td>
 </tr>
 </c:forEach>
 </tbody>

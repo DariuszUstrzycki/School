@@ -73,29 +73,31 @@ public class TeacherServiceImpl implements TeacherService {
 	}
 
 	@Override
-	public Collection<SubjectDto> getSubjectsNotTaughtByTeacher(TeacherDto teacherDto,
-			Collection<SubjectDto> allSubjects) {
+	public Collection<SubjectDto> getNotTaughtSubjects(TeacherDto teacherDto) {
+		
+		Collection<SubjectDto> all = this.subjectService.getAllSubjectDtos();
 
 		for (TeacherSubject teacherSubject : teacherDto.getSubjects()) {
-			allSubjects.removeIf(subject -> subject.getName().equals(teacherSubject.getSubject().getName()));
+			all.removeIf(subject -> subject.getName().equals(teacherSubject.getSubject().getName()));
 		}
 
-		return allSubjects;
+		return all;
 
 	}
 
 	@Override
-	public void removeTeacherSubject(long teacherId, long subjectId) {
+	public void removeTeacherSubject(long teacherSubjectId) {
+		
+		Optional<TeacherSubject> opt = this.teacherSubjectService.getTeacherSubject(teacherSubjectId);
+		System.err.println("--------- teacherSubjectOpt:" + opt.get());
 
-		Optional<Subject> subjectOpt = this.subjectService.getSubjectById(subjectId);
-		Optional<Teacher> teacherOpt = this.teacherRepo.findById(teacherId);
-
-		if (teacherOpt.isPresent()) {
-			Teacher teacher = teacherOpt.get();
-			teacher.removeSubject(subjectOpt.get());
+		if (opt.isPresent()) {
+			TeacherSubject ts = opt.get();
+			Teacher teacher = ts.getTeacher();
+			//teacher.removeSubject(ts);
 			this.teacherRepo.save(teacher);
 		} else {
-			throw new RecordNotFoundException("No teacher with id " + teacherId + " has been found.");
+			throw new RecordNotFoundException("No teacher with id " + "XXXXXXXXXXXXXX" + " has been found.");
 		}
 	}
 

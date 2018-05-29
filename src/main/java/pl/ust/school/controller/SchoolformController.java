@@ -1,8 +1,6 @@
 package pl.ust.school.controller;
 
 import java.util.Optional;
-import java.util.Set;
-import java.util.TreeSet;
 
 import javax.validation.Valid;
 
@@ -23,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import pl.ust.school.dto.SchoolformDto;
-import pl.ust.school.dto.TeacherDto;
 import pl.ust.school.service.SchoolformService;
 import pl.ust.school.service.StudentService;
 import pl.ust.school.service.TeacherSubjectService;
@@ -100,12 +97,7 @@ public class SchoolformController {
 		Optional<SchoolformDto> opt = this.schoolformService.getSchoolformDtoById(id);
 
 		if (opt.isPresent()) {
-			Set<SchoolformDto> schoolformItems = new TreeSet<>();
-			SchoolformDto schoolformDto = opt.get();
 			model.addAttribute("schoolformDto", opt.get());
-			//schoolformItems.add(schoolformDto);
-			//model.addAttribute("schoolformName", schoolformDto.getName());
-			//model.addAttribute(COLLECTION_OF_SCHOOLFORMS_NAME, schoolformItems);
 			model.addAttribute(COLLECTION_OF_STUDENTS_NAME, this.studentService.getStudentBySchoolformId(id));
 			model.addAttribute(COLLECTION_OF_TEACHERSTUDENTS_NAME, this.teacherSubjectService.getAllTeacherSubjects());
 			//
@@ -139,9 +131,9 @@ public class SchoolformController {
 		if (opt.isPresent()) {
 			SchoolformDto schoolformDto = opt.get();
 			model.addAttribute("schoolformDto", schoolformDto);
-			
-			model.addAttribute("remainingTeacherSubjects", this.schoolformService.getTeacherSubjectsNotTaughtInSchoolform(
-					schoolformDto, this.teacherSubjectService.getAllTeacherSubjectDtos()));
+			model.addAttribute("notTaughTeacherSubjects", this.schoolformService.getNotTaughtTeacherSubjects(schoolformDto));
+			model.addAttribute(COLLECTION_OF_STUDENTS_NAME, this.studentService.getStudentBySchoolformId(id));
+			model.addAttribute(COLLECTION_OF_TEACHERSTUDENTS_NAME, this.teacherSubjectService.getAllTeacherSubjects());
 		} else {
 			throw new RecordNotFoundException("No schoolform with id " + id + " has been found.");
 		}
@@ -153,10 +145,7 @@ public class SchoolformController {
 	public String updateSchoolform(@Valid SchoolformDto schoolformDto, BindingResult result, @PathVariable long id, Model model) {
 
 		if (result.hasErrors()) {
-			
-			model.addAttribute("remainingTeacherSubjects", this.schoolformService.getTeacherSubjectsNotTaughtInSchoolform(
-					schoolformDto, this.teacherSubjectService.getAllTeacherSubjectDtos()));
-			
+			model.addAttribute("notTaughTeacherSubjects", this.schoolformService.getNotTaughtTeacherSubjects(schoolformDto));
 			return CREATE_OR_UPDATE_FORM_VIEW;
 		} else {
 			schoolformDto.setId(id);
@@ -171,15 +160,15 @@ public class SchoolformController {
 	@GetMapping("/{schoolformId}/teacherSubject/{teacherSubjectId}/remove")
 	private String removeTeacherSubjectFromSchoolForm(@PathVariable long schoolformId, @PathVariable long teacherSubjectId) {
 
-		//this.teacherSubjectService.removeTeacherSubject(teacherSubjectId);
-		return "redirect:/view/" + schoolformId;
+		this.schoolformService.removeTeacherSubject(schoolformId, teacherSubjectId);
+		return "redirect:/schoolform/view/" + schoolformId;
 	}
 
 	@GetMapping("/{schoolformId}/teacherSubject/{teacherSubjectId}/add")
 	private String addSubjectToTeacher(@PathVariable long schoolformId, @PathVariable long teacherSubjectId) {
 
-		//this.teacherSubjectService.addTeacherSubject(teacherSubjectId);
-		return "redirect:/view/" + schoolformId;
+		this.schoolformService.addTeacherSubject(schoolformId, teacherSubjectId);
+		return "redirect:/schoolform/view/" + schoolformId;
 	}
 
 	////////////////////// exception handling ////////////////////////////////////

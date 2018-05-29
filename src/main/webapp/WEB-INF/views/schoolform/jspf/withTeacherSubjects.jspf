@@ -3,6 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@	taglib	uri="http://www.springframework.org/tags/form"	prefix="form" %>
 
+<h3>Subjects and teachers in this school form:</h3>
 <table border='1px'>
 <thead>
 <tr>
@@ -11,13 +12,47 @@
 </thead>
 <tbody>
 
-<c:forEach items='${teacherSubjectItems}' var='teacherSubject'>
+<c:forEach items='${schoolformDto.teacherSubjects}' var='ts'>
 <tr>
-	<td>${teacherSubject.id}</td>
-	<td>${teacherSubject.teacher.firstName} ${teacherSubject.teacher.lastName}</td>
-	<td>${teacherSubject.subject.name}</td>
-	<td><a href='${pageContext.request.contextPath}/schoolform/${student.schoolform.id}/teacherSubject/${teacherSubject.id}/remove'>Remove from school form</a></td>
+	<td>${ts.id}</td>
+	<td>${ts.subject.name}</td>
+	<td>${ts.teacher.firstName} ${ts.teacher.lastName}</td>
+					<td><form
+						action='${pageContext.request.contextPath}/schoolform/${ts.schoolform.id}/teacherSubject/${ts.id}/remove'
+						method="GET">
+						<input type="submit" value="Remove from school form" />
+					</form>
+					</td>
 </tr> 
 </c:forEach>
 </tbody>
+</table>
+
+
+<h3>!!! Other subjects/teachers:</h3>
+<table border='1px'>
+	<thead>
+		<tr>
+			<th>Id</th>
+			<th>Subject</th>
+			<th>Teacher</th>
+			<th>Action</th>
+		</tr>
+	</thead>
+	<tbody>
+		<c:forEach items='${notTaughTeacherSubjects}' var='ts'>
+			<tr>
+				<td>${ts.id}</td>
+				<td>${ts.subject.name}</td>
+				<td>${ts.teacher.firstName} ${ts.teacher.lastName}</td>
+				<td>
+					<form
+						action='${pageContext.request.contextPath}/schoolform/${ts.schoolform.id}/teacherSubject/${ts.id}/add'
+						method="GET">
+						<input type="submit" value="Add to school form" />
+					</form>
+				</td>
+			</tr>
+		</c:forEach>
+	</tbody>
 </table>

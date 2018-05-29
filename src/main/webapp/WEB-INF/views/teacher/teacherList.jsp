@@ -21,7 +21,7 @@
 	<%@ include file="../teacher/jspf/list.jspf" %>
 </div>
 
-<div id="header">
+<div id="footer">
     <%@ include file="../jspf/footer.jspf" %>
 </div>
 </body>

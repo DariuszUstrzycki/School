@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import pl.ust.school.controller.RecordNotFoundException;
 import pl.ust.school.dto.SchoolformDto;
-import pl.ust.school.dto.SubjectDto;
 import pl.ust.school.dto.TeacherSubjectDto;
 import pl.ust.school.entity.Schoolform;
 import pl.ust.school.entity.TeacherSubject;
@@ -22,12 +21,16 @@ public class SchoolformServiceImpl implements SchoolformService {
 
 	@Autowired
 	private SchoolformRepository schoolformRepo;
-
+	
 	@Autowired
 	private SchoolformMapper schoolformMapper;
 	
 	@Autowired
+	private TeacherSubjectService teacherSubjectService;
+	
+	@Autowired
 	private TeacherSubjectMapper teacherSubjectMapper;
+	
 
 	public long createSchoolform(SchoolformDto schoolformDto) {
 		Schoolform schoolform = this.schoolformMapper.fromDTO(schoolformDto);
@@ -75,18 +78,15 @@ public class SchoolformServiceImpl implements SchoolformService {
 	///////////////////////////////////////////
 
 	@Override
-	public Collection<TeacherSubjectDto> getTeacherSubjectsNotTaughtInSchoolform(SchoolformDto schoolformDto, Collection<TeacherSubjectDto> teacherSubjects) {
+	public Collection<TeacherSubjectDto> getNotTaughtTeacherSubjects(SchoolformDto schoolformDto) {
 
-		System.err.println("-----------------------Size of TSs: " + teacherSubjects.size());
-		
-		for (TeacherSubject ts : schoolformDto.getTeacherSubjects()) {
-			teacherSubjects.removeIf(teacherSubject -> 
-				ts.getSchoolform().getId() != teacherSubject.getSchoolform().getId());
-		}
-		
-		System.err.println("-----------------------EXIT Size of TSs: " + teacherSubjects.size());
-		
-		return teacherSubjects;
+		Collection<TeacherSubject> teacherSubjectsFromSchoolform = schoolformDto.getTeacherSubjects();
+		Collection<TeacherSubject> all = this.teacherSubjectService.getAllTeacherSubjects();
+		all.removeAll(teacherSubjectsFromSchoolform);
+
+		return all.stream()
+				.map(teacherSubjectMapper::toDTO)
+				.collect(Collectors.toList());
 	}
 	
 	public Collection<SchoolformDto> getAllSchoolformDtos() {
@@ -95,6 +95,42 @@ public class SchoolformServiceImpl implements SchoolformService {
 				.stream()
 				.map(schoolformMapper::toDTO)
 				.collect(Collectors.toList());
+	}
+
+	@Override
+	public void removeTeacherSubject(long schoolformId, long teacherSubjectId) {
+		//Optional<TeacherSubject> opt = this.teacherSubjectRepository.findById(teacherSubjectId);
+		
+		Optional<Schoolform> opt = this.schoolformRepo.findById(schoolformId);
+
+		if (opt.isPresent()) {
+			/*TeacherSubject teacherSubject = opt.get();
+			teacherSubject.setSchoolform(null);
+			this.teacherSubjectRepository.save(teacherSubject);*/
+			Schoolform schoolform = opt.get();
+			TeacherSubject toBeRemoved = null;
+			for(TeacherSubject ts : schoolform.getTeacherSubjects()) {
+				if(ts.getId() == teacherSubjectId) {
+					toBeRemoved = ts;
+				}
+			}
+			
+			if(toBeRemoved != null) {
+				schoolform.removeTeacherSubject(toBeRemoved);
+				this.schoolformRepo.save(schoolform);
+			}
+			
+			
+		} else {
+			throw new RecordNotFoundException("No schoolform with id " + teacherSubjectId + " has been found.");
+		}
+		
+	}
+
+	@Override
+	public void addTeacherSubject(long schoolformId, long teacherSubjectId) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

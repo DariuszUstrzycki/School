@@ -14,6 +14,10 @@ public interface SchoolformService {
 	Optional<SchoolformDto> getSchoolformDtoById(long id);
 	Optional<Schoolform> getSchoolformById(long id);
 	void deleteSchoolform(Long id);
-	Collection<TeacherSubjectDto> getTeacherSubjectsNotTaughtInSchoolform(SchoolformDto dto, Collection<TeacherSubjectDto> allTSDtos);
+	Collection<TeacherSubjectDto> getNotTaughtTeacherSubjects(SchoolformDto dto);
+	void removeTeacherSubject(long schoolformId, long teacherSubjectId);
+	void addTeacherSubject(long schoolformId, long teacherSubjectId);
+	
+	
 
 }

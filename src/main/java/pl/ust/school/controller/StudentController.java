@@ -1,9 +1,7 @@
 package pl.ust.school.controller;
 
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Optional;
-import java.util.Set;
 
 import javax.validation.Valid;
 
@@ -100,9 +98,8 @@ public class StudentController {
 		Optional<StudentDto> opt = this.studentService.getStudentDtoById(id);
 
 		if (opt.isPresent()) {
-			Set<StudentDto> studentItems = new HashSet<>();
-			studentItems.add(opt.get());
-			model.addAttribute(COLLECTION_OF_STUDENTS_NAME, studentItems);
+			StudentDto studentDto = opt.get();
+			model.addAttribute("studentDto", studentDto);
 		} else {
 			throw new RecordNotFoundException("No student with id " + id + " has been found.");
 		}

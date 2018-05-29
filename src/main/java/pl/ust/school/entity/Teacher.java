@@ -39,10 +39,12 @@ public class Teacher extends Person {
 	
 	public void removeSubject(Subject subject) {
 		TeacherSubject teacherSubject = new TeacherSubject(this, subject, null);
+		//teacherSubject.getSchoolform().getTeacherSubjects().remove(teacherSubject); // new line
 		subject.getTeachers().remove(teacherSubject);
 		this.subjects.remove(teacherSubject);
 		teacherSubject.setTeacher(null);
 		teacherSubject.setSubject(null);
+		//teacherSubject.setSchoolform(null);
 	}
 	
 	public void removeFromAllTeacherSubjects() {

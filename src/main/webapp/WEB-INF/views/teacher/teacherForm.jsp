@@ -64,7 +64,7 @@
 
 	<div>
 		<c:if test="${empty notFound}">
-			<%@ include file="../teacher/jspf/subjectsTaught.jspf"%>
+			<%@ include file="../teacher/jspf/withSubjects.jspf"%>
 		</c:if>
 	</div>
 

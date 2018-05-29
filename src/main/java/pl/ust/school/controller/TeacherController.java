@@ -1,6 +1,5 @@
 package pl.ust.school.controller;
 
-import java.util.List;
 import java.util.Optional;
 
 import javax.validation.Valid;
@@ -10,7 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import pl.ust.school.dto.TeacherDto;
-import pl.ust.school.service.SubjectService;
 import pl.ust.school.service.TeacherService;
 
 @Controller
@@ -41,9 +38,6 @@ public class TeacherController {
 
 	@Autowired
 	private TeacherService teacherService;
-
-	@Autowired
-	private SubjectService subjectService;
 
 	//////////////////////////// before each ////////////////////////////
 
@@ -123,9 +117,7 @@ public class TeacherController {
 		if (opt.isPresent()) {
 			TeacherDto teacherDto = opt.get();
 			model.addAttribute("teacherDto", teacherDto);
-
-			model.addAttribute("remainingSubjects", this.teacherService.getSubjectsNotTaughtByTeacher(teacherDto,
-					this.subjectService.getAllSubjectDtos()));
+			model.addAttribute("notTaughSubjects", this.teacherService.getNotTaughtSubjects(teacherDto));
 
 		} else {
 			throw new RecordNotFoundException("No teacher with id " + id + " has been found.");
@@ -138,8 +130,7 @@ public class TeacherController {
 	public String updateTeacher(@Valid TeacherDto teacherDto, BindingResult result, @PathVariable long id, Model model) {
 
 		if (result.hasErrors()) {
-		    model.addAttribute("remainingSubjects", this.teacherService.getSubjectsNotTaughtByTeacher(teacherDto,
-					this.subjectService.getAllSubjectDtos()));
+		    model.addAttribute("notTaughSubjects", this.teacherService.getNotTaughtSubjects(teacherDto));
 			return CREATE_OR_UPDATE_FORM_VIEW;
 		} else {
 			teacherDto.setId(id);
@@ -149,12 +140,12 @@ public class TeacherController {
 	}
 
 	////////////////////////// remove/add new subject to this teacher //////////
+// Could not resolve placeholder 'teacherId' in value "/${teacherId}/remove/${teacherSubjectId}
+	//@GetMapping("/remove/${teacherSubjectId}")
+	private String removeSubjectFromTeacher(@PathVariable long teacherSubjectId) {
 
-	@GetMapping("/{teacherId}/subject/{subjectId}/remove")
-	private String removeSubjectFromTeacher(@PathVariable long teacherId, @PathVariable long subjectId) {
-
-		this.teacherService.removeTeacherSubject(teacherId, subjectId);
-		return "redirect:/teacher/update/" + teacherId;
+		this.teacherService.removeTeacherSubject(teacherSubjectId);
+		return "redirect:/teacher/update/" + "";
 	}
 
 	@GetMapping("/{teacherId}/subject/{subjectId}/add")

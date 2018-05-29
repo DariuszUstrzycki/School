@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import pl.ust.school.dto.StudentDto;
 import pl.ust.school.dto.SubjectDto;
 import pl.ust.school.service.SubjectService;
 
@@ -87,9 +88,8 @@ public class SubjectController {
 		Optional<SubjectDto> opt = this.subjectService.getSubjectDtoById(id);
 
 		if (opt.isPresent()) {
-			Set<SubjectDto> subjectItems = new HashSet<>();
-			subjectItems.add(opt.get());
-			model.addAttribute(COLLECTION_OF_SUBJECTS_NAME, subjectItems);
+			SubjectDto subjectDto = opt.get();
+			model.addAttribute("subjectDto", subjectDto);
 		} else {
 			throw new RecordNotFoundException("No subject with id " + id + " has been found.");
 		}

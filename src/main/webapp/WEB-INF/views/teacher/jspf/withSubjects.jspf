@@ -7,19 +7,21 @@
 <table border='1px'>
 	<thead>
 		<tr>
+			<th>TS Id</th>
 			<th>Subject</th>
-			<th>TeacherSubject Id</th>
+			<th>School form</th>
 			<th>Action</th>
 		</tr>
 	</thead>
 	<tbody>
 		<c:forEach items='${teacherDto.subjects}' var='teacherSubject'>
 			<tr>
-				<td>${teacherSubject.subject.name}</td>
 				<td>${teacherSubject.id}</td>
+				<td>${teacherSubject.subject.name}</td>
+				<td>${teacherSubject.schoolform.name}</td>
 				<td>
 					<form
-						action='${pageContext.request.contextPath}/teacher/${teacherDto.id}/subject/${teacherSubject.subject.id}/remove'
+						action='${pageContext.request.contextPath}/teacher/${teacherSubject.teacher.id}/remove/${teacherSubject.id}'
 						method="GET">
 						<input type="submit" value="Remove" />
 					</form>
@@ -39,7 +41,7 @@
 		</tr>
 	</thead>
 	<tbody>
-		<c:forEach items='${remainingSubjects}' var='subject'>
+		<c:forEach items='${notTaughSubjects}' var='subject'>
 			<tr>
 				<td>${subject.name}</td>
 				<td>${subject.id}</td>

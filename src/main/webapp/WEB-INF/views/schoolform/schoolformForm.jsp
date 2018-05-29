@@ -36,7 +36,7 @@
 <input type="submit" value="${actionType}" />
 <input type="reset" value="Reset" />
 </form:form>
-</div><br><br>
+</div>
 
 
 <div>

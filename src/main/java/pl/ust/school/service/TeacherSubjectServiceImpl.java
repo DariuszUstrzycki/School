@@ -44,4 +44,10 @@ public class TeacherSubjectServiceImpl implements TeacherSubjectService{
 				.collect(Collectors.toSet());
 	}
 
+	@Override
+	public Optional<TeacherSubject> getTeacherSubject(long teacherSubjectId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
