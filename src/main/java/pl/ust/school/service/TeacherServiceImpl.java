@@ -88,8 +88,12 @@ public class TeacherServiceImpl implements TeacherService {
 	@Override
 	public void removeTSS(long tSSId) {
 		
-		Optional<TSS> opt = this.tSSService.getTSS(tSSId);
-		System.err.println("--------- tSSOpt:" + opt.get());
+		///////////////////im working here /////////////////
+		
+		
+		this.tSSService.deleteTSS(tSSId);
+		
+		/*Optional<TSS> opt = this.tSSService.getTSS(tSSId);
 
 		if (opt.isPresent()) {
 			TSS ts = opt.get();
@@ -98,7 +102,7 @@ public class TeacherServiceImpl implements TeacherService {
 			this.teacherRepo.save(teacher);
 		} else {
 			throw new RecordNotFoundException("No teacher with id " + "XXXXXXXXXXXXXX" + " has been found.");
-		}
+		}*/
 	}
 
 	@Override

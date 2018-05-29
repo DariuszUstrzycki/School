@@ -140,12 +140,12 @@ public class TeacherController {
 	}
 
 	////////////////////////// remove/add new subject to this teacher //////////
-// Could not resolve placeholder 'teacherId' in value "/${teacherId}/remove/${tSSId}
-	//@GetMapping("/remove/${tSSId}")
-	private String removeSubjectFromTeacher(@PathVariable long tSSId) {
 
-		this.teacherService.removeTSS(tSSId);
-		return "redirect:/teacher/update/" + "";
+	@GetMapping("/{teacherId}/remove/{tSSId}")
+	private String removeSubjectFromTeacher(@PathVariable long teacherId, @PathVariable long tSSId) {
+
+		this.teacherService.removeTSS(tSSId); // completely
+		return "redirect:/teacher/update/" + teacherId;
 	}
 
 	@GetMapping("/{teacherId}/subject/{subjectId}/add")

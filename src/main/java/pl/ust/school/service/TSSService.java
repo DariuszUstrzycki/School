@@ -11,7 +11,6 @@ public interface TSSService {
 	
 	Optional<TSS> getTSS(long teacherId, long subjectId);
 	Optional<TSS> getTSS(long tSSId);
-	void delete(long tSSId);
 	Collection<TSS> getAllTSSs();
 	Collection<TSSDto> getAllTSSDtos(); 
 	void deleteTSS(long tSSId);

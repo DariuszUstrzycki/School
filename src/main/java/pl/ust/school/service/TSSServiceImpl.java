@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import pl.ust.school.controller.RecordNotFoundException;
 import pl.ust.school.dto.TSSDto;
 import pl.ust.school.entity.Subject;
 import pl.ust.school.entity.TSS;
@@ -14,7 +15,7 @@ import pl.ust.school.mapper.TSSMapper;
 import pl.ust.school.repository.TSSRepository;
 
 @Service
-public class TSSImpl implements TSSService{
+public class TSSServiceImpl implements TSSService{
 	
 	@Autowired
 	private TSSRepository tSSRepo;
@@ -25,11 +26,6 @@ public class TSSImpl implements TSSService{
 	@Override
 	public Optional<TSS> getTSS(long teacherId, long subjectId) {
 		return this.tSSRepo.findByTeacherIdAndSubjectId(teacherId, subjectId);
-	}
-
-	@Override
-	public void delete(long tSSId) {
-		this.tSSRepo.deleteById(tSSId);
 	}
 
 	@Override
@@ -52,18 +48,27 @@ public class TSSImpl implements TSSService{
 
 	@Override
 	public void deleteTSS(long tSSId) {
-		// TODO Auto-generated method stub
+		
+		Optional<TSS> opt = this.tSSRepo.findById(tSSId);
+		
+		if(opt.isPresent()) {
+			TSS tss = opt.get();
+			tss.removeTSS();
+			this.tSSRepo.delete(tss);
+		} else {
+			throw new RecordNotFoundException("No TSS with id " + tSSId + " has been found.");
+		} 
 		
 	}
-
+	
 	@Override
 	public void deleteTSSsBySubject(long subjectId) {
 		
 		Collection<TSS> tssesWithThisSubject = this.tSSRepo.findBySubjectId(subjectId);
 		
-		for(TSS ts : tssesWithThisSubject) {
-			ts.removeTSS();
-			this.tSSRepo.delete(ts);
+		for(TSS tss : tssesWithThisSubject) {
+			tss.removeTSS();
+			this.tSSRepo.delete(tss);
 		}
 		
 	}
