@@ -12,13 +12,13 @@
 </thead>
 <tbody>
 
-<c:forEach items='${schoolformDto.tsses}' var='ts'>
+<c:forEach items='${schoolformDto.tsses}' var='tss'>
 <tr>
-	<td>${ts.id}</td>
-	<td>${ts.subject.name}</td>
-	<td>${ts.teacher.firstName} ${ts.teacher.lastName}</td>
+	<td>${tss.id}</td>
+	<td>${tss.subject.name}</td>
+	<td>${tss.teacher.firstName} ${tss.teacher.lastName}</td>
 					<td><form
-						action='${pageContext.request.contextPath}/schoolform/${ts.schoolform.id}/tSS/${ts.id}/remove'
+						action='${pageContext.request.contextPath}/schoolform/${tss.schoolform.id}/tSS/${tss.id}/remove'
 						method="GET">
 						<input type="submit" value="Remove from school form" />
 					</form>
@@ -29,7 +29,8 @@
 </table>
 
 
-<h3>!!! Other subjects/teachers:</h3>
+<h3>Available subject-teacher pairs:</h3>
+<p>(A new teacher/subject can be added in the Teacher panel.)</p>
 <table border='1px'>
 	<thead>
 		<tr>
@@ -40,14 +41,14 @@
 		</tr>
 	</thead>
 	<tbody>
-		<c:forEach items='${notTaughTSSs}' var='ts'>
+		<c:forEach items='${notTaughTSSs}' var='tss'>
 			<tr>
-				<td>${ts.id}</td>
-				<td>${ts.subject.name}</td>
-				<td>${ts.teacher.firstName} ${ts.teacher.lastName}</td>
+				<td>${tss.id}</td>
+				<td>${tss.subject.name}</td>
+				<td>${tss.teacher.firstName} ${ts.teacher.lastName}</td>
 				<td>
 					<form
-						action='${pageContext.request.contextPath}/schoolform/${ts.schoolform.id}/tSS/${ts.id}/add'
+						action='${pageContext.request.contextPath}/schoolform/${schoolformDto.id}/tSS/${tss.id}/add'
 						method="GET">
 						<input type="submit" value="Add to school form" />
 					</form>

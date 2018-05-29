@@ -62,18 +62,6 @@ public class SchoolformServiceImpl implements SchoolformService {
 
 	}
 
-	public void deleteSchoolform(Long id) {
-
-		Optional<Schoolform> opt = this.schoolformRepo.findById(id);
-
-		if (opt.isPresent()) {
-			Schoolform schoolform = opt.get();
-			schoolform.removeAllStudents();
-			this.schoolformRepo.delete(schoolform);
-		} else {
-			throw new RecordNotFoundException("No schoolform with id " + id + " has been found.");
-		}
-	}
 	
 	///////////////////////////////////////////
 
@@ -96,41 +84,61 @@ public class SchoolformServiceImpl implements SchoolformService {
 				.map(schoolformMapper::toDTO)
 				.collect(Collectors.toList());
 	}
-
-	@Override
-	public void removeTSS(long schoolformId, long tSSId) {
-		//Optional<TSS> opt = this.tSSRepository.findById(tSSId);
+	
+	public void deleteSchoolform(Long id) {
 		
-		Optional<Schoolform> opt = this.schoolformRepo.findById(schoolformId);
+		//////////////////// workinf area ///////////////////////
+
+		Optional<Schoolform> opt = this.schoolformRepo.findById(id);
 
 		if (opt.isPresent()) {
-			/*TSS tSS = opt.get();
-			tSS.setSchoolform(null);
-			this.tSSRepository.save(tSS);*/
 			Schoolform schoolform = opt.get();
-			TSS toBeRemoved = null;
-			for(TSS ts : schoolform.getTsses()) {
-				if(ts.getId() == tSSId) {
-					toBeRemoved = ts;
-				}
+			schoolform.removeAllStudents();
+			for(TSS tss : schoolform.getTsses()) {
+				tss.setSchoolform(null);
 			}
-			
-			if(toBeRemoved != null) {
-				schoolform.removeTSS(toBeRemoved);
-				this.schoolformRepo.save(schoolform);
-			}
-			
-			
+			schoolform.getTsses().clear();
+			this.schoolformRepo.delete(schoolform);
 		} else {
-			throw new RecordNotFoundException("No schoolform with id " + tSSId + " has been found.");
+			throw new RecordNotFoundException("No schoolform with id " + id + " has been found.");
 		}
+	}
+
+	@Override
+	public void removeSchoolformFromTSS(long schoolformId, long tSSId) {
+		
+		
+		
+		Optional<TSS> tssOpt = this.tSSService.getTSS(tSSId);
+		if (tssOpt.isPresent()) {
+			TSS tss = tssOpt.get();
+			Schoolform schoolform = tss.getSchoolform();
+			tss.setSchoolform(null);
+			this.schoolformRepo.save(schoolform);
+		} else {
+			throw new RecordNotFoundException("No TSS with id " + tSSId + " has been found.");
+		}	
 		
 	}
 
 	@Override
-	public void addTSS(long schoolformId, long tSSId) {
-		// TODO Auto-generated method stub
-		
+	public void addSchoolformToTSS(long schoolformId, long tSSId) {
+		Optional<TSS> tssOpt = this.tSSService.getTSS(tSSId);
+
+		if (tssOpt.isPresent()) {
+			TSS tss = tssOpt.get();
+
+			Optional<Schoolform> schOpt = this.schoolformRepo.findById(schoolformId);
+			if (schOpt.isPresent()) {
+				Schoolform schoolform = schOpt.get();
+				tss.setSchoolform(schoolform);
+				this.schoolformRepo.save(schoolform);
+			} else {
+				throw new RecordNotFoundException("No schoolform with id " + schoolformId + " has been found.");
+
+			}
+
+		} 
 	}
 
 }

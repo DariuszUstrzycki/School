@@ -155,20 +155,20 @@ public class SchoolformController {
 
 	}
 
-	////////////////////////// remove/add new tSS to this scholform //////////
+	////////////////////////// remove/add new tSS from/to this scholform //////////
 
 	@GetMapping("/{schoolformId}/tSS/{tSSId}/remove")
 	private String removeTSSFromSchoolForm(@PathVariable long schoolformId, @PathVariable long tSSId) {
 
-		this.schoolformService.removeTSS(schoolformId, tSSId);
-		return "redirect:/schoolform/view/" + schoolformId;
+		this.schoolformService.removeSchoolformFromTSS(schoolformId, tSSId);
+		return "redirect:/schoolform/update/" + schoolformId;
 	}
 
 	@GetMapping("/{schoolformId}/tSS/{tSSId}/add")
 	private String addSubjectToTeacher(@PathVariable long schoolformId, @PathVariable long tSSId) {
 
-		this.schoolformService.addTSS(schoolformId, tSSId);
-		return "redirect:/schoolform/view/" + schoolformId;
+		this.schoolformService.addSchoolformToTSS(schoolformId, tSSId);
+		return "redirect:/schoolform/update/" + schoolformId;
 	}
 
 	////////////////////// exception handling ////////////////////////////////////

@@ -25,7 +25,7 @@
 <br>
 
 
-<h3>IM IN DETAILS Subjects and teachers:</h3>
+<h3>Subjects and teachers:</h3>
 <table border='1px'> 
 <thead>
 <tr>
@@ -33,10 +33,10 @@
 </tr>
 </thead>
 <tbody>
-<c:forEach items='${schoolformDto.tsses}' var='tSS'>
+<c:forEach items='${schoolformDto.tsses}' var='tss'>
 <tr>
-	<td>${tSS.subject.name}</td>
-	<td>${tSS.teacher.firstName} ${tSS.teacher.lastName}</td>
+	<td>${tss.subject.name}</td>
+	<td>${tss.teacher.firstName} ${tss.teacher.lastName}</td>
 </tr>
 </c:forEach>
 </tbody>

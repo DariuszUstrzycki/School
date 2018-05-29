@@ -15,8 +15,8 @@ public interface SchoolformService {
 	Optional<Schoolform> getSchoolformById(long id);
 	void deleteSchoolform(Long id);
 	Collection<TSSDto> getNotTaughtTSSs(SchoolformDto dto);
-	void removeTSS(long schoolformId, long tSSId);
-	void addTSS(long schoolformId, long tSSId);
+	void removeSchoolformFromTSS(long schoolformId, long tSSId);
+	void addSchoolformToTSS(long schoolformId, long tSSId);
 	
 	
 
