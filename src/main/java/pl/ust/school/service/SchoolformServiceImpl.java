@@ -80,9 +80,9 @@ public class SchoolformServiceImpl implements SchoolformService {
 	@Override
 	public Collection<TSSDto> getNotTaughtTSSs(SchoolformDto schoolformDto) {
 
-		Collection<TSS> tSSsFromSchoolform = schoolformDto.getTSSs();
+		Collection<TSS> tssesFromSchoolform = schoolformDto.getTsses();
 		Collection<TSS> all = this.tSSService.getAllTSSs();
-		all.removeAll(tSSsFromSchoolform);
+		all.removeAll(tssesFromSchoolform);
 
 		return all.stream()
 				.map(tSSMapper::toDTO)
@@ -109,7 +109,7 @@ public class SchoolformServiceImpl implements SchoolformService {
 			this.tSSRepository.save(tSS);*/
 			Schoolform schoolform = opt.get();
 			TSS toBeRemoved = null;
-			for(TSS ts : schoolform.getTSSs()) {
+			for(TSS ts : schoolform.getTsses()) {
 				if(ts.getId() == tSSId) {
 					toBeRemoved = ts;
 				}

@@ -27,7 +27,7 @@
 
 <form:hidden path="isDeleted"/>
 <form:hidden path="students" />
-<form:hidden path="tSSs" />
+<form:hidden path="tsses" />
 
 <label for="name">Name:</label>
 <form:input placeholder="eg 1B, 2C, 4D, etc." path="name" />

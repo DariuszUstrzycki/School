@@ -12,7 +12,7 @@
 </thead>
 <tbody>
 
-<c:forEach items='${schoolformDto.tSSs}' var='ts'>
+<c:forEach items='${schoolformDto.tsses}' var='ts'>
 <tr>
 	<td>${ts.id}</td>
 	<td>${ts.subject.name}</td>

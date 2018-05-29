@@ -21,7 +21,7 @@ public class TeacherMapper {
 					.email(teacher.getEmail())
 					.password(teacher.getPassword())
 					.telephone(teacher.getTelephone())
-					.subjects(teacher.getTSSs())
+					.subjects(teacher.getTsses())
 					.build();
 	}
 	
@@ -44,7 +44,7 @@ public class TeacherMapper {
 		teacher.setEmail(dto.getEmail());
 		teacher.setPassword(dto.getPassword());
 		teacher.setTelephone(dto.getTelephone());
-		teacher.setTSSs(dto.getSubjects());
+		teacher.setTsses(dto.getSubjects());
 		return teacher;
 	}
 

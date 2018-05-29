@@ -59,9 +59,9 @@ public class TSSImpl implements TSSService{
 	@Override
 	public void deleteTSSsBySubject(long subjectId) {
 		
-		Collection<TSS> tSSsWithThisSubject = this.tSSRepo.findBySubjectId(subjectId);
+		Collection<TSS> tssesWithThisSubject = this.tSSRepo.findBySubjectId(subjectId);
 		
-		for(TSS ts : tSSsWithThisSubject) {
+		for(TSS ts : tssesWithThisSubject) {
 			ts.removeTSS();
 			this.tSSRepo.delete(ts);
 		}

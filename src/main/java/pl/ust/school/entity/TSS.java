@@ -56,9 +56,9 @@ public class TSS extends IdEntity {
 	}
 
 	public void removeTSS() {
-		teacher.getTSSs().remove(this);
-		subject.getTSSs().remove(this);
-		schoolform.getTSSs().remove(this);
+		teacher.getTsses().remove(this);
+		subject.getTsses().remove(this);
+		schoolform.getTsses().remove(this);
 	}
 
 }

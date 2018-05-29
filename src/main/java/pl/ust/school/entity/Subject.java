@@ -20,18 +20,18 @@ import lombok.ToString;
 @Table(name = "subjects")
 @Where(clause = "is_deleted=false")
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor
-@ToString(callSuper = true, includeFieldNames = false, exclude = "teachers")
+@ToString(callSuper = true, includeFieldNames = false, exclude = "tsses")
 public class Subject extends NamedEntity {
 
 	private static final long serialVersionUID = 1L;
 
 	@OneToMany(mappedBy = "subject", fetch = FetchType.EAGER) // 
-	private Set<TSS> tSSs;
+	private Set<TSS> tsses;
 
 	/////////////// helper ///////////////////
 
 	public void addTSS(TSS tSS) {
-		tSSs.add(tSS);
+		tsses.add(tSS);
 	}
 
 	public void removeTSS(TSS tSS) {
@@ -40,11 +40,11 @@ public class Subject extends NamedEntity {
 
 	/////////////// getters and setters ///////////////////
 
-	public Set<TSS> getTSSs() {
-		if (this.tSSs == null) {
-			this.tSSs = new TreeSet<>();
+	public Set<TSS> getTsses() {
+		if (this.tsses == null) {
+			this.tsses = new TreeSet<>();
 		}
-		return this.tSSs;
+		return this.tsses;
 	}
 
 }

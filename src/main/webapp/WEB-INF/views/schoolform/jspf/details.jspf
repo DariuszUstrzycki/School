@@ -33,7 +33,7 @@
 </tr>
 </thead>
 <tbody>
-<c:forEach items='${schoolformDto.tSSs}' var='tSS'>
+<c:forEach items='${schoolformDto.tsses}' var='tSS'>
 <tr>
 	<td>${tSS.subject.name}</td>
 	<td>${tSS.teacher.firstName} ${tSS.teacher.lastName}</td>

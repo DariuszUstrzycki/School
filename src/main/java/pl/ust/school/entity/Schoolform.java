@@ -19,7 +19,7 @@ import lombok.ToString;
 @Entity
 @Table(name = "schoolforms") 
 @Where(clause = "is_deleted=false")
-@Getter @Setter @NoArgsConstructor @ToString(callSuper=true, exclude= { "students", "tSSs" })
+@Getter @Setter @NoArgsConstructor @ToString(callSuper=true, exclude= { "students", "tsses" })
 public class Schoolform extends NamedEntity {
 
 	private static final long serialVersionUID = 1L;
@@ -28,7 +28,7 @@ public class Schoolform extends NamedEntity {
 	private Set<Student> students; 
 	
 	@OneToMany(mappedBy = "schoolform", cascade = { CascadeType.MERGE, CascadeType.PERSIST }, fetch = FetchType.EAGER)
-	private Set<TSS> tSSs; 
+	private Set<TSS> tsses; 
 	
 	/////////////// helper ///////////////////
 
@@ -44,12 +44,12 @@ public class Schoolform extends NamedEntity {
 	
 	
 	public void addTSS(TSS ts) {
-		tSSs.add(ts);
+		tsses.add(ts);
 		ts.setSchoolform(this);
 	}
 	
 	public void removeTSS(TSS ts) {
-		tSSs.remove(ts);
+		tsses.remove(ts);
 		ts.setSchoolform(null);
 	}
 	
@@ -70,16 +70,16 @@ public class Schoolform extends NamedEntity {
 		this.students.clear();
 	}
 	
-	public Set<TSS> getTSSs() {
-		if (this.tSSs == null) {
-			this.tSSs = new HashSet<>();
+	public Set<TSS> getTsses() {
+		if (this.tsses == null) {
+			this.tsses = new HashSet<>();
 		}
-		return this.tSSs;
+		return this.tsses;
 	}
 	
 	public void removeAllTSSs() {
 		
-		for (TSS ts : this.getTSSs()) {
+		for (TSS ts : this.getTsses()) {
 			ts.setSchoolform(null);
 		}
 		this.students.clear();

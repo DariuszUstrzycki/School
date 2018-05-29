@@ -21,7 +21,7 @@ public class SchoolformDto {
 	@NotEmpty
 	private String name;
 	private Set<Student> students; 
-	private Set<TSS> tSSs; 
+	private Set<TSS> tsses; 
 	
 	public boolean isNew() {
         return this.id < 1;
