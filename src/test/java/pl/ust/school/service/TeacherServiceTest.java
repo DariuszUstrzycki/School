@@ -48,7 +48,7 @@ public class TeacherServiceTest {
 	}
 	
 	@Test
-	public void shouldAddTeacherSubject() {
+	public void shouldAddTSS() {
 		/*// given
 		System.err.println(teacherMapper);
 		TeacherDto t = teacherMapper.toDTO(this.teacher);
@@ -58,10 +58,10 @@ public class TeacherServiceTest {
 		subject.setName("Maths");
 		
 		//when
-		this.teacherService.addTeacherSubject(this.teacher.getId(), subject.getId());
+		this.teacherService.addTSS(this.teacher.getId(), subject.getId());
 		
 		//then
-		//TeacherSubjectService tss;
+		//TSSService tss;
 		Optional<Teacher> opt = this.teacherService.getTeacherById(this.teacher.getId());
 		Teacher found = opt.get();
 		assertThat(found.getSubjects()).hasSize(1);

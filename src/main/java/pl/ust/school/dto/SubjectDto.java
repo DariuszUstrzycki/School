@@ -9,7 +9,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import pl.ust.school.entity.TeacherSubject;
+import pl.ust.school.entity.TSS;
 
 @Builder 
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor
@@ -20,7 +20,7 @@ public class SubjectDto {
 	private boolean isDeleted;
 	@NotEmpty
 	private String name;
-	private Set<TeacherSubject> teachers;  
+	private Set<TSS> teachers;  
 	
 	public boolean isNew() {
         return this.id < 1;

@@ -4,7 +4,7 @@ import java.util.Collection;
 import java.util.Optional;
 
 import pl.ust.school.dto.SchoolformDto;
-import pl.ust.school.dto.TeacherSubjectDto;
+import pl.ust.school.dto.TSSDto;
 import pl.ust.school.entity.Schoolform;
 
 public interface SchoolformService {
@@ -14,9 +14,9 @@ public interface SchoolformService {
 	Optional<SchoolformDto> getSchoolformDtoById(long id);
 	Optional<Schoolform> getSchoolformById(long id);
 	void deleteSchoolform(Long id);
-	Collection<TeacherSubjectDto> getNotTaughtTeacherSubjects(SchoolformDto dto);
-	void removeTeacherSubject(long schoolformId, long teacherSubjectId);
-	void addTeacherSubject(long schoolformId, long teacherSubjectId);
+	Collection<TSSDto> getNotTaughtTSSs(SchoolformDto dto);
+	void removeTSS(long schoolformId, long tSSId);
+	void addTSS(long schoolformId, long tSSId);
 	
 	
 

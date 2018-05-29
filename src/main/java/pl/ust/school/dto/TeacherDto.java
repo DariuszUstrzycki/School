@@ -15,7 +15,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import pl.ust.school.entity.TeacherSubject;
+import pl.ust.school.entity.TSS;
 
 @Builder
 @Getter
@@ -43,7 +43,7 @@ public class TeacherDto {
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@Past
 	private LocalDate birthDate;
-	private Set<TeacherSubject> subjects;  
+	private Set<TSS> subjects;  
 	
 	public boolean isNew() {
         return this.id < 1;

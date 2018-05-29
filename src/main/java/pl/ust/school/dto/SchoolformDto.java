@@ -10,7 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import pl.ust.school.entity.Student;
-import pl.ust.school.entity.TeacherSubject;
+import pl.ust.school.entity.TSS;
 
 @Builder 
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor
@@ -21,7 +21,7 @@ public class SchoolformDto {
 	@NotEmpty
 	private String name;
 	private Set<Student> students; 
-	private Set<TeacherSubject> teacherSubjects; 
+	private Set<TSS> tSSs; 
 	
 	public boolean isNew() {
         return this.id < 1;

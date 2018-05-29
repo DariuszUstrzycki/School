@@ -89,7 +89,7 @@ public class TeacherJPATest {
 		ts2.setTeacher(teacher1);
 		ts2.setSubject(subject2);
 		
-		assertThat(teacher1.getTeacherSubjects().size()).isEqualTo(2);
+		assertThat(teacher1.getTSSs().size()).isEqualTo(2);
 		assertThat(ts1.getTeacher()).isNotNull();
 		assertThat(ts2.getTeacher()).isNotNull();
 		
@@ -97,7 +97,7 @@ public class TeacherJPATest {
 		teacher1.remove();
 		
 		//assert
-		assertThat(teacher1.getTeacherSubjects().size()).isEqualTo(0);
+		assertThat(teacher1.getTSSs().size()).isEqualTo(0);
 		assertThat(ts1.getTeacher()).isNull();
 		assertThat(ts2.getTeacher()).isNull();
 		*/

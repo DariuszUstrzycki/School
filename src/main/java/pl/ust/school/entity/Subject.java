@@ -26,25 +26,25 @@ public class Subject extends NamedEntity {
 	private static final long serialVersionUID = 1L;
 
 	@OneToMany(mappedBy = "subject", fetch = FetchType.EAGER) // 
-	private Set<TeacherSubject> teachers;
+	private Set<TSS> tSSs;
 
 	/////////////// helper ///////////////////
 
-	public void addTeacherSubject(TeacherSubject teacherSubject) {
-		teachers.add(teacherSubject);
+	public void addTSS(TSS tSS) {
+		tSSs.add(tSS);
 	}
 
-	public void removeTeacherSubject(TeacherSubject teacherSubject) {
-		teacherSubject.setSubject(null);
+	public void removeTSS(TSS tSS) {
+		tSS.setSubject(null);
 	}
 
 	/////////////// getters and setters ///////////////////
 
-	public Set<TeacherSubject> getTeachers() {
-		if (this.teachers == null) {
-			this.teachers = new TreeSet<>();
+	public Set<TSS> getTSSs() {
+		if (this.tSSs == null) {
+			this.tSSs = new TreeSet<>();
 		}
-		return this.teachers;
+		return this.tSSs;
 	}
 
 }

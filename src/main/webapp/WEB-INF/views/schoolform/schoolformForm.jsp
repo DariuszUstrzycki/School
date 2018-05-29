@@ -27,7 +27,7 @@
 
 <form:hidden path="isDeleted"/>
 <form:hidden path="students" />
-<form:hidden path="teacherSubjects" />
+<form:hidden path="tSSs" />
 
 <label for="name">Name:</label>
 <form:input placeholder="eg 1B, 2C, 4D, etc." path="name" />
@@ -41,7 +41,7 @@
 
 <div>
 	<c:if test="${empty notFound}">
-		<%@ include file="../schoolform/jspf/withTeacherSubjects.jspf" %>
+		<%@ include file="../schoolform/jspf/withTSSs.jspf" %>
 	</c:if>
 </div>
 

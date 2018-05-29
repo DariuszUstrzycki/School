@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import pl.ust.school.dto.SchoolformDto;
 import pl.ust.school.service.SchoolformService;
 import pl.ust.school.service.StudentService;
-import pl.ust.school.service.TeacherSubjectService;
+import pl.ust.school.service.TSSService;
 
 @Controller
 @RequestMapping("schoolform")
@@ -36,7 +36,7 @@ public class SchoolformController {
 
 	private static final String COLLECTION_OF_SCHOOLFORMS_NAME = "schoolformItems";
 	private static final String COLLECTION_OF_STUDENTS_NAME = "studentItems";
-	private static final String COLLECTION_OF_TEACHERSTUDENTS_NAME = "teacherSubjectItems";
+	private static final String COLLECTION_OF_TEACHERSTUDENTS_NAME = "tSSItems";
 	private static final String ENTITY_NAME = "entityName";
 	private static final String ENTITY_NAME_VALUE = "schoolform";
 
@@ -47,7 +47,7 @@ public class SchoolformController {
 	private StudentService studentService;
 	
 	@Autowired
-	private TeacherSubjectService teacherSubjectService;
+	private TSSService tSSService;
 
 	//////////////////////////// before each ////////////////////////////
 
@@ -99,7 +99,7 @@ public class SchoolformController {
 		if (opt.isPresent()) {
 			model.addAttribute("schoolformDto", opt.get());
 			model.addAttribute(COLLECTION_OF_STUDENTS_NAME, this.studentService.getStudentBySchoolformId(id));
-			model.addAttribute(COLLECTION_OF_TEACHERSTUDENTS_NAME, this.teacherSubjectService.getAllTeacherSubjects());
+			model.addAttribute(COLLECTION_OF_TEACHERSTUDENTS_NAME, this.tSSService.getAllTSSs());
 			//
 		} else {
 			throw new RecordNotFoundException("No school form with id " + id + " has been found.");
@@ -131,9 +131,9 @@ public class SchoolformController {
 		if (opt.isPresent()) {
 			SchoolformDto schoolformDto = opt.get();
 			model.addAttribute("schoolformDto", schoolformDto);
-			model.addAttribute("notTaughTeacherSubjects", this.schoolformService.getNotTaughtTeacherSubjects(schoolformDto));
+			model.addAttribute("notTaughTSSs", this.schoolformService.getNotTaughtTSSs(schoolformDto));
 			model.addAttribute(COLLECTION_OF_STUDENTS_NAME, this.studentService.getStudentBySchoolformId(id));
-			model.addAttribute(COLLECTION_OF_TEACHERSTUDENTS_NAME, this.teacherSubjectService.getAllTeacherSubjects());
+			model.addAttribute(COLLECTION_OF_TEACHERSTUDENTS_NAME, this.tSSService.getAllTSSs());
 		} else {
 			throw new RecordNotFoundException("No schoolform with id " + id + " has been found.");
 		}
@@ -145,7 +145,7 @@ public class SchoolformController {
 	public String updateSchoolform(@Valid SchoolformDto schoolformDto, BindingResult result, @PathVariable long id, Model model) {
 
 		if (result.hasErrors()) {
-			model.addAttribute("notTaughTeacherSubjects", this.schoolformService.getNotTaughtTeacherSubjects(schoolformDto));
+			model.addAttribute("notTaughTSSs", this.schoolformService.getNotTaughtTSSs(schoolformDto));
 			return CREATE_OR_UPDATE_FORM_VIEW;
 		} else {
 			schoolformDto.setId(id);
@@ -155,19 +155,19 @@ public class SchoolformController {
 
 	}
 
-	////////////////////////// remove/add new teacherSubject to this scholform //////////
+	////////////////////////// remove/add new tSS to this scholform //////////
 
-	@GetMapping("/{schoolformId}/teacherSubject/{teacherSubjectId}/remove")
-	private String removeTeacherSubjectFromSchoolForm(@PathVariable long schoolformId, @PathVariable long teacherSubjectId) {
+	@GetMapping("/{schoolformId}/tSS/{tSSId}/remove")
+	private String removeTSSFromSchoolForm(@PathVariable long schoolformId, @PathVariable long tSSId) {
 
-		this.schoolformService.removeTeacherSubject(schoolformId, teacherSubjectId);
+		this.schoolformService.removeTSS(schoolformId, tSSId);
 		return "redirect:/schoolform/view/" + schoolformId;
 	}
 
-	@GetMapping("/{schoolformId}/teacherSubject/{teacherSubjectId}/add")
-	private String addSubjectToTeacher(@PathVariable long schoolformId, @PathVariable long teacherSubjectId) {
+	@GetMapping("/{schoolformId}/tSS/{tSSId}/add")
+	private String addSubjectToTeacher(@PathVariable long schoolformId, @PathVariable long tSSId) {
 
-		this.schoolformService.addTeacherSubject(schoolformId, teacherSubjectId);
+		this.schoolformService.addTSS(schoolformId, tSSId);
 		return "redirect:/schoolform/view/" + schoolformId;
 	}
 

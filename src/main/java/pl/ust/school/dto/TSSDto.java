@@ -14,7 +14,7 @@ import pl.ust.school.entity.Teacher;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class TeacherSubjectDto {
+public class TSSDto {
 	
 	private long id;
 	private boolean isDeleted;

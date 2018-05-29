@@ -19,7 +19,7 @@ import lombok.ToString;
 @Table(name = "teachers_subjects")
 @Where(clause = "is_deleted=false")
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor @ToString(callSuper = true)
-public class TeacherSubject extends IdEntity {
+public class TSS extends IdEntity {
 	
 	private static final long serialVersionUID = 1L;
 
@@ -49,7 +49,7 @@ public class TeacherSubject extends IdEntity {
 		if (o == null || getClass() != o.getClass()) {
 			return false;
 		}
-		TeacherSubject that = (TeacherSubject) o;
+		TSS that = (TSS) o;
 		return Objects.equals(this.subject, that.subject) && 
 				Objects.equals(this.teacher, that.teacher) &&
 				Objects.equals(this.schoolform, that.schoolform);

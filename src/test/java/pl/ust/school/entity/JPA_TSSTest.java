@@ -46,13 +46,13 @@ public class JPA_TSSTest {
 				ts2.setTeacher(teacher1);
 				ts2.setSubject(subject2);
 				
-				assertThat(teacher1.getTeacherSubjects().size()).isEqualTo(2);
+				assertThat(teacher1.getTSSs().size()).isEqualTo(2);
 				
 				//act
 				ts1.remove();
 				
 				//assert
-				assertThat(teacher1.getTeacherSubjects().size()).isEqualTo(1);
+				assertThat(teacher1.getTSSs().size()).isEqualTo(1);
 		
 	}
 

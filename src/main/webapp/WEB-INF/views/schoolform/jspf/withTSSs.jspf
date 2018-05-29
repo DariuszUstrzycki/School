@@ -12,13 +12,13 @@
 </thead>
 <tbody>
 
-<c:forEach items='${schoolformDto.teacherSubjects}' var='ts'>
+<c:forEach items='${schoolformDto.tSSs}' var='ts'>
 <tr>
 	<td>${ts.id}</td>
 	<td>${ts.subject.name}</td>
 	<td>${ts.teacher.firstName} ${ts.teacher.lastName}</td>
 					<td><form
-						action='${pageContext.request.contextPath}/schoolform/${ts.schoolform.id}/teacherSubject/${ts.id}/remove'
+						action='${pageContext.request.contextPath}/schoolform/${ts.schoolform.id}/tSS/${ts.id}/remove'
 						method="GET">
 						<input type="submit" value="Remove from school form" />
 					</form>
@@ -40,14 +40,14 @@
 		</tr>
 	</thead>
 	<tbody>
-		<c:forEach items='${notTaughTeacherSubjects}' var='ts'>
+		<c:forEach items='${notTaughTSSs}' var='ts'>
 			<tr>
 				<td>${ts.id}</td>
 				<td>${ts.subject.name}</td>
 				<td>${ts.teacher.firstName} ${ts.teacher.lastName}</td>
 				<td>
 					<form
-						action='${pageContext.request.contextPath}/schoolform/${ts.schoolform.id}/teacherSubject/${ts.id}/add'
+						action='${pageContext.request.contextPath}/schoolform/${ts.schoolform.id}/tSS/${ts.id}/add'
 						method="GET">
 						<input type="submit" value="Add to school form" />
 					</form>

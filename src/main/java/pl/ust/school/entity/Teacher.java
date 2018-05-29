@@ -27,40 +27,40 @@ public class Teacher extends Person {
 	private static final long serialVersionUID = 1L;
 
 	@OneToMany(mappedBy = "teacher", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-	private Set<TeacherSubject> subjects;
+	private Set<TSS> tSSs;
 
 	/////////////// helper ///////////////////
 
-	public void addSubject(Subject subject) {
-		TeacherSubject teacherSubject = new TeacherSubject(this, subject, null);
-		this.subjects.add(teacherSubject);
-		subject.getTeachers().add(teacherSubject);
+	public void addTSS(Subject subject) {
+		TSS tSS = new TSS(this, subject, null);
+		this.tSSs.add(tSS);
+		subject.getTSSs().add(tSS);
 	}
 	
-	public void removeSubject(Subject subject) {
-		TeacherSubject teacherSubject = new TeacherSubject(this, subject, null);
-		//teacherSubject.getSchoolform().getTeacherSubjects().remove(teacherSubject); // new line
-		subject.getTeachers().remove(teacherSubject);
-		this.subjects.remove(teacherSubject);
-		teacherSubject.setTeacher(null);
-		teacherSubject.setSubject(null);
-		//teacherSubject.setSchoolform(null);
+	public void removeTSS(Subject subject) {
+		TSS tSS = new TSS(this, subject, null);
+		//tSS.getSchoolform().getTSSs().remove(tSS); // new line
+		subject.getTSSs().remove(tSS);
+		this.tSSs.remove(tSS);
+		tSS.setTeacher(null);
+		tSS.setSubject(null);
+		//tSS.setSchoolform(null);
 	}
 	
-	public void removeFromAllTeacherSubjects() {
+	public void removeTeacherFromAllTSSs() {
 		
-		for(TeacherSubject teacherSubject : this.getSubjects()) {
-			teacherSubject.setTeacher(null);
+		for(TSS tSS : this.getTSSs()) {
+			tSS.setTeacher(null);
 		}
 	}
 
 	/////////////// getters and setters ///////////////////
 
-	public Set<TeacherSubject> getSubjects() {
-		if (this.subjects == null) {
-			this.subjects = new TreeSet<>();
+	public Set<TSS> getTSSs() {
+		if (this.tSSs == null) {
+			this.tSSs = new TreeSet<>();
 		}
-		return this.subjects;
+		return this.tSSs;
 	}
 	
 }

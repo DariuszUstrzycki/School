@@ -9,11 +9,11 @@ import org.springframework.stereotype.Service;
 
 import pl.ust.school.controller.RecordNotFoundException;
 import pl.ust.school.dto.SchoolformDto;
-import pl.ust.school.dto.TeacherSubjectDto;
+import pl.ust.school.dto.TSSDto;
 import pl.ust.school.entity.Schoolform;
-import pl.ust.school.entity.TeacherSubject;
+import pl.ust.school.entity.TSS;
 import pl.ust.school.mapper.SchoolformMapper;
-import pl.ust.school.mapper.TeacherSubjectMapper;
+import pl.ust.school.mapper.TSSMapper;
 import pl.ust.school.repository.SchoolformRepository;
 
 @Service
@@ -26,10 +26,10 @@ public class SchoolformServiceImpl implements SchoolformService {
 	private SchoolformMapper schoolformMapper;
 	
 	@Autowired
-	private TeacherSubjectService teacherSubjectService;
+	private TSSService tSSService;
 	
 	@Autowired
-	private TeacherSubjectMapper teacherSubjectMapper;
+	private TSSMapper tSSMapper;
 	
 
 	public long createSchoolform(SchoolformDto schoolformDto) {
@@ -78,14 +78,14 @@ public class SchoolformServiceImpl implements SchoolformService {
 	///////////////////////////////////////////
 
 	@Override
-	public Collection<TeacherSubjectDto> getNotTaughtTeacherSubjects(SchoolformDto schoolformDto) {
+	public Collection<TSSDto> getNotTaughtTSSs(SchoolformDto schoolformDto) {
 
-		Collection<TeacherSubject> teacherSubjectsFromSchoolform = schoolformDto.getTeacherSubjects();
-		Collection<TeacherSubject> all = this.teacherSubjectService.getAllTeacherSubjects();
-		all.removeAll(teacherSubjectsFromSchoolform);
+		Collection<TSS> tSSsFromSchoolform = schoolformDto.getTSSs();
+		Collection<TSS> all = this.tSSService.getAllTSSs();
+		all.removeAll(tSSsFromSchoolform);
 
 		return all.stream()
-				.map(teacherSubjectMapper::toDTO)
+				.map(tSSMapper::toDTO)
 				.collect(Collectors.toList());
 	}
 	
@@ -98,37 +98,37 @@ public class SchoolformServiceImpl implements SchoolformService {
 	}
 
 	@Override
-	public void removeTeacherSubject(long schoolformId, long teacherSubjectId) {
-		//Optional<TeacherSubject> opt = this.teacherSubjectRepository.findById(teacherSubjectId);
+	public void removeTSS(long schoolformId, long tSSId) {
+		//Optional<TSS> opt = this.tSSRepository.findById(tSSId);
 		
 		Optional<Schoolform> opt = this.schoolformRepo.findById(schoolformId);
 
 		if (opt.isPresent()) {
-			/*TeacherSubject teacherSubject = opt.get();
-			teacherSubject.setSchoolform(null);
-			this.teacherSubjectRepository.save(teacherSubject);*/
+			/*TSS tSS = opt.get();
+			tSS.setSchoolform(null);
+			this.tSSRepository.save(tSS);*/
 			Schoolform schoolform = opt.get();
-			TeacherSubject toBeRemoved = null;
-			for(TeacherSubject ts : schoolform.getTeacherSubjects()) {
-				if(ts.getId() == teacherSubjectId) {
+			TSS toBeRemoved = null;
+			for(TSS ts : schoolform.getTSSs()) {
+				if(ts.getId() == tSSId) {
 					toBeRemoved = ts;
 				}
 			}
 			
 			if(toBeRemoved != null) {
-				schoolform.removeTeacherSubject(toBeRemoved);
+				schoolform.removeTSS(toBeRemoved);
 				this.schoolformRepo.save(schoolform);
 			}
 			
 			
 		} else {
-			throw new RecordNotFoundException("No schoolform with id " + teacherSubjectId + " has been found.");
+			throw new RecordNotFoundException("No schoolform with id " + tSSId + " has been found.");
 		}
 		
 	}
 
 	@Override
-	public void addTeacherSubject(long schoolformId, long teacherSubjectId) {
+	public void addTSS(long schoolformId, long tSSId) {
 		// TODO Auto-generated method stub
 		
 	}

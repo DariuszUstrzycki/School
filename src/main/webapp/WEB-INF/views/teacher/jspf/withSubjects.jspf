@@ -14,14 +14,14 @@
 		</tr>
 	</thead>
 	<tbody>
-		<c:forEach items='${teacherDto.subjects}' var='teacherSubject'>
+		<c:forEach items='${teacherDto.subjects}' var='tSS'>
 			<tr>
-				<td>${teacherSubject.id}</td>
-				<td>${teacherSubject.subject.name}</td>
-				<td>${teacherSubject.schoolform.name}</td>
+				<td>${tSS.id}</td>
+				<td>${tSS.subject.name}</td>
+				<td>${tSS.schoolform.name}</td>
 				<td>
 					<form
-						action='${pageContext.request.contextPath}/teacher/${teacherSubject.teacher.id}/remove/${teacherSubject.id}'
+						action='${pageContext.request.contextPath}/teacher/${tSS.teacher.id}/remove/${tSS.id}'
 						method="GET">
 						<input type="submit" value="Remove" />
 					</form>

@@ -13,7 +13,7 @@ import pl.ust.school.controller.RecordNotFoundException;
 import pl.ust.school.dto.SubjectDto;
 import pl.ust.school.entity.Subject;
 import pl.ust.school.entity.Teacher;
-import pl.ust.school.entity.TeacherSubject;
+import pl.ust.school.entity.TSS;
 import pl.ust.school.mapper.SubjectMapper;
 import pl.ust.school.repository.SubjectRepository;
 
@@ -64,18 +64,21 @@ public class SubjectServiceImpl implements SubjectService {
 
 	@Override
 	public void deleteSubject(long subjectId) {
+		
+		// get all TSS with this subject ID
+		// iterate over them with delete(TSS)
 
 		Optional<Subject> opt = this.subjectRepo.findById(subjectId);
 
 		if (opt.isPresent()) {
 			Subject subject = opt.get();
 			Set<Teacher> teachers = new HashSet<>();
-			for (TeacherSubject ts : subject.getTeachers()) {
+			for (TSS ts : subject.getTSSs()) {
 				teachers.add(ts.getTeacher());
 			}
 
 			for (Teacher t : teachers) {
-				t.removeSubject(subject);
+				t.removeTSS(subject);
 			}
 
 			this.subjectRepo.delete(subject);

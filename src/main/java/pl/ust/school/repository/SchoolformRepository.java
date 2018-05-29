@@ -5,7 +5,7 @@ import java.util.Collection;
 import org.springframework.transaction.annotation.Transactional;
 
 import pl.ust.school.entity.Schoolform;
-import pl.ust.school.entity.TeacherSubject;
+import pl.ust.school.entity.TSS;
 
 public interface SchoolformRepository extends AppBaseRepository<Schoolform, Long> {
 	
