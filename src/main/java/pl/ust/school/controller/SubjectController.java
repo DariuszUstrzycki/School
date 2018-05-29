@@ -1,8 +1,6 @@
 package pl.ust.school.controller;
 
-import java.util.HashSet;
 import java.util.Optional;
-import java.util.Set;
 
 import javax.validation.Valid;
 
@@ -20,7 +18,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import pl.ust.school.dto.StudentDto;
 import pl.ust.school.dto.SubjectDto;
 import pl.ust.school.service.SubjectService;
 

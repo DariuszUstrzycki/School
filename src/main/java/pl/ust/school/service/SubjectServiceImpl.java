@@ -12,16 +12,20 @@ import org.springframework.stereotype.Service;
 import pl.ust.school.controller.RecordNotFoundException;
 import pl.ust.school.dto.SubjectDto;
 import pl.ust.school.entity.Subject;
-import pl.ust.school.entity.Teacher;
 import pl.ust.school.entity.TSS;
+import pl.ust.school.entity.Teacher;
 import pl.ust.school.mapper.SubjectMapper;
 import pl.ust.school.repository.SubjectRepository;
+import pl.ust.school.repository.TSSRepository;
 
 @Service
 public class SubjectServiceImpl implements SubjectService {
 
 	@Autowired
 	private SubjectRepository subjectRepo;
+	
+	@Autowired
+	private TSSService tSSService;
 
 	@Autowired
 	private SubjectMapper mapper;
@@ -65,27 +69,14 @@ public class SubjectServiceImpl implements SubjectService {
 	@Override
 	public void deleteSubject(long subjectId) {
 		
-		// get all TSS with this subject ID
-		// iterate over them with delete(TSS)
-
 		Optional<Subject> opt = this.subjectRepo.findById(subjectId);
 
 		if (opt.isPresent()) {
-			Subject subject = opt.get();
-			Set<Teacher> teachers = new HashSet<>();
-			for (TSS ts : subject.getTSSs()) {
-				teachers.add(ts.getTeacher());
-			}
-
-			for (Teacher t : teachers) {
-				t.removeTSS(subject);
-			}
-
-			this.subjectRepo.delete(subject);
-
+			this.tSSService.deleteTSSsBySubject(subjectId);
+			this.subjectRepo.delete(opt.get());
 		} else {
 			throw new RecordNotFoundException("No subject with id " + subjectId + " has been found.");
 		}
-
+				
 	}
 }

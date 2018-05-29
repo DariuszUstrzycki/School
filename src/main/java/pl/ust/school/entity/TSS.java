@@ -55,4 +55,10 @@ public class TSS extends IdEntity {
 				Objects.equals(this.schoolform, that.schoolform);
 	}
 
+	public void removeTSS() {
+		teacher.getTSSs().remove(this);
+		subject.getTSSs().remove(this);
+		schoolform.getTSSs().remove(this);
+	}
+
 }
