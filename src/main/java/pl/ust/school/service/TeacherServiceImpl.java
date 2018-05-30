@@ -77,7 +77,7 @@ public class TeacherServiceImpl implements TeacherService {
 		
 		Collection<SubjectDto> all = this.subjectService.getAllSubjectDtos();
 
-		for (TSS tSS : teacherDto.getSubjects()) {
+		for (TSS tSS : teacherDto.getTsses()) {
 			all.removeIf(subject -> subject.getName().equals(tSS.getSubject().getName()));
 		}
 

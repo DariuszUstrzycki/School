@@ -1,0 +1,6 @@
+<div class="form-group row">
+	<div class="col-xs-2">
+		<input type="submit" class="btn btn-info   btn-primary" value="SUBMIT"> 
+		<input type="reset" class="btn btn-info    btn-primary" value="RESET">
+	</div>
+</div>

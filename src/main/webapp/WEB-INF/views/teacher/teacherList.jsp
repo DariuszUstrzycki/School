@@ -1,7 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@	taglib	uri="http://www.springframework.org/tags/form"	prefix="form" %>
+<%@ include file="../jspf/taglibs.jspf" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -9,21 +6,24 @@
 	<%@ include file="../jspf/cssBootstrapLinks.jspf" %>
 </head>
 <body>
-
-<div id="header">
     <%@ include file="../jspf/header.jspf" %>
-</div>
 
-<h1>Teachers</h1>
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-12">
+				<div>
+					<h2>Teachers</h2>
+					<div id="content">
+						<%@ include file="../jspf/addButton.jspf"%>
+						<%@ include file="../teacher/jspf/list.jspf"%>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 
-<div id="content">
-	<%@ include file="../teacher/jspf/addButton.jspf" %>
-	<%@ include file="../teacher/jspf/list.jspf" %>
-</div>
+	<%@ include file="../jspf/footer.jspf"%>
 
-<div id="footer">
-    <%@ include file="../jspf/footer.jspf" %>
-</div>
 </body>
 </html>
 

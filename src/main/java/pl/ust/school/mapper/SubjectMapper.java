@@ -15,7 +15,7 @@ public class SubjectMapper {
 					.id(subject.getId())
 					.isDeleted(subject.isDeleted())
 					.name(subject.getName())
-					.teachers(subject.getTsses())
+					.tsses(subject.getTsses())
 					.build();
 	}
 	
@@ -33,7 +33,7 @@ public class SubjectMapper {
 		subject.setId(subjectDto.getId());
 		subject.setDeleted(subjectDto.getIsDeleted());
 		subject.setName(subjectDto.getName());
-		subject.setTsses(subjectDto.getTeachers());
+		subject.setTsses(subjectDto.getTsses());
 		return subject;
 	}
 

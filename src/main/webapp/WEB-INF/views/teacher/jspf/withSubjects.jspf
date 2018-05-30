@@ -3,8 +3,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@	taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 
-<h3>Subjects taught:</h3>
-<table border='1px'>
+<h3>Subjects taught</h3>
+<table
+	class="table table-striped table-bordered table-hover table-condensed">
 	<thead>
 		<tr>
 			<th>TS Id</th>
@@ -14,14 +15,15 @@
 		</tr>
 	</thead>
 	<tbody>
-		<c:forEach items='${teacherDto.subjects}' var='tSS'>
+		<c:forEach items='${teacherDto.tsses}' var='tss'>
 			<tr>
-				<td>${tSS.id}</td>
-				<td>${tSS.subject.name}</td>
-				<td>${tSS.schoolform.name}</td>
+				<td>${tss.id}</td>
+				<td>${tss.subject.name}</td>
+				<td>${tss.schoolform.name}</td>
 				<td>
 					<form
-						action='${pageContext.request.contextPath}/teacher/${tSS.teacher.id}/remove/${tSS.id}' method="GET">
+						action='${pageContext.request.contextPath}/teacher/${tss.teacher.id}/remove/${tss.id}'
+						method="GET">
 						<input type="submit" value="Remove" />
 					</form>
 				</td>
@@ -30,8 +32,9 @@
 	</tbody>
 </table>
 
-<h3>Other subjects:</h3>
-<table border='1px'>
+<h3>Other subjects</h3>
+<table
+	class="table table-striped table-bordered table-hover table-condensed">
 	<thead>
 		<tr>
 			<th>Subject</th>

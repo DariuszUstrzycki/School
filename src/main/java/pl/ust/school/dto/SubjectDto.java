@@ -20,7 +20,7 @@ public class SubjectDto {
 	private boolean isDeleted;
 	@NotEmpty
 	private String name;
-	private Set<TSS> teachers;  
+	private Set<TSS> tsses;  
 	
 	public boolean isNew() {
         return this.id < 1;

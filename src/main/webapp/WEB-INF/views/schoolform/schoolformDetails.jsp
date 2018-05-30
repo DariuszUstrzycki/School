@@ -1,34 +1,37 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@	taglib	uri="http://www.springframework.org/tags/form"	prefix="form" %>
+<%@ include file="../jspf/taglibs.jspf"%>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-	<%@ include file="../jspf/cssBootstrapLinks.jspf" %>
+<%@ include file="../jspf/cssBootstrapLinks.jspf"%>
+
+
 </head>
 <body>
+	<%@ include file="../jspf/header.jspf"%>
 
-<div id="header">
-    <%@ include file="../jspf/header.jspf" %>
-</div>
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-12">
+				<div>
 
-<h1>School form details</h1>
+					<h2>School form details</h2>
+					<div id="content">
+						<c:if test="${empty notFound}">
+							<%@ include file="../schoolform/jspf/details.jspf"%>
+						</c:if>
 
-<div id="content">
+						<c:if test="${not empty notFound}">
+							<p class='error'>${notFound}</p>
+						</c:if>
+					</div>
 
-	<c:if test="${empty notFound}">
-	<%@ include file="../schoolform/jspf/details.jspf" %>
-	</c:if>
-	
-	<c:if test="${not empty notFound}">
-		<p class='error'>${notFound}</p>
-	</c:if>
-	
-</div>
+				</div>
+			</div>
+		</div>
+	</div>
 
-<div id="footer">
-    <%@ include file="../jspf/footer.jspf" %>
-</div>
+	<%@ include file="../jspf/footer.jspf"%>
+
 </body>
 </html>

@@ -1,0 +1,7 @@
+<div class="form-group row">
+	<div class="col-xs-2">
+		<form method="GET" action='${pageContext.request.contextPath}/${entityName}/save'>
+			<input type="submit" class="btn btn-info   btn-primary" value="Add new ${entityName}">
+		</form>
+	</div>
+</div>

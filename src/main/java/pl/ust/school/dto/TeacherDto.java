@@ -43,7 +43,7 @@ public class TeacherDto {
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@Past
 	private LocalDate birthDate;
-	private Set<TSS> subjects;  
+	private Set<TSS> tsses;  
 	
 	public boolean isNew() {
         return this.id < 1;

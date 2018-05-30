@@ -1,33 +1,41 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@	taglib	uri="http://www.springframework.org/tags/form"	prefix="form" %>
+<%@ include file="../jspf/taglibs.jspf"%>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-	<%@ include file="../jspf/cssBootstrapLinks.jspf" %>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>School Manager Project</title>
+<%@ include file="../jspf/cssBootstrapLinks.jspf"%>
 </head>
 <body>
+	<%@ include file="../jspf/header.jspf"%>
 
-<div id="header">
-    <%@ include file="../jspf/header.jspf" %>
-</div>
-<div>
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-12">
+				<h3 class='text-danger'>Do you really want to delete
+					<c:out value="${entityName}" default="item" />
+					with id ${id}?
+				</h3>
+				<div class="form-group row">
+				<div class="col-xs-1">
+					<form action='${pageContext.request.contextPath}/${entityName}/delete/${id}' method="GET">
+						<input type="submit" class="btn btn-info   btn-primary" value="SUBMIT">
+					</form>
+				</div>
+				<div class="form-group row">
+				<div class="col-xs-1">
+					<form action='${pageContext.request.contextPath}/${entityName}/list/' method="GET">
+						<input type="submit" class="btn btn-info  btn-primary"  value="CANCEL">
+					</form>
+				</div>       
+				</div>  
+			</div>
+			</div>
+		</div>
+	</div>
 
-<h3>Do you really want to delete <c:out value="${entityName}" default="item"/> with id ${id}?</h3>
+	<%@ include file="../jspf/footer.jspf"%>
 
-<form action='${pageContext.request.contextPath}/${entityName}/delete/${id}' method="GET">
-<input type="submit" value="Confirm">
-</form><br>
-
-<form action='${pageContext.request.contextPath}/${entityName}/list/' method="GET">
-<input type="submit" value="Cancel">
-</form>
-
-
-</div>
-<div id="header">
-    <%@ include file="../jspf/footer.jspf" %>
-</div>
 </body>
 </html>
