@@ -14,7 +14,7 @@ import pl.ust.school.repository.TestEntityRepository;
 public class TestController {
 
 	@Autowired
-	TestEntityRepository<?> repo;
+	TestEntityRepository repo;
 
 	@PostMapping("/test/save")
 	public void saveTestEntity(@ModelAttribute TestEntity testEntity) {

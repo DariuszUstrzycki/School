@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import pl.ust.school.controller.RecordNotFoundException;
 import pl.ust.school.dto.TSSDto;
-import pl.ust.school.entity.Subject;
 import pl.ust.school.entity.TSS;
 import pl.ust.school.mapper.TSSMapper;
 import pl.ust.school.repository.TSSRepository;

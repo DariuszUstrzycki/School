@@ -7,9 +7,9 @@
 </head>
 <body>
 	<%@ include file="../jspf/header.jspf"%>
-
+	
 	<div class="container">
-		<h2>${actionType}&nbspa&nbspteacher</h2>
+		<h2>CREATE/UPDATE&nbspa&nbspteacher</h2>
 			<h3>Personal data</h3>
 		<form:form class="form-horizontal" action="#" method="POST" modelAttribute="teacherDto">
 			<form:hidden path="isDeleted" />

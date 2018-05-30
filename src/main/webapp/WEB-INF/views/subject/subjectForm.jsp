@@ -4,7 +4,6 @@
 <html>
 <head>
 <%@ include file="../jspf/cssBootstrapLinks.jspf"%>
-
 </head>
 <body>
 	<%@ include file="../jspf/header.jspf"%>

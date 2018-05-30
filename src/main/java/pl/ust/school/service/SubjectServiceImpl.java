@@ -1,9 +1,7 @@
 package pl.ust.school.service;
 
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,11 +10,8 @@ import org.springframework.stereotype.Service;
 import pl.ust.school.controller.RecordNotFoundException;
 import pl.ust.school.dto.SubjectDto;
 import pl.ust.school.entity.Subject;
-import pl.ust.school.entity.TSS;
-import pl.ust.school.entity.Teacher;
 import pl.ust.school.mapper.SubjectMapper;
 import pl.ust.school.repository.SubjectRepository;
-import pl.ust.school.repository.TSSRepository;
 
 @Service
 public class SubjectServiceImpl implements SubjectService {

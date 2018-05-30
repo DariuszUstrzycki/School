@@ -4,7 +4,6 @@ import java.util.Collection;
 import java.util.Optional;
 
 import pl.ust.school.dto.TSSDto;
-import pl.ust.school.entity.Subject;
 import pl.ust.school.entity.TSS;
 
 public interface TSSService {
