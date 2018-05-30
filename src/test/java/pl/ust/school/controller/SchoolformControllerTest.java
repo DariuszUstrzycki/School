@@ -22,9 +22,10 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
-import pl.ust.school.dto.SchoolformDto;
-import pl.ust.school.service.SchoolformService;
-import pl.ust.school.service.StudentService;
+import pl.ust.school.schoolform.SchoolformController;
+import pl.ust.school.schoolform.SchoolformDto;
+import pl.ust.school.schoolform.SchoolformService;
+import pl.ust.school.student.StudentService;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(SchoolformController.class)

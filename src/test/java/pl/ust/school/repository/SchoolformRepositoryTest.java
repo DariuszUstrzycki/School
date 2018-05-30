@@ -14,7 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import pl.ust.school.entity.Schoolform;
+import pl.ust.school.schoolform.Schoolform;
+import pl.ust.school.schoolform.SchoolformRepository;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest

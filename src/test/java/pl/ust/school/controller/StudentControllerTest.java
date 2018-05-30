@@ -23,10 +23,11 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
-import pl.ust.school.dto.StudentDto;
-import pl.ust.school.entity.Schoolform;
-import pl.ust.school.service.SchoolformService;
-import pl.ust.school.service.StudentService;
+import pl.ust.school.schoolform.Schoolform;
+import pl.ust.school.schoolform.SchoolformService;
+import pl.ust.school.student.StudentController;
+import pl.ust.school.student.StudentDto;
+import pl.ust.school.student.StudentService;
 
 
 // allows the Web App Context to be loaded. By default Spring will load the context into a Static variable so it only gets 

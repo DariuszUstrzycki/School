@@ -14,7 +14,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import pl.ust.school.entity.Student;
+import pl.ust.school.schoolform.Schoolform;
+import pl.ust.school.student.Student;
 
 @RunWith(SpringRunner.class) 
 @DataJpaTest

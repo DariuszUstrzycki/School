@@ -11,8 +11,8 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import pl.ust.school.entity.Subject;
-import pl.ust.school.entity.TestEntity;
+import pl.ust.school.subject.Subject;
+import pl.ust.school.testing.TestEntity;
 
 @SpringBootTest(webEnvironment = RANDOM_PORT) // loads the whole context
 @RunWith(SpringRunner.class)

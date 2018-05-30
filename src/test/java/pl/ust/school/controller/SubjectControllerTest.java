@@ -22,8 +22,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
-import pl.ust.school.dto.SubjectDto;
-import pl.ust.school.service.SubjectService;
+import pl.ust.school.subject.SubjectController;
+import pl.ust.school.subject.SubjectDto;
+import pl.ust.school.subject.SubjectService;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(SubjectController.class)

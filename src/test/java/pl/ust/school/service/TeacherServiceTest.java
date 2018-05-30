@@ -12,10 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import pl.ust.school.dto.TeacherDto;
-import pl.ust.school.entity.Subject;
-import pl.ust.school.entity.Teacher;
-import pl.ust.school.mapper.TeacherMapper;
+import pl.ust.school.subject.Subject;
+import pl.ust.school.teacher.Teacher;
+import pl.ust.school.teacher.TeacherDto;
+import pl.ust.school.teacher.TeacherMapper;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest 

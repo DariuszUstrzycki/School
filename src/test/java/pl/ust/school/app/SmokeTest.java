@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import pl.ust.school.controller.HomeController;
+import pl.ust.school.testing.HomeController;
 
 @RunWith(SpringRunner.class) // bez tego nie zrobi Autowired
 @SpringBootTest // tells Spring Boot to go and look for a main configuration class (one with 

@@ -22,8 +22,9 @@ import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import pl.ust.school.entity.Subject;
-import pl.ust.school.entity.Teacher;
+import pl.ust.school.subject.Subject;
+import pl.ust.school.teacher.Teacher;
+import pl.ust.school.teacher.TeacherRepository;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest 

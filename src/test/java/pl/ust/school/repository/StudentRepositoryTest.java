@@ -22,8 +22,10 @@ import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import pl.ust.school.entity.Schoolform;
-import pl.ust.school.entity.Student;
+import pl.ust.school.schoolform.Schoolform;
+import pl.ust.school.schoolform.SchoolformRepository;
+import pl.ust.school.student.Student;
+import pl.ust.school.student.StudentRepository;
 /*
 In this test, we are using the H2 database for testing. This is common practice. Otherwise, 
 you need to have the same type of database set up in all test/dev environments, maintain them 
