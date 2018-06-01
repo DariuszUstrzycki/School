@@ -1,4 +1,4 @@
-package pl.ust.school.app;
+package pl.ust.school.testpractice;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -7,8 +7,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import pl.ust.school.testing.HomeController;
 
 @RunWith(SpringRunner.class) // bez tego nie zrobi Autowired
 @SpringBootTest // tells Spring Boot to go and look for a main configuration class (one with 

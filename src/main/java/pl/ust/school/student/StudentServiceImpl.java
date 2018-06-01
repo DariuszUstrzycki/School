@@ -90,7 +90,8 @@ public class StudentServiceImpl implements StudentService {
 		Optional<Student> opt = this.studentRepo.findById(id);
 		if (opt.isPresent()) {
 			Student student = opt.get();
-			student.remove();
+			student.setDeleted(true);
+			//student.remove(); - nic wiecej nie robi...
 			this.studentRepo.save(student);
 		} else {
 			throw new RecordNotFoundException("No student with id " + id + " has been found.");

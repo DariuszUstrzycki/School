@@ -1,4 +1,4 @@
-package pl.ust.school.repository;
+package pl.ust.school.teacher;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Optional;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +21,6 @@ import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import pl.ust.school.subject.Subject;
 import pl.ust.school.teacher.Teacher;
 import pl.ust.school.teacher.TeacherRepository;
 
@@ -205,7 +203,7 @@ public class TeacherRepositoryTest {
 	    }
 	    
 	    
-		@Ignore @Test //TODO
+		@Test //TODO
 		public void shouldThrowExceptionWhenSavingTeacherWithNonUniqueEmail() {
 	    					
 				assertThatCode(() -> {

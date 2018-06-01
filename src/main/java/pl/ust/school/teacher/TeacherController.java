@@ -26,12 +26,12 @@ import pl.ust.school.system.RecordNotFoundException;
 @RequestMapping("teacher")
 public class TeacherController {
 
-	private static final String CREATE_OR_UPDATE_FORM_VIEW = "teacher/teacherForm";
-	private static final String LIST_VIEW = "teacher/teacherList";
-	private static final String DETAILS_VIEW = "teacher/teacherDetails";
-	private static final String CONFIRM_DELETE_VIEW = "forms/confirmDelete";
+	private static final String VIEW_CREATE_OR_UPDATE_FORM = "teacher/teacherForm";
+	private static final String VIEW_LIST = "teacher/teacherList";
+	private static final String VIEW_DETAILS = "teacher/teacherDetails";
+	private static final String VIEW_CONFIRM_DELETE = "forms/confirmDelete";
 
-	private static final String COLLECTION_OF_TEACHERS_NAME = "teacherItems";
+	private static final String NAME_COLLECTION_OF_TEACHERS = "teacherItems";
 	private static final String ENTITY_NAME = "entityName";
 	private static final String ENTITY_NAME_VALUE = "teacher";
 
@@ -55,15 +55,15 @@ public class TeacherController {
 	//////////////////////////// SAVE ////////////////////////////
 
 	@GetMapping("/save")
-	public String showForm(TeacherDto teacherDto) {
-		return CREATE_OR_UPDATE_FORM_VIEW;
+	public String showCreateForm(TeacherDto teacherDto) {
+		return VIEW_CREATE_OR_UPDATE_FORM;
 	}
 
 	@PostMapping("/save")
 	public String saveTeacher(@Valid TeacherDto teacherDto, BindingResult result) {
 
 		if (result.hasErrors()) {
-			return CREATE_OR_UPDATE_FORM_VIEW;
+			return VIEW_CREATE_OR_UPDATE_FORM;
 		}
 
 		long id = this.teacherService.createTeacher(teacherDto);
@@ -74,8 +74,8 @@ public class TeacherController {
 
 	@RequestMapping("/list")
 	public String listTeachers(@RequestParam(defaultValue = "0", required = false) int min, Model model) {
-		model.addAttribute(COLLECTION_OF_TEACHERS_NAME, this.teacherService.getAllTeacherDtos());
-		return LIST_VIEW;
+		model.addAttribute(NAME_COLLECTION_OF_TEACHERS, this.teacherService.getAllTeacherDtos());
+		return VIEW_LIST;
 	}
 
 	//////////////////////////// VIEW ONE ////////////////////////////
@@ -91,14 +91,14 @@ public class TeacherController {
 			throw new RecordNotFoundException("No teacher with id " + id + " has been found.");
 		}
 
-		return DETAILS_VIEW;
+		return VIEW_DETAILS;
 	}
 
 	//////////////////////////// DELETE ////////////////////////////
 
 	@GetMapping("/delete/{id}/confirm")
-	public String showConfirmationPage(@PathVariable long id) {
-		return CONFIRM_DELETE_VIEW;
+	public String confirmDelete(@PathVariable long id) {
+		return VIEW_CONFIRM_DELETE;
 	}
 
 	@RequestMapping(value = "/delete/{id}")
@@ -110,7 +110,7 @@ public class TeacherController {
 	//////////////////////////// UPDATE ////////////////////////////
 
 	@GetMapping("/update/{id}")
-	public String showForm(@PathVariable long id, Model model) {
+	public String showUpdateForm(@PathVariable long id, Model model) {
 
 		Optional<TeacherDto> opt = this.teacherService.getTeacherDtoById(id);
 		if (opt.isPresent()) {
@@ -122,7 +122,7 @@ public class TeacherController {
 			throw new RecordNotFoundException("No teacher with id " + id + " has been found.");
 		}
 
-		return CREATE_OR_UPDATE_FORM_VIEW;
+		return VIEW_CREATE_OR_UPDATE_FORM;
 	}
 
 	@PostMapping("/update/{id}")
@@ -130,7 +130,7 @@ public class TeacherController {
 
 		if (result.hasErrors()) {
 		    model.addAttribute("notTaughSubjects", this.teacherService.getNotTaughtSubjects(teacherDto));
-			return CREATE_OR_UPDATE_FORM_VIEW;
+			return VIEW_CREATE_OR_UPDATE_FORM;
 		} else {
 			teacherDto.setId(id);
 			this.teacherService.createTeacher(teacherDto);
@@ -160,7 +160,7 @@ public class TeacherController {
 	@ResponseStatus(HttpStatus.NOT_FOUND)
 	private String recordNotFoundHandler(RecordNotFoundException ex, Model model) {
 		model.addAttribute("notFound", ex.getMessage());
-		return DETAILS_VIEW;
+		return VIEW_DETAILS;
 	}
 
 }

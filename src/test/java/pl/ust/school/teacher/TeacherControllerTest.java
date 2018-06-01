@@ -1,4 +1,4 @@
-package pl.ust.school.controller;
+package pl.ust.school.teacher;
 
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -10,12 +10,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Optional;
 
 import org.assertj.core.util.Lists;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,14 +32,11 @@ import pl.ust.school.teacher.TeacherService;
 @WebMvcTest(TeacherController.class)
 public class TeacherControllerTest {
 	
-	private static final String CREATE_OR_UPDATE_FORM_VIEW = "teacher/teacherForm";
-	private static final String LIST_VIEW = "teacher/teacherList";
-	private static final String DETAILS_VIEW = "teacher/teacherDetails";
-	@SuppressWarnings("unused")
-	private static final String CONFIRM_DELETE_VIEW = "forms/confirmDelete";
-	
-	private static final String COLLECTION_OF_TEACHERS_NAME = "teacherItems";
-	
+	private static final String VIEW_CREATE_OR_UPDATE_FORM = "teacher/teacherForm";
+	private static final String VIEW_LIST = "teacher/teacherList";
+	private static final String VIEW_DETAILS = "teacher/teacherDetails";
+	private static final String VIEW_CONFIRM_DELETE = "forms/confirmDelete";
+	private static final String NAME_COLLECTION_OF_TEACHERS = "teacherItems";
 	private static final long TEST_TEACHER_ID = 1L;
 
 	@Autowired
@@ -74,17 +69,16 @@ public class TeacherControllerTest {
 	}
 	
 	@Test
-	public void shouldShowTeacherFormWhenGetRequest() throws Exception {
+	public void shouldAddDtoToModelWhenSaving() throws Exception {
 		mockMvc.perform(get("/teacher/save"))
 		.andDo(print())
 		.andExpect(status().isOk())
         .andExpect(model().attributeExists("teacherDto")) 
-        // .andExpect(model().attribute("teacher",  TeacherDTO.class))
-		.andExpect(view().name(CREATE_OR_UPDATE_FORM_VIEW));
+		.andExpect(view().name(VIEW_CREATE_OR_UPDATE_FORM));
 	}
 
 	@Test
-	public void shouldAddNewTeacher() throws Exception {
+	public void shouldProcessFormDataWhenNoErrors() throws Exception {
 		mockMvc.perform(post("/teacher/save")
 				.param("telephone", "1111111111")
 				.param("address", "Penny Lane 12, London, England")
@@ -92,10 +86,11 @@ public class TeacherControllerTest {
 				.param("firstName", "Maria")
 				.param("lastName", "Smith").param("password", "000777"))
 				.andDo(print())
+				
 				.andExpect(status().is3xxRedirection());
 	}
 
-	@Ignore @Test
+	 @Test
 	public void shouldFindErrorsWhenInvalidValues() throws Exception {
 
 		mockMvc.perform(post("/teacher/save")
@@ -114,18 +109,19 @@ public class TeacherControllerTest {
 				.andExpect(model().attributeHasFieldErrors("teacherDto", "telephone"))
 				.andExpect(model().attributeHasFieldErrors("teacherDto", "password"))
 				.andExpect(model().attributeErrorCount("teacherDto", 6))
-				.andExpect(view().name(CREATE_OR_UPDATE_FORM_VIEW));
+				.andExpect(view().name(VIEW_CREATE_OR_UPDATE_FORM));
 	}
 	
 	@Test
 	public void shouldRetrieveListOfTeachers() throws Exception {
 
 		given(this.teacherService.getAllTeacherDtos()).willReturn(Lists.newArrayList(john, new TeacherDto()));
+		
 		mockMvc.perform(get("/teacher/list"))
 				.andDo(print())
 				.andExpect(status().isOk())
-				.andExpect(model().attributeExists(COLLECTION_OF_TEACHERS_NAME))
-				.andExpect(view().name(LIST_VIEW));
+				.andExpect(model().attributeExists(NAME_COLLECTION_OF_TEACHERS))
+				.andExpect(view().name(VIEW_LIST));
 	}
 
 	@Test
@@ -134,30 +130,33 @@ public class TeacherControllerTest {
 		mockMvc.perform(get("/teacher/view/{id}", TEST_TEACHER_ID))
 				.andDo(print())
 				.andExpect(status().isOk())
-				.andExpect(view().name(DETAILS_VIEW));
+				.andExpect(view().name(VIEW_DETAILS));
 	}
 
 	@Test
-	public void shouldReturn404HttpWhenNotFound() throws Exception {
-		given(this.teacherService.getTeacherDtoById(-1L)).willReturn((Optional.empty()));
+	public void shouldHandle404AndPassMessageWhenEntityNotFound() throws Exception {
+		
+		given(this.teacherService.getTeacherDtoById(-1L))
+				.willReturn((Optional.empty()));
 		
 		mockMvc.perform(get("/teacher/view/{id}", -1))
 				.andDo(print())
 				.andExpect(status().isNotFound())
-				.andExpect(model().attributeExists("notFound")).andExpect(view().name(DETAILS_VIEW));
+				.andExpect(model().attributeExists("notFound"))
+				.andExpect(view().name(VIEW_DETAILS));
 	}
 
-	@Ignore @Test
-	public void shouldShowUpdateForm() throws Exception {
-		/*
-		given(this.teacherService.getNotTaughtSubjects( new TeacherDto(), new ArrayList<SubjectDto>()))
-													.willReturn(Lists.newArrayList( new SubjectDto()));
+	@Test
+	public void shouldAddDtoToModelWhenUpdate() throws Exception {
+		
+		given(this.teacherService.getNotTaughtSubjects( new TeacherDto()))
+				.willReturn(Lists.newArrayList( new SubjectDto()));
 
 		mockMvc.perform(get("/teacher/update/{id}", TEST_TEACHER_ID))
 				.andDo(print())
 				.andExpect(status().isOk())
 				.andExpect(model().attributeExists("teacherDto"))
-				.andExpect(view().name(CREATE_OR_UPDATE_FORM_VIEW));*/
+				.andExpect(view().name(VIEW_CREATE_OR_UPDATE_FORM));
 	}
 
 	@Test
@@ -165,20 +164,15 @@ public class TeacherControllerTest {
 		mockMvc.perform(post("/teacher/update/{id}", TEST_TEACHER_ID).param("telephone", "1111111111")
 				.param("address", "Penny Lane 12, London, England").param("email", "maria@gmail.com")
 				.param("firstName", "Maria").param("lastName", "Smith").param("password", "000777"))
-				// .andExpect(model().attributeHasNoErrors("teacher")) No BindingResult for
-				// attribute: product WHY?!
-				// This exception is caused because the view returned by tested controller is a
-				// redirect: "redirect:....".
-				// You could use it only for a view not being a redirect.
 				.andDo(print())
-				.andExpect(model()
-				.hasNoErrors())
+				
+				.andExpect(model().hasNoErrors())
 				.andExpect(status().is3xxRedirection())
 				.andExpect( redirectedUrl("/teacher/view/" + TEST_TEACHER_ID));
 	}
 
-	@Ignore @Test
-	public void shouldReturnUpdateFormWhenErrors() throws Exception {
+	 @Test
+	public void shouldFindErrorsAndShowUpdateFormWhenErrors() throws Exception {
 		mockMvc.perform(post("/teacher/update/{id}", TEST_TEACHER_ID)
 				.param("firstName", "")
 				.param("email", "<error>")
@@ -195,16 +189,16 @@ public class TeacherControllerTest {
 				.andExpect(model().attributeHasFieldErrors("teacherDto", "telephone"))
 				.andExpect(model().attributeHasFieldErrors("teacherDto", "password"))
 				.andExpect(model().attributeErrorCount("teacherDto", 6))
-			    .andExpect(view().name(CREATE_OR_UPDATE_FORM_VIEW));
+			    .andExpect(view().name(VIEW_CREATE_OR_UPDATE_FORM));
 	}
 
 	@Test
-	public void shouldAskForConfirmationBeforeDeleting() throws Exception {
+	public void shouldAskForConfirmationBeforeDelete() throws Exception {
 
 		mockMvc.perform(get("/teacher/delete/{id}/confirm", TEST_TEACHER_ID))
 				.andDo(print())
 				.andExpect(status().isOk())
-				.andExpect(view().name(CONFIRM_DELETE_VIEW));
+				.andExpect(view().name(VIEW_CONFIRM_DELETE));
 	}
 
 	@Test
@@ -220,9 +214,9 @@ public class TeacherControllerTest {
 	}
 	
 	@Test  
-	public void shouldProcessSubjectRemovalSuccessfully() throws Exception {
+	public void shouldProcessRemoveSubjectSuccessfully() throws Exception {
 		
-		mockMvc.perform(get("/teacher/{teacherId}/subject/{subjectId}/remove"  , TEST_TEACHER_ID, 1L))
+		mockMvc.perform(get("/teacher/{teacherId}/remove/{tSSId}/"  , TEST_TEACHER_ID, 1L))
 		.andDo(print())
 
 		// assert
@@ -231,7 +225,7 @@ public class TeacherControllerTest {
 	}
 	
 	@Test
-	public void shouldProcessSubjectAdditionSuccessfully() throws Exception {
+	public void shouldProcessAddSubjectSuccessfully() throws Exception {
 		
 		mockMvc.perform(get("/teacher/{teacherId}/subject/{subjectId}/add", TEST_TEACHER_ID, 1L))
 		.andDo(print())

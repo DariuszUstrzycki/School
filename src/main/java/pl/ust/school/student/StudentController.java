@@ -29,13 +29,13 @@ import pl.ust.school.system.RecordNotFoundException;
 @RequestMapping("student")
 public class StudentController {
 
-	private static final String CREATE_OR_UPDATE_FORM_VIEW = "student/studentForm";
-	private static final String LIST_VIEW = "student/studentList";
-	private static final String DETAILS_VIEW = "student/studentDetails";
-	private static final String CONFIRM_DELETE_VIEW = "forms/confirmDelete";
+	private static final String VIEW_CREATE_OR_UPDATE_FORM = "student/studentForm";
+	private static final String VIEW_LIST = "student/studentList";
+	private static final String VIEW_DETAILS = "student/studentDetails";
+	private static final String VIEW_CONFIRM_DELETE = "forms/confirmDelete";
 
-	private static final String COLLECTION_OF_STUDENTS_NAME = "studentItems";
-	private static final String COLLECTION_OF_SCHOOLFORMS_NAME = "schoolformItems";
+	private static final String NAME_COLLECTION_OF_STUDENTS = "studentItems";
+	private static final String NAME_COLLECTION_OF_SCHOOLFORMS = "schoolformItems";
 	private static final String ENTITY_NAME = "entityName";
 	private static final String ENTITY_NAME_VALUE = "student";
 
@@ -52,7 +52,7 @@ public class StudentController {
 		model.addAttribute(ENTITY_NAME, ENTITY_NAME_VALUE);
 	}
 
-	@ModelAttribute(COLLECTION_OF_SCHOOLFORMS_NAME)
+	@ModelAttribute(NAME_COLLECTION_OF_SCHOOLFORMS)
 	public Collection<SchoolformDto> populateSchoolformItems() {
 		return this.schoolformService.getAllSchoolformDtos();
 	}
@@ -67,15 +67,15 @@ public class StudentController {
 	//////////////////////////// SAVE ////////////////////////////
 
 	@GetMapping("/save")
-	public String showForm(StudentDto studentDto) {
-		return CREATE_OR_UPDATE_FORM_VIEW;
+	public String showCreateForm(StudentDto studentDto) {
+		return VIEW_CREATE_OR_UPDATE_FORM;
 	}
 
 	@PostMapping("/save")
 	public String saveStudent(@Valid StudentDto studentDto, BindingResult result) {
 
 		if (result.hasErrors()) {
-			return CREATE_OR_UPDATE_FORM_VIEW;
+			return VIEW_CREATE_OR_UPDATE_FORM;
 		}
 
 		long id = this.studentService.createStudent(studentDto);
@@ -86,8 +86,8 @@ public class StudentController {
 
 	@RequestMapping("/list")
 	public String listStudents(@RequestParam(defaultValue = "0", required = false) int min, Model model) {
-		model.addAttribute(COLLECTION_OF_STUDENTS_NAME, this.studentService.getAllStudents());
-		return LIST_VIEW;
+		model.addAttribute(NAME_COLLECTION_OF_STUDENTS, this.studentService.getAllStudents());
+		return VIEW_LIST;
 	}
 
 	//////////////////////////// VIEW ONE ////////////////////////////
@@ -103,14 +103,14 @@ public class StudentController {
 			throw new RecordNotFoundException("No student with id " + id + " has been found.");
 		}
 
-		return DETAILS_VIEW;
+		return VIEW_DETAILS;
 	}
 
 	//////////////////////////// DELETE ////////////////////////////
 
 	@GetMapping("/delete/{id}/confirm")
-	public String showConfirmationPage(@PathVariable long id) {
-		return CONFIRM_DELETE_VIEW;
+	public String confirmDelete(@PathVariable long id) {
+		return VIEW_CONFIRM_DELETE;
 	}
 
 	@RequestMapping(value = "/delete/{id}")
@@ -123,19 +123,19 @@ public class StudentController {
 	//////////////////////////// UPDATE ////////////////////////////
 
 	@GetMapping("/update/{id}")
-	public String showForm(@PathVariable long id, Model model) {
+	public String showUpdateForm(@PathVariable long id, Model model) {
 
 		Optional<StudentDto> opt = studentService.getStudentDtoById(id);
 		opt.ifPresent(model::addAttribute);
 
-		return CREATE_OR_UPDATE_FORM_VIEW;
+		return VIEW_CREATE_OR_UPDATE_FORM;
 	}
 
 	@PostMapping("/update/{id}")
 	public String updateStudent(@Valid StudentDto studentDto, BindingResult result, @PathVariable long id) {
 
 		if (result.hasErrors()) {
-			return CREATE_OR_UPDATE_FORM_VIEW;
+			return VIEW_CREATE_OR_UPDATE_FORM;
 		} else {
 			studentDto.setId(id);
 			this.studentService.createStudent(studentDto);
@@ -157,7 +157,7 @@ public class StudentController {
 	@ResponseStatus(HttpStatus.NOT_FOUND)
 	private String recordNotFoundHandler(RecordNotFoundException ex, Model model) {
 		model.addAttribute("notFound", ex.getMessage());
-		return DETAILS_VIEW;
+		return VIEW_DETAILS;
 	}
 
 }

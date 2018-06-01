@@ -1,4 +1,4 @@
-package pl.ust.school.app;
+package pl.ust.school.testpractice;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -12,8 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-
-import pl.ust.school.testing.HomeController;
 
 @RunWith(SpringRunner.class)
 //@SpringBootTest
@@ -43,15 +41,17 @@ public class HttpRequestNoServerMockTest {
 		.andExpect(content().string(containsString("Hello World")));
 	}
 	/*
-	@MockBean
+	@MockBean // pure Mockito annotation
     private GreetingService service;
 	
 	@Test
     public void greetingShouldReturnMessageFromService() throws Exception {
         when(service.greet()).thenReturn("Hello Mock"); // Mockito sets the expectations of service
-        this.mockMvc.perform(get("/greeting")).andDo(print()).andExpect(status().isOk())
+        this.mockMvc.perform(get("/greeting"))
+        	.andDo(print())
+        	.andExpect(status().isOk())
                 .andExpect(content().string(containsString("Hello Mock")));
     }
-
-	*/
+*/
+	
 }

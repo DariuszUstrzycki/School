@@ -1,4 +1,4 @@
-package pl.ust.school.testing;
+package pl.ust.school.testpractice;
 
 import pl.ust.school.repository.AppBaseRepository;
 

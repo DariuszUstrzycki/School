@@ -28,13 +28,13 @@ import pl.ust.school.tss.TSSService;
 @RequestMapping("schoolform")
 public class SchoolformController {
 
-	private static final String CREATE_OR_UPDATE_FORM_VIEW = "schoolform/schoolformForm";
-	private static final String LIST_VIEW = "schoolform/schoolformList";
-	private static final String DETAILS_VIEW = "schoolform/schoolformDetails";
-	private static final String CONFIRM_DELETE_VIEW = "forms/confirmDelete";
+	private static final String VIEW_CREATE_OR_UPDATE_FORM = "schoolform/schoolformForm";
+	private static final String VIEW_LIST = "schoolform/schoolformList";
+	private static final String VIEW_DETAILS = "schoolform/schoolformDetails";
+	private static final String VIEW_CONFIRM_DELETE = "forms/confirmDelete";
 
-	private static final String COLLECTION_OF_SCHOOLFORMS_NAME = "schoolformItems";
-	private static final String COLLECTION_OF_STUDENTS_NAME = "studentItems";
+	private static final String NAME_COLLECTION_OF_SCHOOLFORMS = "schoolformItems";
+	private static final String NAME_COLLECTION_OF_STUDENTS = "studentItems";
 	private static final String COLLECTION_OF_TEACHERSTUDENTS_NAME = "tSSItems";
 	private static final String ENTITY_NAME = "entityName";
 	private static final String ENTITY_NAME_VALUE = "schoolform";
@@ -65,15 +65,15 @@ public class SchoolformController {
 	//////////////////////////// SAVE ////////////////////////////
 
 	@GetMapping("/save")
-	public String showForm(SchoolformDto schoolformDto, Model model) {
-		return CREATE_OR_UPDATE_FORM_VIEW;
+	public String showCreateForm(SchoolformDto schoolformDto, Model model) {
+		return VIEW_CREATE_OR_UPDATE_FORM;
 	}
 
 	@PostMapping("/save")
 	public String saveSchoolform(@Valid SchoolformDto schoolformDto, BindingResult result) {
 
 		if (result.hasErrors()) {
-			return CREATE_OR_UPDATE_FORM_VIEW;
+			return VIEW_CREATE_OR_UPDATE_FORM;
 		}
 
 		this.schoolformService.createSchoolform(schoolformDto);
@@ -84,8 +84,8 @@ public class SchoolformController {
 
 	@RequestMapping("/list")
 	public String listSchoolforms(@RequestParam(defaultValue = "0", required = false) int min, Model model) {
-		model.addAttribute(COLLECTION_OF_SCHOOLFORMS_NAME, this.schoolformService.getAllSchoolformDtos());
-		return LIST_VIEW;
+		model.addAttribute(NAME_COLLECTION_OF_SCHOOLFORMS, this.schoolformService.getAllSchoolformDtos());
+		return VIEW_LIST;
 	}
 
 	//////////////////////////// VIEW ONE ////////////////////////////
@@ -97,21 +97,21 @@ public class SchoolformController {
 
 		if (opt.isPresent()) {
 			model.addAttribute("schoolformDto", opt.get());
-			model.addAttribute(COLLECTION_OF_STUDENTS_NAME, this.studentService.getStudentBySchoolformId(id));
+			model.addAttribute(NAME_COLLECTION_OF_STUDENTS, this.studentService.getStudentBySchoolformId(id));
 			model.addAttribute(COLLECTION_OF_TEACHERSTUDENTS_NAME, this.tSSService.getAllTSSs());
 			//
 		} else {
 			throw new RecordNotFoundException("No school form with id " + id + " has been found.");
 		}
 
-		return DETAILS_VIEW;
+		return VIEW_DETAILS;
 	}
 
 	//////////////////////////// DELETE //////////////////////////// Subjects taught:  subjectsTaughtFrag.jspf  
 
 	@GetMapping("/delete/{id}/confirm")
-	public String showConfirmationPage(@PathVariable long id) {
-		return CONFIRM_DELETE_VIEW;
+	public String confirmDelete(@PathVariable long id) {
+		return VIEW_CONFIRM_DELETE;
 	}
 
 	@RequestMapping(value = "/delete/{id}")
@@ -124,20 +124,20 @@ public class SchoolformController {
 	//////////////////////////// UPDATE ////////////////////////////
 	
 	@GetMapping("/update/{id}")
-	public String showForm(@PathVariable long id, Model model) {
+	public String showUpdateForm(@PathVariable long id, Model model) {
 
 		Optional<SchoolformDto> opt = this.schoolformService.getSchoolformDtoById(id);
 		if (opt.isPresent()) {
 			SchoolformDto schoolformDto = opt.get();
 			model.addAttribute("schoolformDto", schoolformDto);
 			model.addAttribute("notTaughTSSs", this.schoolformService.getNotTaughtTSSs(schoolformDto));
-			model.addAttribute(COLLECTION_OF_STUDENTS_NAME, this.studentService.getStudentBySchoolformId(id));
+			model.addAttribute(NAME_COLLECTION_OF_STUDENTS, this.studentService.getStudentBySchoolformId(id));
 			model.addAttribute(COLLECTION_OF_TEACHERSTUDENTS_NAME, this.tSSService.getAllTSSs());
 		} else {
 			throw new RecordNotFoundException("No schoolform with id " + id + " has been found.");
 		}
 
-		return CREATE_OR_UPDATE_FORM_VIEW;
+		return VIEW_CREATE_OR_UPDATE_FORM;
 	}
 
 	@PostMapping("/update/{id}")
@@ -145,7 +145,7 @@ public class SchoolformController {
 
 		if (result.hasErrors()) {
 			model.addAttribute("notTaughTSSs", this.schoolformService.getNotTaughtTSSs(schoolformDto));
-			return CREATE_OR_UPDATE_FORM_VIEW;
+			return VIEW_CREATE_OR_UPDATE_FORM;
 		} else {
 			schoolformDto.setId(id);
 			this.schoolformService.createSchoolform(schoolformDto);
@@ -176,7 +176,7 @@ public class SchoolformController {
 	@ResponseStatus(HttpStatus.NOT_FOUND)
 	private String recordNotFoundHandler(RecordNotFoundException ex, Model model) {
 		model.addAttribute("notFound", ex.getMessage());
-		return DETAILS_VIEW;
+		return VIEW_DETAILS;
 	}
 
 }

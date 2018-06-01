@@ -1,4 +1,4 @@
-package pl.ust.school.entity;
+package pl.ust.school.student;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -6,7 +6,6 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +13,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import pl.ust.school.schoolform.Schoolform;
 import pl.ust.school.student.Student;
 
 @RunWith(SpringRunner.class) 
@@ -31,7 +29,7 @@ public class StudentJPATest {
 
 		student = createStudent("Lucy");
 	}
-     // the test doesnt use  studentRepository - will fail if brak @Entity, or @Id @GeneratedValue
+
 	@Test
 	public void shouldMapCorrectly_WhenSaving() { 
 		
@@ -39,12 +37,6 @@ public class StudentJPATest {
 		assertThat(persisted.getId()).isNotNull();
 		assertThat(persisted.getId()).isGreaterThan(0);
 		assertThat(persisted.getLastName()).isEqualTo(this.student.getLastName());
-		
-		/* Other useful methods
-		 * Long id = (Long) this.tem.getId(persisted);
-		Student found = this.tem.find(Student.class, 1L);
-		Long studentId = this.tem.persistAndGetId(this.student, Long.class);
-		Student found2 = this.tem.persistFlushFind(this.student);*/
 	}
 	
 	@Test
@@ -74,26 +66,6 @@ public class StudentJPATest {
 	    assertThat(students.size()).isEqualTo(noOfNotDeletedStudents);
 	}
 	
-	@Ignore @Test
-	public void shouldRemoveStudentFromSchoolform_WhenStudentIsDeleted() {
-		
-		//assert
-		Student notDeleted = createStudent("NotDeleted");
-		Schoolform form = new Schoolform();
-		form.setName("First Year");
-		notDeleted.setSchoolform(form);
-		
-		Student deleted = createStudent("deleted");
-		deleted.setSchoolform(form);
-		
-		assertThat(form.getStudents().size()).isEqualTo(2);
-		
-		//act
-		deleted.remove();
-		
-		//assert
-		assertThat(form.getStudents().size()).isEqualTo(1);
-	}
 	
 	private Student createStudent(String name) {
 		

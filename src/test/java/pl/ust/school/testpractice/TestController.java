@@ -1,4 +1,4 @@
-package pl.ust.school.testing;
+package pl.ust.school.testpractice;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -3,6 +3,7 @@ package pl.ust.school.student;
 import java.time.LocalDate;
 
 import javax.validation.constraints.Digits;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Past;
 
@@ -29,9 +30,9 @@ public class StudentDto {
 	private String firstName;
 	@NotEmpty
 	private String lastName;
-	//TODO @Email
+	@Email
 	private String email;
-	//TODO @NotEmpty
+	@NotEmpty
 	private String password;
 	@NotEmpty
 	private String address;

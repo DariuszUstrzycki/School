@@ -24,12 +24,12 @@ import pl.ust.school.system.RecordNotFoundException;
 @RequestMapping("subject")
 public class SubjectController {
 
-	private static final String CREATE_OR_UPDATE_FORM_VIEW = "subject/subjectForm";
-	private static final String LIST_VIEW = "subject/subjectList";
-	private static final String DETAILS_VIEW = "subject/subjectDetails";
-	private static final String CONFIRM_DELETE_VIEW = "forms/confirmDelete";
+	private static final String VIEW_CREATE_OR_UPDATE_FORM = "subject/subjectForm";
+	private static final String VIEW_LIST = "subject/subjectList";
+	private static final String VIEW_DETAILS = "subject/subjectDetails";
+	private static final String VIEW_CONFIRM_DELETE = "forms/confirmDelete";
 
-	private static final String COLLECTION_OF_SUBJECTS_NAME = "subjectItems";
+	private static final String NAME_COLLECTION_OF_SUBJECTS = "subjectItems";
 	private static final String ENTITY_NAME = "entityName";
 	private static final String ENTITY_NAME_VALUE = "subject";
 
@@ -53,15 +53,15 @@ public class SubjectController {
 	//////////////////////////// SAVE ////////////////////////////
 
 	@GetMapping("/save")
-	public String showForm(SubjectDto subjectDto, Model model) {
-		return CREATE_OR_UPDATE_FORM_VIEW;
+	public String showCreateForm(SubjectDto subjectDto, Model model) {
+		return VIEW_CREATE_OR_UPDATE_FORM;
 	}
 
 	@PostMapping("/save")
 	public String saveSubject(@Valid SubjectDto subjectDto, BindingResult result) {
 
 		if (result.hasErrors()) {
-			return CREATE_OR_UPDATE_FORM_VIEW;
+			return VIEW_CREATE_OR_UPDATE_FORM;
 		}
 
 		long id = this.subjectService.createSubject(subjectDto);
@@ -72,8 +72,8 @@ public class SubjectController {
 
 	@RequestMapping("/list")
 	public String listSubjects(@RequestParam(defaultValue = "0", required = false) int min, Model model) {
-		model.addAttribute(COLLECTION_OF_SUBJECTS_NAME, this.subjectService.getAllSubjectDtos());
-		return LIST_VIEW;
+		model.addAttribute(NAME_COLLECTION_OF_SUBJECTS, this.subjectService.getAllSubjectDtos());
+		return VIEW_LIST;
 	}
 
 	//////////////////////////// VIEW ONE ////////////////////////////
@@ -90,14 +90,14 @@ public class SubjectController {
 			throw new RecordNotFoundException("No subject with id " + id + " has been found.");
 		}
 
-		return DETAILS_VIEW;
+		return VIEW_DETAILS;
 	}
 
 	//////////////////////////// DELETE ////////////////////////////
 
 	@GetMapping("/delete/{id}/confirm")
-	public String showConfirmationPage(@PathVariable long id) {
-		return CONFIRM_DELETE_VIEW;
+	public String confirmDelete(@PathVariable long id) {
+		return VIEW_CONFIRM_DELETE;
 	}
 
 	@RequestMapping(value = "/delete/{id}")
@@ -109,19 +109,19 @@ public class SubjectController {
 	//////////////////////////// UPDATE ////////////////////////////
 
 	@GetMapping("/update/{id}")
-	public String showForm(@PathVariable long id, Model model) {
+	public String showUpdateForm(@PathVariable long id, Model model) {
 
 		Optional<SubjectDto> opt = this.subjectService.getSubjectDtoById(id);
 		opt.ifPresent(model::addAttribute);
 
-		return CREATE_OR_UPDATE_FORM_VIEW;
+		return VIEW_CREATE_OR_UPDATE_FORM;
 	}
 
 	@PostMapping("/update/{id}")
 	public String updateSubject(@Valid SubjectDto subjectDto, BindingResult result, @PathVariable long id) {
 
 		if (result.hasErrors()) {
-			return CREATE_OR_UPDATE_FORM_VIEW;
+			return VIEW_CREATE_OR_UPDATE_FORM;
 		} else {
 			subjectDto.setId(id);
 			this.subjectService.createSubject(subjectDto);
@@ -135,7 +135,7 @@ public class SubjectController {
 	@ExceptionHandler
 	private String recordNotFoundHandler(RecordNotFoundException ex, Model model) {
 		model.addAttribute("notFound", ex.getMessage());
-		return DETAILS_VIEW;
+		return VIEW_DETAILS;
 	}
 
 }

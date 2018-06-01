@@ -1,4 +1,4 @@
-package pl.ust.school.controller;
+package pl.ust.school.schoolform;
 
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -26,20 +26,17 @@ import pl.ust.school.schoolform.SchoolformController;
 import pl.ust.school.schoolform.SchoolformDto;
 import pl.ust.school.schoolform.SchoolformService;
 import pl.ust.school.student.StudentService;
+import pl.ust.school.tss.TSSService;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(SchoolformController.class)
 public class SchoolformControllerTest {
 
-	private static final String CREATE_OR_UPDATE_FORM_VIEW = "schoolform/schoolformForm";
-	private static final String LIST_VIEW = "schoolform/schoolformList";
-	private static final String DETAILS_VIEW = "schoolform/schoolformDetails";
-	@SuppressWarnings("unused")
-	private static final String CONFIRM_DELETE_VIEW = "forms/confirmDelete";
-
-	private static final String COLLECTION_OF_SCHOOLFORMS_NAME = "schoolformItems";
-	private static final String COLLECTION_OF_STUDENTS_NAME = "studentItems";
-
+	private static final String VIEW_CREATE_OR_UPDATE_FORM = "schoolform/schoolformForm";
+	private static final String VIEW_LIST = "schoolform/schoolformList";
+	private static final String VIEW_DETAILS = "schoolform/schoolformDetails";
+	private static final String VIEW_CONFIRM_DELETE = "forms/confirmDelete";
+	private static final String NAME_COLLECTION_OF_SCHOOLFORMS = "schoolformItems";
 	private static final long TEST_SCHOOLFORM_ID = 1L;
 
 	@Autowired
@@ -50,6 +47,9 @@ public class SchoolformControllerTest {
 
 	@MockBean
 	private StudentService studentService;
+	
+	@MockBean
+	private TSSService tSSService;
 
 	private SchoolformDto schoolform1A;
 
@@ -66,26 +66,34 @@ public class SchoolformControllerTest {
 	}
 
 	@Test
-	public void shouldShowSchoolformWhenGetRequest() throws Exception {
-		mockMvc.perform(get("/schoolform/save")).andDo(print()).andExpect(status().isOk())
+	public void shouldAddDtoToModelWhenSaving() throws Exception {
+		mockMvc.perform(get("/schoolform/save"))
+				.andDo(print())
+				
+				.andExpect(status().isOk())
 				.andExpect(model().attributeExists("schoolformDto"))
-				// // .andExpect(model().attribute("teacher", SchoolformDTO.class))
-				.andExpect(view().name(CREATE_OR_UPDATE_FORM_VIEW));
+				.andExpect(view().name(VIEW_CREATE_OR_UPDATE_FORM));
 	}
 
 	@Test
-	public void shouldAddNewSchoolform() throws Exception {
-		mockMvc.perform(post("/schoolform/save").param("name", "1A")).andDo(print())
+	public void shouldProcessFormDataWhenNoErrors() throws Exception {
+		mockMvc.perform(post("/schoolform/save")
+				.param("name", "1A"))
+				.andDo(print())
 				.andExpect(status().is3xxRedirection());
 	}
 
 	@Test
 	public void shouldFindErrorWhenNameIsEmptyString() throws Exception {
 
-		mockMvc.perform(post("/schoolform/save").param("name", "")).andDo(print()).andExpect(status().isOk())
+		mockMvc.perform(post("/schoolform/save")
+				.param("name", ""))
+				.andDo(print())
+				
+				.andExpect(status().isOk())
 				.andExpect(model().attributeHasErrors("schoolformDto"))
 				.andExpect(model().attributeHasFieldErrors("schoolformDto", "name"))
-				.andExpect(view().name(CREATE_OR_UPDATE_FORM_VIEW));
+				.andExpect(view().name(VIEW_CREATE_OR_UPDATE_FORM));
 	}
 
 	@Test
@@ -93,59 +101,74 @@ public class SchoolformControllerTest {
 
 		given(this.schoolformService.getAllSchoolformDtos())
 				.willReturn(Lists.newArrayList(schoolform1A, new SchoolformDto()));
-		mockMvc.perform(get("/schoolform/list")).andDo(print()).andExpect(status().isOk())
-				.andExpect(model().attributeExists(COLLECTION_OF_SCHOOLFORMS_NAME)).andExpect(view().name(LIST_VIEW));
+		
+		mockMvc.perform(get("/schoolform/list"))
+				.andDo(print())
+				
+				.andExpect(status().isOk())
+				.andExpect(model().attributeExists(NAME_COLLECTION_OF_SCHOOLFORMS))
+				.andExpect(view().name(VIEW_LIST));
 	}
 
 	@Test
 	public void shouldRetrieveSchooFormByIdWhenExists() throws Exception {
-		mockMvc.perform(get("/schoolform/view/{id}", TEST_SCHOOLFORM_ID)).andDo(print()).andExpect(status().isOk())
-				.andExpect(model().attributeExists(COLLECTION_OF_SCHOOLFORMS_NAME))
-				//.andExpect(model().attributeExists(COLLECTION_OF_STUDENTS_NAME))
-				.andExpect(view().name(DETAILS_VIEW));
+		mockMvc.perform(get("/schoolform/view/{id}", TEST_SCHOOLFORM_ID))
+				.andDo(print())
+				.andExpect(status().isOk())
+				.andExpect(view().name(VIEW_DETAILS));
 	}
 
 	@Test
-	public void shouldReturn404HttpWhenNotFound() throws Exception {
+	public void shouldHandle404AndPassMessageWhenEntityNotFound() throws Exception {
 		given(this.schoolformService.getSchoolformDtoById(-1L)).willReturn((Optional.empty()));
-		mockMvc.perform(get("/schoolform/view/{id}", -1)).andDo(print()).andExpect(status().isNotFound())
-				.andExpect(model().attributeExists("notFound")).andExpect(view().name(DETAILS_VIEW));
+		
+		mockMvc.perform(get("/schoolform/view/{id}", -1))
+				.andDo(print())
+				.andExpect(status().isNotFound())
+				.andExpect(model().attributeExists("notFound"))
+				.andExpect(view().name(VIEW_DETAILS));
 	}
 
 	@Test
-	public void shouldShowUpdateForm() throws Exception {
+	public void shouldAddDtoToModelWhenUpdate() throws Exception {
 
-		mockMvc.perform(get("/schoolform/update/{id}", TEST_SCHOOLFORM_ID)).andDo(print()).andExpect(status().isOk())
-				.andExpect(model().attributeExists("schoolformDto")).andExpect(view().name(CREATE_OR_UPDATE_FORM_VIEW));
+		mockMvc.perform(get("/schoolform/update/{id}", TEST_SCHOOLFORM_ID))
+				.andDo(print())
+				
+				.andExpect(status().isOk())
+				.andExpect(model().attributeExists("schoolformDto"))
+				.andExpect(view().name(VIEW_CREATE_OR_UPDATE_FORM));
 	}
 
 	@Test
 	public void shouldProcessUpdateWhenNoErrors() throws Exception {
-		mockMvc.perform(post("/schoolform/update/{id}", TEST_SCHOOLFORM_ID).param("name", "2B"))
-				// .andExpect(model().attributeHasNoErrors("schooForm")) No BindingResult for
-				// attribute: product WHY?!
-				// This exception is caused because the view returned by tested controller is a
-				// redirect: "redirect:....".
-				// You could use it only for a view not being a redirect.
-				.andDo(print()).andExpect(model().hasNoErrors()).andExpect(status().is3xxRedirection())
-				.andExpect(redirectedUrl("/schoolform/list"));
+		mockMvc.perform(post("/schoolform/update/{id}", TEST_SCHOOLFORM_ID)
+				.param("name", "2B"))
+				.andDo(print())
+				
+				.andExpect(model().hasNoErrors())
+				.andExpect(status().is3xxRedirection())
+				.andExpect(redirectedUrl("/schoolform/view/" + TEST_SCHOOLFORM_ID));
 	}
 
 	@Test
-	public void shouldReturnUpdateFormWhenErrors() throws Exception {
+	public void shouldFindErrorWhenEmptyName() throws Exception {
 		mockMvc.perform(post("/schoolform/update/{id}", TEST_SCHOOLFORM_ID).contentType(MediaType.TEXT_HTML)
 
 				.param("name", "")).andDo(print()).andExpect(status().isOk())
 				.andExpect(model().attributeHasErrors("schoolformDto"))
 				.andExpect(model().attributeHasFieldErrors("schoolformDto", "name")).andExpect(model().errorCount(1))
-				.andExpect(view().name(CREATE_OR_UPDATE_FORM_VIEW));
+				.andExpect(view().name(VIEW_CREATE_OR_UPDATE_FORM));
 	}
 
 	@Test
-	public void shouldAskForConfirmationBeforeDeleting() throws Exception {
+	public void shouldAskForConfirmationBeforeDelet() throws Exception {
 
-		mockMvc.perform(get("/schoolform/delete/{id}/confirm", TEST_SCHOOLFORM_ID)).andDo(print())
-				.andExpect(status().isOk()).andExpect(view().name(CONFIRM_DELETE_VIEW));
+		mockMvc.perform(get("/schoolform/delete/{id}/confirm", TEST_SCHOOLFORM_ID))
+				.andDo(print())
+				
+				.andExpect(status().isOk())
+				.andExpect(view().name(VIEW_CONFIRM_DELETE));
 	}
 
 	@Test
@@ -155,7 +178,8 @@ public class SchoolformControllerTest {
 		mockMvc.perform(get("/schoolform/delete/{id}", TEST_SCHOOLFORM_ID)).andDo(print())
 
 				// assert
-				.andExpect(status().is3xxRedirection()).andExpect(redirectedUrl("/schoolform/list"));
+				.andExpect(status().is3xxRedirection())
+				.andExpect(redirectedUrl("/schoolform/list"));
 	}
 
 }

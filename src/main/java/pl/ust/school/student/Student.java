@@ -26,29 +26,6 @@ public class Student extends Person {
 	@ManyToOne
 	@JoinColumn(name = "schoolform_id")
 	private Schoolform schoolform;
-
-	/////////////// getters and setters ///////////////////
-
-
-	public void setSchoolform(Schoolform newSchoolform) {
-
-		/*if (newSchoolform != null) {
-			newSchoolform.getStudents().add(this);
-		} 
-		
-		if (this.schoolform != null && newSchoolform != null) { // Schoolform class takes care of removal when argument schoolform is null
-			this.schoolform.getStudents().remove(this);
-		}*/
-
-		this.schoolform = newSchoolform;
-	}
-	
-	///////////////// removal ///////////////////////////////
-	
-	public void remove() {
-		//this.getSchoolform().getStudents().remove(this); // @WhereJoinTable ?!
-		this.setDeleted(true);
-	}
 	
 	
 }

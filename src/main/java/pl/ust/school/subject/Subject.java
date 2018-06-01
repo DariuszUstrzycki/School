@@ -26,8 +26,10 @@ import pl.ust.school.tss.TSS;
 public class Subject extends NamedEntity {
 
 	private static final long serialVersionUID = 1L;
-
-	@OneToMany(mappedBy = "subject", fetch = FetchType.EAGER) // 
+	/**
+	 * @param tsses = objects of type TSS (TeacherSubjectSchoolform), eg Smith/Maths/FirstYear1A
+	 */
+	@OneToMany(mappedBy = "subject", fetch = FetchType.EAGER) 
 	private Set<TSS> tsses;
 
 	/////////////// helper ///////////////////

@@ -19,6 +19,9 @@ import pl.ust.school.schoolform.Schoolform;
 import pl.ust.school.subject.Subject;
 import pl.ust.school.teacher.Teacher;
 
+/**
+ * JavaBean domain object representing a triplet of a Teacher, a Subject and a Schoolform
+ */
 @Entity
 @Table(name = "teachers_subjects")
 @Where(clause = "is_deleted=false")

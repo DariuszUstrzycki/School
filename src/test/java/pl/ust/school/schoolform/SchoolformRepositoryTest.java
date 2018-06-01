@@ -1,4 +1,4 @@
-package pl.ust.school.repository;
+package pl.ust.school.schoolform;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;

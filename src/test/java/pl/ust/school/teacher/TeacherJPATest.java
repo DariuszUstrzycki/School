@@ -1,4 +1,4 @@
-package pl.ust.school.entity;
+package pl.ust.school.teacher;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -6,7 +6,6 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +31,7 @@ public class TeacherJPATest {
 	}
 
 	@Test
-	public void shouldMapCorrectly_WhenSaving() {
+	public void shouldMapCorrectlyWhenSaving() {
 
 		Teacher persisted = this.tem.persistAndFlush(this.teacher);
 		assertThat(persisted.getLastName()).isEqualTo(this.teacher.getLastName());
@@ -62,9 +61,10 @@ public class TeacherJPATest {
 		Teacher notDeleted2 = createTeacher("Larry");
 		notDeleted2.setDeleted(false);
 		
+		this.tem.persistAndFlush(deleted);
 		this.tem.persistAndFlush(notDeleted1);
 		this.tem.persistAndFlush(notDeleted2);
-		this.tem.persistAndFlush(deleted);
+		
 		
 		//then
 	    List<Teacher> teachers = this.tem.getEntityManager()
@@ -72,37 +72,6 @@ public class TeacherJPATest {
 	    		.getResultList();
 	    		
 	    assertThat(teachers.size()).isEqualTo(noOfNotDeletedTeachers);
-	}
-	
-	@Ignore @Test  //TODO
-	public void shouldSetTeachersSubjectsToNull_WhenTeacherDeleted() {
-		/*
-		//arrange
-		Subject subject1 = new Subject();
-		subject1.setName("Maths");
-		Teacher teacher1 = createTeacher("John");
-		TSS ts1 = new TSS();
-		ts1.setTeacher(teacher1);
-		ts1.setSubject(subject1);
-		
-		Subject subject2 = new Subject();
-		subject2.setName("Biology");
-		TSS ts2 = new TSS();
-		ts2.setTeacher(teacher1);
-		ts2.setSubject(subject2);
-		
-		assertThat(teacher1.getTSSs().size()).isEqualTo(2);
-		assertThat(ts1.getTeacher()).isNotNull();
-		assertThat(ts2.getTeacher()).isNotNull();
-		
-		//act
-		teacher1.remove();
-		
-		//assert
-		assertThat(teacher1.getTSSs().size()).isEqualTo(0);
-		assertThat(ts1.getTeacher()).isNull();
-		assertThat(ts2.getTeacher()).isNull();
-		*/
 	}
 	
 	private Teacher createTeacher(String name) {

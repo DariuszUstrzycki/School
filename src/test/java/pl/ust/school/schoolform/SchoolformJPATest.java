@@ -1,12 +1,10 @@
-package pl.ust.school.entity;
+package pl.ust.school.schoolform;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +13,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import pl.ust.school.schoolform.Schoolform;
-import pl.ust.school.student.Student;
 
 @RunWith(SpringRunner.class) 
 @DataJpaTest
@@ -43,7 +40,7 @@ public class SchoolformJPATest {
 	}
 	
 	@Test
-	public void shouldNotLoadSchoolforms_WhenIsDeletedSetToTrue() {  
+	public void shouldNotLoadSchoolformsWhenIsDeletedSetToTrue() {  
 		
 		//given
 		Schoolform deleted = new Schoolform();
@@ -72,43 +69,7 @@ public class SchoolformJPATest {
 	    assertThat(schoolforms.size()).isEqualTo(noOfNotDeletedSchoolforms);
 	}
 	
-	@Ignore @Test //TODO
-	public void shouldSetStudentsSchoolformToNull_WhenSchoolformDeleted() {
-		
-		//arrange
-		Student student1 = createStudent("John");
-		Student student2 = createStudent("Mike");
-		student1.setSchoolform(this.schoolform);
-		student2.setSchoolform(this.schoolform);
-		
-		assertThat(this.schoolform.getStudents().size()).isEqualTo(2);
-		assertThat(student1.getSchoolform()).isNotNull();
-		assertThat(student2.getSchoolform()).isNotNull();
-		/*
-		//act
-		this.schoolform.remove();
-		*/
-		//assert
-		assertThat(this.schoolform.getStudents().size()).isEqualTo(0);
-		assertThat(student1.getSchoolform()).isNull();
-		assertThat(student2.getSchoolform()).isNull();
-		
-		
-	}
+	
 
-	private Student createStudent(String name) {
-
-		Student student = new Student();
-		student = new Student();
-		student.setFirstName("Jessica");
-		student.setLastName("Motgmomery");
-		student.setEmail(name + "@gamil.com");
-		student.setPassword("567");
-		student.setTelephone("1234567");
-		student.setBirthDate(LocalDate.of(2000, 1, 1));
-		student.setAddress("Manchester, England");
-
-		return student;
-	}
 	
 }

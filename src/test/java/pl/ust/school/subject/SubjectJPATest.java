@@ -1,4 +1,4 @@
-package pl.ust.school.entity;
+package pl.ust.school.subject;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.LocalDate;
@@ -57,9 +57,9 @@ public class SubjectJPATest {
 		notDeleted2.setName("Subject2");
 		notDeleted2.setDeleted(false);
 		
+		this.tem.persistAndFlush(deleted);
 		this.tem.persistAndFlush(notDeleted1);
 		this.tem.persistAndFlush(notDeleted2);
-		this.tem.persistAndFlush(deleted);
 		
 		//then
 	    List<Subject> subjects = this.tem.getEntityManager()
@@ -69,36 +69,9 @@ public class SubjectJPATest {
 	    assertThat(subjects.size()).isEqualTo(noOfNotDeletedSubjects);
 	}
 
-	public void shouldSetTeachersSubjectsToNull_WhenSubjectDeleted() {
-		/*
-		// arrange
-		Subject subject1 = new Subject();
-		subject1.setName("Maths");
-		Teacher teacher1 = createTeacher("John");
-		TSS ts1 = new TSS();
-		ts1.setTeacher(teacher1);
-		ts1.setSubject(subject1);
+	
 
-		Subject subject2 = new Subject();
-		subject2.setName("Biology");
-		TSS ts2 = new TSS();
-		ts2.setTeacher(teacher1);
-		ts2.setSubject(subject2);
-
-		assertThat(subject1.getTeachers().size()).isEqualTo(2);
-		assertThat(ts1.getTeacher()).isNotNull();
-		assertThat(ts2.getTeacher()).isNotNull();
-
-		// act
-		teacher1.remove();
-
-		// assert
-		assertThat(subject1.getTeachers().size()).isEqualTo(0);
-		assertThat(ts1.getTeacher()).isNull();
-		assertThat(ts2.getTeacher()).isNull();
-*/
-	}
-
+	@SuppressWarnings("unused")
 	private Teacher createTeacher(String name) {
 
 		Teacher teacher = new Teacher();

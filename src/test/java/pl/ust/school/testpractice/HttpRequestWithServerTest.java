@@ -1,4 +1,4 @@
-package pl.ust.school.app;
+package pl.ust.school.testpractice;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,8 +24,8 @@ public class HttpRequestWithServerTest {
 
     @Test
     public void greetingShouldReturnDefaultMessage() throws Exception {
-        assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/helloworld",
-                String.class)).contains("Hello World");
+        assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/helloworld",String.class))
+        		.contains("Hello World");
     }
 
 }

@@ -30,10 +30,29 @@ public class Schoolform extends NamedEntity {
 	@OneToMany(mappedBy = "schoolform", cascade = { CascadeType.MERGE, CascadeType.PERSIST }, fetch = FetchType.EAGER)
 	private Set<Student> students; 
 	
+	/**
+	 * @param tsses = objects of type TSS (TeacherSubjectSchoolform), eg Smith/Maths/FirstYear1A
+	 */
 	@OneToMany(mappedBy = "schoolform", cascade = { CascadeType.MERGE, CascadeType.PERSIST }, fetch = FetchType.EAGER)
 	private Set<TSS> tsses; 
-	
-	/////////////// helper ///////////////////
+
+	/////////////// getters and setters ///////////////////
+
+	public Set<Student> getStudents() {
+		if (this.students == null) {
+			this.students = new HashSet<>();
+		}
+		return this.students;
+	}
+
+	public Set<TSS> getTsses() {
+		if (this.tsses == null) {
+			this.tsses = new HashSet<>();
+		}
+		return this.tsses;
+	}
+
+	/////////////// helpers for Students ///////////////////
 
 	public void addStudent(Student s) {
 		students.add(s);
@@ -45,26 +64,6 @@ public class Schoolform extends NamedEntity {
 		s.setSchoolform(null);
 	}
 	
-	
-	public void addTSS(TSS ts) {
-		tsses.add(ts);
-		ts.setSchoolform(this);
-	}
-	
-	public void removeTSS(TSS ts) {
-		tsses.remove(ts);
-		ts.setSchoolform(null);
-	}
-	
-	/////////////// getters and setters ///////////////////
-
-	public Set<Student> getStudents() {
-		if (this.students == null) {
-			this.students = new HashSet<>();
-		}
-		return this.students;
-	}
-	
 	public void removeAllStudents() {
 		
 		for (Student s : this.getStudents()) {
@@ -73,12 +72,19 @@ public class Schoolform extends NamedEntity {
 		this.students.clear();
 	}
 	
-	public Set<TSS> getTsses() {
-		if (this.tsses == null) {
-			this.tsses = new HashSet<>();
-		}
-		return this.tsses;
+	/////////////// helpers for TSS ///////////////////
+	
+	
+	public void addTSS(TSS ts) {
+		tsses.add(ts);
+		ts.setSchoolform(this);
 	}
+	
+	public void removeTSS(TSS ts) {
+		ts.setSchoolform(null);
+		tsses.remove(ts);
+	}
+	
 	
 	public void removeAllTSSs() {
 		
@@ -87,5 +93,6 @@ public class Schoolform extends NamedEntity {
 		}
 		this.students.clear();
 	}
+	
 	
 }

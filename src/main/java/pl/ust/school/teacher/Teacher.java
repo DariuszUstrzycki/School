@@ -29,10 +29,13 @@ public class Teacher extends Person {
 
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * @param tsses = objects of type TSS (TeacherSubjectSchoolform), eg Smith/Maths/FirstYear1A
+	 */
 	@OneToMany(mappedBy = "teacher", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
 	private Set<TSS> tsses;
 
-	/////////////// helper ///////////////////
+	/////////////// helpers ///////////////////
 
 	public void addTSS(Subject subject) {
 		TSS tSS = new TSS(this, subject, null);
@@ -42,12 +45,10 @@ public class Teacher extends Person {
 	
 	public void removeTSS(Subject subject) {
 		TSS tSS = new TSS(this, subject, null);
-		//tSS.getSchoolform().getTSSs().remove(tSS); // new line
 		subject.getTsses().remove(tSS);
 		this.tsses.remove(tSS);
 		tSS.setTeacher(null);
 		tSS.setSubject(null);
-		//tSS.setSchoolform(null);
 	}
 	
 	public void removeTeacherFromAllTSSs() {

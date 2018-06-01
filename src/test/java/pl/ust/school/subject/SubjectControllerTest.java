@@ -1,5 +1,6 @@
-package pl.ust.school.controller;
+package pl.ust.school.subject;
 
+import org.assertj.core.util.Lists;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -11,9 +12,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.util.Optional;
 
-import org.assertj.core.util.Lists;
+
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,14 +30,11 @@ import pl.ust.school.subject.SubjectService;
 @WebMvcTest(SubjectController.class)
 public class SubjectControllerTest {
 	
-	private static final String CREATE_OR_UPDATE_FORM_VIEW = "subject/subjectForm";
-	private static final String LIST_VIEW = "subject/subjectList";
-	private static final String DETAILS_VIEW = "subject/subjectDetails";
-	@SuppressWarnings("unused")
-	private static final String CONFIRM_DELETE_VIEW = "forms/confirmDelete";
-	
-	private static final String COLLECTION_OF_SUBJECTS_NAME = "subjectItems";
-
+	private static final String VIEW_CREATE_OR_UPDATE_FORM = "subject/subjectForm";
+	private static final String VIEW_LIST = "subject/subjectList";
+	private static final String VIEW_DETAILS = "subject/subjectDetails";
+	private static final String VIEW_CONFIRM_DELETE = "forms/confirmDelete";
+	private static final String NAME_COLLECTION_OF_SUBJECTS = "subjectItems";
     private static final long TEST_SUBJECT_ID = 1L;
 
     @Autowired
@@ -55,22 +52,21 @@ public class SubjectControllerTest {
     	this.biology.setName("Biology");
     	
 		given(this.subjectService.getSubjectDtoById(TEST_SUBJECT_ID)).willReturn(Optional.of(this.biology));
-
         
-        System.err.println("----------@Before setup()-----------------"); // useful when debugging as it's easy to see when each test starts/ends
+		// System.err.println("----------@Before setup()-----------------");  useful when debugging as it's easy to see when each test starts/ends
     }
 
     @Test
-    public void shouldShowSubjectFormWhenGetRequest() throws Exception {
+    public void shouldAddDtoToModelWhenSaving() throws Exception {
         mockMvc.perform(get("/subject/save"))
         	.andDo(print())
             .andExpect(status().isOk())
             .andExpect(model().attributeExists("subjectDto"))
-            .andExpect(view().name(CREATE_OR_UPDATE_FORM_VIEW));
+            .andExpect(view().name(VIEW_CREATE_OR_UPDATE_FORM));
     }
 
     @Test
-    public void shouldAddNewSubjectWhenNoErrors() throws Exception {
+    public void shouldProcessFormDataWhenNoErrors() throws Exception {
         mockMvc.perform( post("/subject/save")
         	   .param("name", "Astrophysics") )
         	   .andDo(print())
@@ -87,7 +83,7 @@ public class SubjectControllerTest {
             .andExpect(status().isOk()) 
             .andExpect(model().attributeHasErrors("subjectDto"))
             .andExpect(model().attributeHasFieldErrors("subjectDto", "name"))
-            .andExpect(view().name(CREATE_OR_UPDATE_FORM_VIEW));
+            .andExpect(view().name(VIEW_CREATE_OR_UPDATE_FORM));
     }
    
     @Test
@@ -96,8 +92,8 @@ public class SubjectControllerTest {
         given(this.subjectService.getAllSubjectDtos()).willReturn(Lists.newArrayList(this.biology, new SubjectDto()));
         mockMvc.perform(get("/subject/list"))
             .andExpect(status().isOk())
-            .andExpect(model().attributeExists(COLLECTION_OF_SUBJECTS_NAME))
-            .andExpect(view().name(LIST_VIEW));
+            .andExpect(model().attributeExists(NAME_COLLECTION_OF_SUBJECTS))
+            .andExpect(view().name(VIEW_LIST));
     }
    
     @Test
@@ -106,20 +102,18 @@ public class SubjectControllerTest {
         )
         	.andDo(print())
         	.andExpect(status().isOk())
-        	.andExpect(model().attributeExists(COLLECTION_OF_SUBJECTS_NAME))
-        	//.andExpect(model().attribute("subjectItems", this.b)
-            .andExpect(view().name(DETAILS_VIEW));
+            .andExpect(view().name(VIEW_DETAILS));
     }
   
     @Test
-    public void shouldReturn404HttpWhenNotFound() throws Exception {
+    public void shouldHandle404AndPassMessageWhenEntityNotFound() throws Exception {
     	 given(this.subjectService.getSubjectDtoById(-1L)).willReturn((Optional.empty()));
         mockMvc.perform(get("/subject/view/{id}", -1)
         )
         	.andDo(print())
         	.andExpect(status().isOk())
         	.andExpect(model().attributeExists("notFound"))
-            .andExpect(view().name(DETAILS_VIEW));
+            .andExpect(view().name(VIEW_DETAILS));
     }
 
      @Test
@@ -130,7 +124,7 @@ public class SubjectControllerTest {
             .andExpect(status().isOk())
             .andExpect(model().attributeExists("subjectDto"))
             .andExpect(model().attribute("subjectDto", this.biology))
-            .andExpect(view().name(CREATE_OR_UPDATE_FORM_VIEW));
+            .andExpect(view().name(VIEW_CREATE_OR_UPDATE_FORM));
     }
 
     @Test
@@ -148,7 +142,7 @@ public class SubjectControllerTest {
     }
    
     @Test
-    public void shouldReturnUpdateFormWhenErrors() throws Exception {
+    public void shouldFindErrorWhenNameIsEmpty() throws Exception {
         mockMvc.perform( post("/subject/update/{id}", TEST_SUBJECT_ID)
             .param("name", "")
         )
@@ -157,20 +151,20 @@ public class SubjectControllerTest {
         	.andExpect(model().attributeHasErrors("subjectDto"))
         	.andExpect(model().attributeHasFieldErrors("subjectDto", "name"))
         	.andExpect(model().errorCount(1))
-            .andExpect(view().name(CREATE_OR_UPDATE_FORM_VIEW));
+            .andExpect(view().name(VIEW_CREATE_OR_UPDATE_FORM));
     }
     
     
-    @Ignore @Test
+    @Test
     public void shouldAskForConfirmationBeforeDeleting() throws Exception {
     	
     	mockMvc.perform(get("/subject/delete/{id}/confirm", TEST_SUBJECT_ID))
     	.andDo(print())
     	.andExpect(status().isOk())
-    	.andExpect(view().name(CONFIRM_DELETE_VIEW));
+    	.andExpect(view().name(VIEW_CONFIRM_DELETE));
     }
     
-    @Ignore @Test
+    @Test
     public void shouldDeleteSuccessfully() throws Exception {
     	
     	//then
