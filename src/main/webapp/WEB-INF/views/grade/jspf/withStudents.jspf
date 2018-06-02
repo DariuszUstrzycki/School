@@ -1,7 +1,7 @@
  <table class="table table-striped table-bordered table-hover table-condensed">
 <thead>
 <tr>
-    <th>Id</th><th>First Name</th><th>Last Name</th><th>Form</th><th>Action</th>
+    <th>Id</th><th>Student</th><th>Grades</th><th>Action</th>
 </tr>
 </thead>
 <tbody>
@@ -9,9 +9,12 @@
 <c:forEach items='${studentItems}' var='student'>
 <tr>
 	<td>${student.id}</td>
-	<td>${student.firstName}</td>
-	<td>${student.lastName}</td>
-	<td>${student.schoolform.name}</td>
+	<td>${student.firstName}&nbsp${student.lastName}</td>
+	<td>
+	<c:forEach items='${student.grades}' var='grade'>
+			${grade['gradeValue']}&nbsp&nbsp
+	</c:forEach>
+	</td>
 	<td>
 	<a href='${pageContext.request.contextPath}/student/update/${student.id}'>Update</a>
 	<a href='${pageContext.request.contextPath}/student/view/${student.id}'>View</a>

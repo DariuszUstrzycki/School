@@ -23,7 +23,7 @@ import pl.ust.school.teacher.Teacher;
  * JavaBean domain object representing a triplet of a Teacher, a Subject and a Schoolform
  */
 @Entity
-@Table(name = "teachers_subjects")
+@Table(name = "teachers_subjects_schoolforms")
 @Where(clause = "is_deleted=false")
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor @ToString(callSuper = true)
 public class TSS extends BaseEntity {

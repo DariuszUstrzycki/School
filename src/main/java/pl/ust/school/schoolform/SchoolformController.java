@@ -97,7 +97,7 @@ public class SchoolformController {
 
 		if (opt.isPresent()) {
 			model.addAttribute("schoolformDto", opt.get());
-			model.addAttribute(NAME_COLLECTION_OF_STUDENTS, this.studentService.getStudentBySchoolformId(id));
+			model.addAttribute(NAME_COLLECTION_OF_STUDENTS, this.studentService.getStudentsBySchoolformId(id));
 			model.addAttribute(COLLECTION_OF_TEACHERSTUDENTS_NAME, this.tSSService.getAllTSSs());
 			//
 		} else {
@@ -131,7 +131,7 @@ public class SchoolformController {
 			SchoolformDto schoolformDto = opt.get();
 			model.addAttribute("schoolformDto", schoolformDto);
 			model.addAttribute("notTaughTSSs", this.schoolformService.getNotTaughtTSSs(schoolformDto));
-			model.addAttribute(NAME_COLLECTION_OF_STUDENTS, this.studentService.getStudentBySchoolformId(id));
+			model.addAttribute(NAME_COLLECTION_OF_STUDENTS, this.studentService.getStudentsBySchoolformId(id));
 			model.addAttribute(COLLECTION_OF_TEACHERSTUDENTS_NAME, this.tSSService.getAllTSSs());
 		} else {
 			throw new RecordNotFoundException("No schoolform with id " + id + " has been found.");

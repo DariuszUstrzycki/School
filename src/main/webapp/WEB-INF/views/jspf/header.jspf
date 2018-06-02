@@ -16,6 +16,7 @@
       <li><a href='/teacher/list'>Teachers</a></li>
       <li><a href='/student/list'>Students</a></li>
       <li><a href='/subject/list'>Subjects</a></li>
+      <li><a href='/grade/tssList'>Grades</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>

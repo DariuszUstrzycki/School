@@ -37,11 +37,6 @@ public class TSSServiceImpl implements TSSService{
 	}
 
 	@Override
-	public Optional<TSS> getTSS(long tSSId) {
-		return this.tSSRepo.findById(tSSId);
-	}
-
-	@Override
 	public void deleteTSS(long tSSId) {
 		
 		Optional<TSS> opt = this.tSSRepo.findById(tSSId);
@@ -65,6 +60,28 @@ public class TSSServiceImpl implements TSSService{
 			tss.removeTSS();
 			this.tSSRepo.delete(tss);
 		}
+		
+	}
+	
+	@Override
+	public Optional<TSS> getTSS(long tSSId) {
+		return this.tSSRepo.findById(tSSId);
+	}
+
+
+	@Override
+	public TSSDto getTSSDto(long tSSId) {
+		
+		Optional<TSS> opt = this.tSSRepo.findById(tSSId);
+		
+		if(opt.isPresent()) {
+			
+			TSS tss = opt.get();
+			return this.tSSMapper.toDTO(tss);
+			
+		} else {
+			throw new RecordNotFoundException("No TSS with id " + tSSId + " has been found.");
+		} 
 		
 	}
 

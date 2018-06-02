@@ -1,15 +1,18 @@
 package pl.ust.school.student;
 
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import pl.ust.school.grade.Grade;
 import pl.ust.school.schoolform.Schoolform;
 import pl.ust.school.schoolform.SchoolformService;
 import pl.ust.school.system.RecordNotFoundException;
+import pl.ust.school.tss.TSSDto;
 
 @Service
 public class StudentServiceImpl implements StudentService {
@@ -99,9 +102,29 @@ public class StudentServiceImpl implements StudentService {
 	}
 
 	@Override
-	public Collection<StudentDto> getStudentBySchoolformId(long id) {
+	public Collection<StudentDto> getStudentsBySchoolformId(long id) {
 
 		return this.studentRepo.findBySchoolformId(id).stream().map(mapper::toDTO).collect(Collectors.toSet());
+	}
+
+	@Override
+	public TSSDto filterGradesWithSubject(TSSDto tssDto) {
+		
+		long subjectId = tssDto.getSubject().getId();
+		Collection<Student> students = tssDto.getSchoolform().getStudents();
+		
+		for (Student student : students) {
+			
+			for (Iterator iterator = student.getGrades().iterator(); iterator.hasNext();) {
+				Grade grade = (Grade) iterator.next();
+				if(grade.getSubject().getId() != subjectId) {
+					iterator.remove();
+				}
+				
+			}
+		}
+		
+		return tssDto;
 	}
 
 }

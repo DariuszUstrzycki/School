@@ -1,5 +1,6 @@
 package pl.ust.school.schoolform;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -17,6 +18,7 @@ import lombok.Setter;
 import lombok.ToString;
 import pl.ust.school.model.NamedEntity;
 import pl.ust.school.student.Student;
+import pl.ust.school.student.StudentDto;
 import pl.ust.school.tss.TSS;
 
 @Entity
@@ -28,24 +30,24 @@ public class Schoolform extends NamedEntity {
 	private static final long serialVersionUID = 1L;
 
 	@OneToMany(mappedBy = "schoolform", cascade = { CascadeType.MERGE, CascadeType.PERSIST }, fetch = FetchType.EAGER)
-	private Set<Student> students; 
+	private Collection<Student> students; 
 	
 	/**
 	 * @param tsses = objects of type TSS (TeacherSubjectSchoolform), eg Smith/Maths/FirstYear1A
 	 */
-	@OneToMany(mappedBy = "schoolform", cascade = { CascadeType.MERGE, CascadeType.PERSIST }, fetch = FetchType.EAGER)
-	private Set<TSS> tsses; 
+	@OneToMany(mappedBy = "schoolform", cascade = { CascadeType.MERGE, CascadeType.PERSIST })
+	private Collection<TSS> tsses; 
 
 	/////////////// getters and setters ///////////////////
 
-	public Set<Student> getStudents() {
+	public Collection<Student> getStudents() {
 		if (this.students == null) {
 			this.students = new HashSet<>();
 		}
 		return this.students;
 	}
 
-	public Set<TSS> getTsses() {
+	public Collection<TSS> getTsses() {
 		if (this.tsses == null) {
 			this.tsses = new HashSet<>();
 		}
