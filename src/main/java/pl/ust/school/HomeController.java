@@ -1,4 +1,4 @@
-package pl.ust.school.testpractice;
+package pl.ust.school;
 
 import java.util.Locale;
 
